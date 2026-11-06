@@ -9,10 +9,13 @@
       <%= flash %>
       <% if phone_header_shown? %>
         <%= helpers.ui_mobile_header(title: page_signalled(:title), back_url: page_signalled(:back_url), subtitle: page_signalled(:subtitle)) %>
+      <% elsif !native_app? %>
+        <%= render KeystoneUi::App::SectionMenuComponent.new %>
       <% end %>
     </header>
     <% page = tag.main(content) %>
     <% if native_app? %>
+      <%= render KeystoneUi::App::NativeMenuButtonComponent.new %>
       <%= page %>
     <% else %>
       <%= helpers.ui_navigation do |navigation| %>
