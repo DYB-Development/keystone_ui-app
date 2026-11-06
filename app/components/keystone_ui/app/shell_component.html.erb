@@ -9,6 +9,8 @@
       <%= flash %>
       <% if phone_header_shown? %>
         <%= helpers.ui_mobile_header(title: page_signalled(:title), back_url: page_signalled(:back_url), subtitle: page_signalled(:subtitle)) %>
+      <% else %>
+        <%= render KeystoneUi::App::SectionMenuComponent.new %>
       <% end %>
     </header>
     <% page = tag.main(content) %>
