@@ -34,4 +34,10 @@ class SectionMenuTest < ActionDispatch::IntegrationTest
 
     assert_select "header .ks-nav-dropdown", count: 0
   end
+
+  test "on a phone browser a page that belongs to no section shows no section menu" do
+    get "/pages/plain"
+
+    assert_select "header .ks-nav-dropdown", count: 0
+  end
 end
