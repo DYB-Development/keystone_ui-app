@@ -20,4 +20,10 @@ class NativeMenuButtonTest < ActionDispatch::IntegrationTest
 
     assert_equal [], sent_menu["items"]
   end
+
+  test "in a browser the page draws no native menu button" do
+    get "/pages/plain", params: { tab: "quotes" }
+
+    assert_select "[data-controller='bridge--menu-button']", count: 0
+  end
 end
