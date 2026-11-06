@@ -11,6 +11,7 @@ module KeystoneUi
 
       PAGE_SIGNALS = %i[show_page form_page].freeze
       VIEWPORT = "width=device-width, initial-scale=1"
+      NATIVE_APP_VIEWPORT = "#{VIEWPORT}, maximum-scale=1.0, user-scalable=0"
 
       def native_app?
         return @native_app if defined?(@native_app)
@@ -19,7 +20,7 @@ module KeystoneUi
       end
 
       def viewport
-        VIEWPORT
+        native_app? ? NATIVE_APP_VIEWPORT : VIEWPORT
       end
 
       def phone_header_shown?

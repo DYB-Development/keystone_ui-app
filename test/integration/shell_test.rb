@@ -95,4 +95,9 @@ class ShellTest < ActionDispatch::IntegrationTest
 
     assert_select "head meta[name=viewport][content=?]", "width=device-width, initial-scale=1"
   end
+  test "inside the native app the page cannot be pinch-zoomed" do
+    get "/pages/plain", headers: NATIVE_APP
+
+    assert_select "head meta[name=viewport][content=?]", "width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0"
+  end
 end
