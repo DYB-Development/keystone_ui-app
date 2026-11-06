@@ -1,5 +1,5 @@
 <div class="<%= WRAPPER_CLASSES %>">
-  <%= render Keystone::Ui::NavDropdownComponent.new(title: section.label, area: section.label) do %>
+  <%= render Keystone::Ui::NavDropdownComponent.new(title: title, area: section.label) do %>
     <% section.tabs.each do |tab| %>
       <%= render Keystone::Ui::NavItemComponent.new(label: tab.label, href: tab.href, active: tab.active) %>
     <% end %>

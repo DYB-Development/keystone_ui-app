@@ -11,6 +11,12 @@ class SectionMenuTest < ActionDispatch::IntegrationTest
     assert_select "header [class~='lg:hidden'] .ks-nav-dropdown-trigger", text: /Sales/
   end
 
+  test "on a phone browser a page with a page header shows the header's title in the top bar" do
+    get "/pages/header", params: { tab: "quotes" }
+
+    assert_select "header [class~='lg:hidden'] .ks-nav-dropdown-trigger", text: /Quote Q-1/
+  end
+
   test "on a phone browser the section's button opens a menu of the section's tabs" do
     get "/pages/plain", params: { tab: "quotes" }
 
