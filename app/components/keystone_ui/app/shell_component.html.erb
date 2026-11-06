@@ -7,6 +7,9 @@
     <header>
       <%= flash %>
     </header>
-    <main><%= content %></main>
+    <%= helpers.ui_navigation do |navigation| %>
+      <% navigation.with_logo { logo.to_s } if logo? %>
+      <main><%= content %></main>
+    <% end %>
   </body>
 </html>
