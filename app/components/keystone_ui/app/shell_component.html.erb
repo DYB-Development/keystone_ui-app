@@ -7,7 +7,7 @@
     <header>
       <%= flash %>
       <% if page_signal %>
-        <%= helpers.ui_mobile_header(title: page_signalled(:title), back_url: page_signalled(:back_url)) %>
+        <%= helpers.ui_mobile_header(title: page_signalled(:title), back_url: page_signalled(:back_url), subtitle: page_signalled(:subtitle)) %>
       <% end %>
     </header>
     <%= helpers.ui_navigation do |navigation| %>

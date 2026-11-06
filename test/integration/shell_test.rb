@@ -63,4 +63,9 @@ class ShellTest < ActionDispatch::IntegrationTest
 
     assert_select "header a.ks-mobile-header-back[href='/pages/plain']"
   end
+  test "on a show page the phone header shows the page's subtitle" do
+    get "/pages/show"
+
+    assert_select "header .ks-mobile-header-subtitle", text: "INV-1"
+  end
 end
