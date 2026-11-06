@@ -9,6 +9,7 @@
     </header>
     <%= helpers.ui_navigation do |navigation| %>
       <% navigation.with_logo { logo.to_s } if logo? %>
+      <% navigation.with_menus { menus.to_s } if menus? %>
       <main><%= content %></main>
     <% end %>
   </body>

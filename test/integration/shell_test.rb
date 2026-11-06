@@ -34,4 +34,10 @@ class ShellTest < ActionDispatch::IntegrationTest
 
     assert_select "nav #logo", text: "Dummy logo"
   end
+
+  test "in a browser the shell draws the app's menus in the navigation bar" do
+    get "/pages/plain"
+
+    assert_select "nav #menus", text: "Account menu"
+  end
 end
