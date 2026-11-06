@@ -85,4 +85,9 @@ class ShellTest < ActionDispatch::IntegrationTest
 
     assert_select ".ks-mobile-header-title", count: 0
   end
+  test "inside the native app the shell draws no footer" do
+    get "/pages/plain", headers: NATIVE_APP
+
+    assert_select "#footer", count: 0
+  end
 end

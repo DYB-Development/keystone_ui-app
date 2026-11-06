@@ -12,7 +12,9 @@ module KeystoneUi
       PAGE_SIGNALS = %i[show_page form_page].freeze
 
       def native_app?
-        helpers.hotwire_native_app?
+        return @native_app if defined?(@native_app)
+
+        @native_app = helpers.hotwire_native_app?
       end
 
       def phone_header_shown?
@@ -20,7 +22,7 @@ module KeystoneUi
       end
 
       def footer_shown?
-        !helpers.content_for?(:hide_footer)
+        !native_app? && !helpers.content_for?(:hide_footer)
       end
 
       def page_signal
