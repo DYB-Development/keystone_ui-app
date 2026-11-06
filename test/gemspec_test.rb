@@ -15,8 +15,8 @@ class GemspecTest < ActiveSupport::TestCase
     assert_equal Gem::Requirement.new(">= 0.30.0"), requirement_for("keystone_ui-styles")
   end
 
-  test "the gem requires a keystone_ui whose form page passes its subtitle to the layout" do
-    assert_equal Gem::Requirement.new(">= 0.65.0"), requirement_for("keystone_ui")
+  test "the gem requires a keystone_ui whose page header records its title for the top bar" do
+    assert_equal Gem::Requirement.new(">= 0.66.0"), requirement_for("keystone_ui")
   end
 
   test "the packaged gem holds the importmap its engine pins" do
