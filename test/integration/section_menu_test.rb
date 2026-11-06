@@ -20,4 +20,10 @@ class SectionMenuTest < ActionDispatch::IntegrationTest
 
     assert_select "header .ks-nav-dropdown-menu a.active", text: "Quotes"
   end
+
+  test "the phone section menu leaves out tabs the person is not permitted to see" do
+    get "/pages/plain", params: { tab: "quotes" }
+
+    assert_select "header .ks-nav-dropdown-menu a", text: "Refunds", count: 0
+  end
 end
