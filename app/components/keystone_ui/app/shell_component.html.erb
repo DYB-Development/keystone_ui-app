@@ -12,6 +12,6 @@
       <% navigation.with_menus { menus.to_s } if menus? %>
       <main><%= content %></main>
     <% end %>
-    <%= footer %>
+    <%= footer if footer_shown? %>
   </body>
 </html>

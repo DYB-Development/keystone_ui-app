@@ -2,4 +2,5 @@
 
 Rails.application.routes.draw do
   get "/pages/plain", to: "pages#plain"
+  get "/pages/no_footer", to: "pages#no_footer"
 end

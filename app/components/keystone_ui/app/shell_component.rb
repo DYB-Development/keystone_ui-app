@@ -8,6 +8,10 @@ module KeystoneUi
       renders_one :logo
       renders_one :menus
       renders_one :footer
+
+      def footer_shown?
+        !helpers.content_for?(:hide_footer)
+      end
     end
   end
 end

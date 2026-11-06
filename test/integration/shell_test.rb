@@ -46,4 +46,10 @@ class ShellTest < ActionDispatch::IntegrationTest
 
     assert_select "body > #footer", text: "Dummy footer"
   end
+
+  test "a page that asks for no footer is drawn without the app's footer" do
+    get "/pages/no_footer"
+
+    assert_select "#footer", count: 0
+  end
 end
