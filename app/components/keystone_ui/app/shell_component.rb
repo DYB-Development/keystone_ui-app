@@ -10,11 +10,16 @@ module KeystoneUi
       renders_one :footer
 
       PAGE_SIGNALS = %i[show_page form_page].freeze
+      VIEWPORT = "width=device-width, initial-scale=1"
 
       def native_app?
         return @native_app if defined?(@native_app)
 
         @native_app = helpers.hotwire_native_app?
+      end
+
+      def viewport
+        VIEWPORT
       end
 
       def phone_header_shown?

@@ -90,4 +90,9 @@ class ShellTest < ActionDispatch::IntegrationTest
 
     assert_select "#footer", count: 0
   end
+  test "in a browser the page can be pinch-zoomed" do
+    get "/pages/plain"
+
+    assert_select "head meta[name=viewport][content=?]", "width=device-width, initial-scale=1"
+  end
 end
