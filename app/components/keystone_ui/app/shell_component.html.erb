@@ -15,6 +15,7 @@
     </header>
     <% page = tag.main(content) %>
     <% if native_app? %>
+      <%= render KeystoneUi::App::NativeMenuButtonComponent.new %>
       <%= page %>
     <% else %>
       <%= helpers.ui_navigation do |navigation| %>
