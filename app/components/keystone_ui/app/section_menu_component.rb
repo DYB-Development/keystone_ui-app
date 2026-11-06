@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "keystone_ui/visible_navigation"
+require "keystone_ui/app/current_section"
 
 module KeystoneUi
   module App
@@ -12,12 +12,7 @@ module KeystoneUi
       end
 
       def section
-        @section ||= KeystoneUi::VisibleNavigation.new(
-          KeystoneUi.configuration.navigation_groups,
-          view: helpers,
-          saved_order: [],
-          current_tab: KeystoneUi.configuration.supplied_current_tab(helpers)
-        ).groups.find(&:active)
+        @section ||= KeystoneUi::App::CurrentSection.new(helpers).group
       end
     end
   end
