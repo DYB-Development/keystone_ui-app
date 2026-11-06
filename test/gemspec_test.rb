@@ -10,4 +10,8 @@ class GemspecTest < ActiveSupport::TestCase
   test "the gem requires a keystone_ui-styles that defines the hotwire-native variants" do
     assert_equal Gem::Requirement.new(">= 0.30.0"), requirement_for("keystone_ui-styles")
   end
+
+  test "the gem requires a keystone_ui whose form page passes its subtitle to the layout" do
+    assert_equal Gem::Requirement.new(">= 0.65.0"), requirement_for("keystone_ui")
+  end
 end
