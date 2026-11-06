@@ -20,4 +20,12 @@ class ShellTest < ActionDispatch::IntegrationTest
 
     assert_select "body > header #flash", text: "Saved"
   end
+
+  test "the shell marks the page with the theme mode keystone_ui chooses for the person" do
+    cookies["keystone_theme"] = "dark"
+
+    get "/pages/plain"
+
+    assert_select "html[data-theme=dark]"
+  end
 end
