@@ -40,4 +40,10 @@ class ShellTest < ActionDispatch::IntegrationTest
 
     assert_select "nav #menus", text: "Account menu"
   end
+
+  test "in a browser the shell draws the app's footer at the end of the body" do
+    get "/pages/plain"
+
+    assert_select "body > #footer", text: "Dummy footer"
+  end
 end
