@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = ">= 3.2.0"
 
   spec.files = Dir.chdir(File.expand_path(__dir__)) do
-    Dir["{app,lib}/**/*", "MIT-LICENSE", "README.md"]
+    Dir["{app,config,lib}/**/*", "MIT-LICENSE", "README.md"]
   end
 
   spec.add_dependency "keystone_ui", ">= 0.65.0"
