@@ -14,4 +14,10 @@ class NativeMenuButtonTest < ActionDispatch::IntegrationTest
 
     assert_equal [ { "title" => "Quotes", "path" => "/pages/plain?tab=quotes" }, { "title" => "Orders", "path" => "/pages/plain?tab=orders" } ], sent_menu["items"]
   end
+
+  test "inside the native app a page that belongs to no section sends no tabs to the native menu button" do
+    get "/pages/plain", headers: NATIVE_APP
+
+    assert_equal [], sent_menu["items"]
+  end
 end

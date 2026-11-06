@@ -12,7 +12,11 @@ module KeystoneUi
       end
 
       def menu
-        { title: section.label, items: section.tabs.map { |tab| { title: tab.label, path: tab.href } } }
+        { title: section&.label, items: tabs.map { |tab| { title: tab.label, path: tab.href } } }
+      end
+
+      def tabs
+        section ? section.tabs : []
       end
 
       def section
