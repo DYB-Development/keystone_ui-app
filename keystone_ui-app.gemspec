@@ -25,4 +25,5 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "keystone_ui", ">= 0.64.0"
   spec.add_dependency "railties", ">= 7.0"
+  spec.add_dependency "turbo-rails", ">= 2.0.20"
 end

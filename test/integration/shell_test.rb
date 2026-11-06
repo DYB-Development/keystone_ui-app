@@ -3,6 +3,8 @@
 require "test_helper"
 
 class ShellTest < ActionDispatch::IntegrationTest
+  NATIVE_APP = { "User-Agent" => "Hotwire Native iOS; Turbo Native iOS" }.freeze
+
   test "a layout that calls the shell draws the page inside the main element" do
     get "/pages/plain"
 
@@ -72,5 +74,10 @@ class ShellTest < ActionDispatch::IntegrationTest
     get "/pages/form"
 
     assert_select "header .ks-mobile-header-title", text: "Edit"
+  end
+  test "inside the native app the shell draws no web navigation bar" do
+    get "/pages/plain", headers: NATIVE_APP
+
+    assert_select "#logo", count: 0
   end
 end

@@ -11,6 +11,10 @@ module KeystoneUi
 
       PAGE_SIGNALS = %i[show_page form_page].freeze
 
+      def native_app?
+        helpers.hotwire_native_app?
+      end
+
       def footer_shown?
         !helpers.content_for?(:hide_footer)
       end
