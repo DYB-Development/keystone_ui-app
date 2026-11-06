@@ -1,0 +1,8 @@
+<%= ui_app_shell do |shell| %>
+  <% shell.with_head do %><title>Dummy</title><% end %>
+  <% shell.with_flash do %><p id="flash">Saved</p><% end %>
+  <% shell.with_logo do %><span id="logo">Dummy logo</span><% end %>
+  <% shell.with_menus do %><span id="menus">Account menu</span><% end %>
+  <% shell.with_footer do %><p id="footer">Dummy footer</p><% end %>
+  <%= yield %>
+<% end %>

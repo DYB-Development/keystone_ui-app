@@ -23,5 +23,6 @@ Gem::Specification.new do |spec|
     Dir["{app,lib}/**/*", "MIT-LICENSE", "README.md"]
   end
 
+  spec.add_dependency "keystone_ui", ">= 0.64.0"
   spec.add_dependency "railties", ">= 7.0"
 end
