@@ -80,4 +80,9 @@ class ShellTest < ActionDispatch::IntegrationTest
 
     assert_select "#logo", count: 0
   end
+  test "inside the native app the shell draws no phone header" do
+    get "/pages/show", headers: NATIVE_APP
+
+    assert_select ".ks-mobile-header-title", count: 0
+  end
 end

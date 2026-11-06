@@ -15,6 +15,10 @@ module KeystoneUi
         helpers.hotwire_native_app?
       end
 
+      def phone_header_shown?
+        page_signal && !native_app?
+      end
+
       def footer_shown?
         !helpers.content_for?(:hide_footer)
       end
