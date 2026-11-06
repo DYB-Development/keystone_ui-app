@@ -12,4 +12,7 @@ class PagesController < ApplicationController
 
   def form
   end
+
+  def header
+  end
 end

@@ -11,6 +11,10 @@ module KeystoneUi
         section.present?
       end
 
+      def title
+        helpers.content_for(:mobile_page_title).presence || section.label
+      end
+
       def section
         @section ||= KeystoneUi::App::CurrentSection.new(helpers).group
       end
