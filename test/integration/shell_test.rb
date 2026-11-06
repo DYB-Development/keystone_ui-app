@@ -73,7 +73,12 @@ class ShellTest < ActionDispatch::IntegrationTest
   test "on a form page the shell draws the phone header with the page's title" do
     get "/pages/form"
 
-    assert_select "header .ks-mobile-header-title", text: "Edit"
+    assert_select "header .ks-mobile-header-title", text: /Edit/
+  end
+  test "on a form page the phone header shows the page's subtitle" do
+    get "/pages/form"
+
+    assert_select "header .ks-mobile-header-subtitle", text: "INV-1"
   end
   test "inside the native app the shell draws no web navigation bar" do
     get "/pages/plain", headers: NATIVE_APP
