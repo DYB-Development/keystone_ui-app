@@ -100,4 +100,9 @@ class ShellTest < ActionDispatch::IntegrationTest
 
     assert_select "head meta[name=viewport][content=?]", "width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0"
   end
+  test "inside the native app the shell marks the html element for keystone_ui's native variants" do
+    get "/pages/plain", headers: NATIVE_APP
+
+    assert_select "html.hotwire-native"
+  end
 end
