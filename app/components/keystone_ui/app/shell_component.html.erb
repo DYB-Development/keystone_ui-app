@@ -11,13 +11,14 @@
         <%= helpers.ui_mobile_header(title: page_signalled(:title), back_url: page_signalled(:back_url), subtitle: page_signalled(:subtitle)) %>
       <% end %>
     </header>
+    <% page = tag.main(content) %>
     <% if native_app? %>
-      <main><%= content %></main>
+      <%= page %>
     <% else %>
       <%= helpers.ui_navigation do |navigation| %>
         <% navigation.with_logo { logo.to_s } if logo? %>
         <% navigation.with_menus { menus.to_s } if menus? %>
-        <main><%= content %></main>
+        <%= page %>
       <% end %>
     <% end %>
     <%= footer if footer_shown? %>
