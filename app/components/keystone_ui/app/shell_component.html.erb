@@ -6,6 +6,9 @@
   <body>
     <header>
       <%= flash %>
+      <% if page_signal %>
+        <%= helpers.ui_mobile_header(title: page_signalled(:title), back_url: nil) %>
+      <% end %>
     </header>
     <%= helpers.ui_navigation do |navigation| %>
       <% navigation.with_logo { logo.to_s } if logo? %>

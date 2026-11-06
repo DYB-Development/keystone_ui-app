@@ -6,4 +6,7 @@ class PagesController < ApplicationController
 
   def no_footer
   end
+
+  def show
+  end
 end

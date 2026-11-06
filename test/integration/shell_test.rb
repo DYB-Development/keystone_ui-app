@@ -52,4 +52,10 @@ class ShellTest < ActionDispatch::IntegrationTest
 
     assert_select "#footer", count: 0
   end
+
+  test "on a show page the shell draws the phone header with the page's title" do
+    get "/pages/show"
+
+    assert_select "header .ks-mobile-header-title", text: /Invoice/
+  end
 end
