@@ -14,4 +14,10 @@ class SectionMenuTest < ActionDispatch::IntegrationTest
 
     assert_select "header .ks-nav-dropdown-menu a[href='/pages/plain?tab=orders']", text: "Orders"
   end
+
+  test "the phone section menu marks the tab the page belongs to as active" do
+    get "/pages/plain", params: { tab: "quotes" }
+
+    assert_select "header .ks-nav-dropdown-menu a.active", text: "Quotes"
+  end
 end
