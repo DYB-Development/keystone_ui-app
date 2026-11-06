@@ -14,4 +14,10 @@ class ShellTest < ActionDispatch::IntegrationTest
 
     assert_select "html > head > title", text: "Dummy"
   end
+
+  test "the shell draws the app's flash inside the header" do
+    get "/pages/plain"
+
+    assert_select "body > header #flash", text: "Saved"
+  end
 end
