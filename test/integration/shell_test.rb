@@ -68,4 +68,9 @@ class ShellTest < ActionDispatch::IntegrationTest
 
     assert_select "header .ks-mobile-header-subtitle", text: "INV-1"
   end
+  test "on a form page the shell draws the phone header with the page's title" do
+    get "/pages/form"
+
+    assert_select "header .ks-mobile-header-title", text: "Edit"
+  end
 end

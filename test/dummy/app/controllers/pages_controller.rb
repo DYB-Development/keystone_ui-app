@@ -9,4 +9,7 @@ class PagesController < ApplicationController
 
   def show
   end
+
+  def form
+  end
 end
