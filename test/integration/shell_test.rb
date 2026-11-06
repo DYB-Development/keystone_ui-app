@@ -105,4 +105,9 @@ class ShellTest < ActionDispatch::IntegrationTest
 
     assert_select "html.hotwire-native"
   end
+  test "the shell marks the page with the current locale" do
+    get "/pages/plain"
+
+    assert_select "html[lang=en]"
+  end
 end
