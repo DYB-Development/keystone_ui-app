@@ -147,4 +147,11 @@ class ShellTest < ActionDispatch::IntegrationTest
 
     assert_select "html.dark"
   end
+  test "when the person's theme mode is not dark the html element does not carry the dark class" do
+    cookies["keystone_theme"] = "light"
+
+    get "/pages/plain"
+
+    assert_select "html.dark", count: 0
+  end
 end
