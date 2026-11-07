@@ -13,6 +13,12 @@ module KeystoneUi
       VIEWPORT = "width=device-width, initial-scale=1"
       NATIVE_APP_VIEWPORT = "#{VIEWPORT}, maximum-scale=1.0, user-scalable=0"
 
+      attr_reader :body
+
+      def initialize(body: {})
+        @body = body
+      end
+
       def native_app?
         return @native_app if defined?(@native_app)
 

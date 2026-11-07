@@ -1,4 +1,4 @@
-<%= ui_app_shell do |shell| %>
+<%= ui_app_shell(body: { data: { controller: "trail", trail_url_value: request.fullpath } }) do |shell| %>
   <% shell.with_head do %><title>Dummy</title><% end %>
   <% shell.with_flash do %><p id="flash">Saved</p><% end %>
   <% shell.with_logo do %><span id="logo">Dummy logo</span><% end %>

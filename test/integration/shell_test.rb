@@ -115,4 +115,9 @@ class ShellTest < ActionDispatch::IntegrationTest
 
     assert_select "html[lang=en]"
   end
+  test "the page's body carries the attributes the app passes for it" do
+    get "/pages/plain"
+
+    assert_select "body[data-controller=trail][data-trail-url-value='/pages/plain']"
+  end
 end

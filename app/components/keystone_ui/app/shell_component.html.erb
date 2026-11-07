@@ -4,7 +4,7 @@
     <%= tag.meta name: "viewport", content: viewport %>
     <%= head %>
   </head>
-  <body>
+  <%= tag.body(**body) do %>
     <header>
       <%= flash %>
       <% if phone_header_shown? %>
@@ -25,5 +25,5 @@
       <% end %>
     <% end %>
     <%= footer if footer_shown? %>
-  </body>
+  <% end %>
 </html>
