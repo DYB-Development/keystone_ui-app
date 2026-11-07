@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "keystone_ui/theme_choice"
+
 module KeystoneUi
   module App
     class ShellComponent < ViewComponent::Base
@@ -25,6 +27,14 @@ module KeystoneUi
         return @native_app if defined?(@native_app)
 
         @native_app = helpers.hotwire_native_app?
+      end
+
+      def dark_mode?
+        theme_choice.mode == "dark"
+      end
+
+      def theme_choice
+        KeystoneUi::ThemeChoice.new(helpers.cookies[KeystoneUi::ThemeChoice::COOKIE], supplied: KeystoneUi.configuration.supplied_theme_mode(helpers))
       end
 
       def viewport
