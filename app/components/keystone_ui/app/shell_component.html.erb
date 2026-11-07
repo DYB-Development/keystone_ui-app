@@ -7,7 +7,7 @@
   <%= tag.body(**body) do %>
     <header>
       <%= flash %>
-      <%= tag.div(phone_menus, class: PHONE_ONLY) if phone_menus? %>
+      <%= tag.div(phone_menus, class: PHONE_ONLY) if phone_menus? && !native_app? %>
       <% if phone_header_shown? %>
         <%= helpers.ui_mobile_header(title: page_signalled(:title), back_url: page_signalled(:back_url), subtitle: page_signalled(:subtitle)) %>
       <% elsif !native_app? %>

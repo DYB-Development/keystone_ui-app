@@ -135,4 +135,9 @@ class ShellTest < ActionDispatch::IntegrationTest
 
     assert_select "header div[class~='lg:hidden'] #phone-menus", text: "Phone menu"
   end
+  test "inside the native app the shell draws no phone menus" do
+    get "/pages/plain", headers: NATIVE_APP
+
+    assert_select "#phone-menus", count: 0
+  end
 end
