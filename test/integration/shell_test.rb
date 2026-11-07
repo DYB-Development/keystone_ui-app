@@ -115,4 +115,43 @@ class ShellTest < ActionDispatch::IntegrationTest
 
     assert_select "html[lang=en]"
   end
+  test "the page's body carries the attributes the app passes for it" do
+    get "/pages/plain"
+
+    assert_select "body[data-controller=trail][data-trail-url-value='/pages/plain']"
+  end
+  test "on a phone browser the shell draws the app's phone menus in the header" do
+    get "/pages/plain"
+
+    assert_select "header div[class~='lg:hidden'] #phone-menus", text: "Phone menu"
+  end
+  test "on a show page the shell draws the app's phone menus in the header" do
+    get "/pages/show"
+
+    assert_select "header div[class~='lg:hidden'] #phone-menus", text: "Phone menu"
+  end
+  test "on a form page the shell draws the app's phone menus in the header" do
+    get "/pages/form"
+
+    assert_select "header div[class~='lg:hidden'] #phone-menus", text: "Phone menu"
+  end
+  test "inside the native app the shell draws no phone menus" do
+    get "/pages/plain", headers: NATIVE_APP
+
+    assert_select "#phone-menus", count: 0
+  end
+  test "when the person's theme mode is dark the html element carries the dark class" do
+    cookies["keystone_theme"] = "dark"
+
+    get "/pages/plain"
+
+    assert_select "html.dark"
+  end
+  test "when the person's theme mode is not dark the html element does not carry the dark class" do
+    cookies["keystone_theme"] = "light"
+
+    get "/pages/plain"
+
+    assert_select "html.dark", count: 0
+  end
 end

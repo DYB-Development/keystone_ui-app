@@ -16,11 +16,12 @@ The gem requires keystone_ui-styles 0.30.0 or later, which defines the `hotwire-
 Replace the layout with one call to `ui_app_shell`, filling its slots and putting the page inside it:
 
 ```erb
-<%= ui_app_shell do |shell| %>
+<%= ui_app_shell(body: { data: { controller: "trail", trail_url_value: request.fullpath } }) do |shell| %>
   <% shell.with_head do %><%= render "head" %><% end %>
   <% shell.with_flash do %><%= render "flash" %><% end %>
   <% shell.with_logo do %><%= link_to "Shop", root_path %><% end %>
   <% shell.with_menus do %><%= render "user_menu" %><% end %>
+  <% shell.with_phone_menus do %><%= render "phone_navbar" %><% end %>
   <% shell.with_footer do %><%= render "footer" %><% end %>
   <%= yield %>
 <% end %>
@@ -33,16 +34,21 @@ import { registerControllers as registerKeystoneUiAppControllers } from "keyston
 registerKeystoneUiAppControllers(application)
 ```
 
+`body:` takes the attributes for the page's `body` element, in the form `tag.body` takes them, such as the `data` attributes of the Stimulus controllers that read their settings from the body. It is optional.
+
 Every slot is optional. The shell writes the `<!DOCTYPE html>`, the `html`, `head` and `body` elements and the viewport meta tag, so the app's head leaves out its own viewport tag.
 
 ## What it draws
 
 - The `html` element carries keystone_ui's theme attributes and the current locale.
+- The `html` element carries the `dark` class when the theme mode keystone_ui chooses for the person is dark, and leaves it off for any other mode.
+- The `body` element carries the attributes the layout passes as `body:`.
 - On a desktop browser, keystone_ui's navigation bar with the logo and the menus.
+- On a phone browser, the phone menus at the top of the header on every page, including form and show pages, inside an element hidden from the `lg` breakpoint up.
 - On a phone browser, keystone_ui's phone header for a page drawn with `ui_form_page` or `ui_show_page`, with its back link, title and subtitle.
 - On a phone browser, a page that is not a form or show page shows a menu of the current section's tabs, with the tab the page belongs to marked as active. The section is the navigation group holding the tab keystone_ui's current tab supplier names, and the menu leaves out tabs the person is not permitted to see. A page in no section shows no menu.
 - Inside the native app, the `menu-button` bridge component sends the section's label and tabs to the native menu button, and choosing a tab opens its page in place of the current one. A page in no section sends an empty list.
-- Inside the native app, no navigation bar, no phone header and no footer, the `hotwire-native` class on the `html` element, and a viewport that cannot be pinch-zoomed.
+- Inside the native app, no navigation bar, no phone menus, no phone header and no footer, the `hotwire-native` class on the `html` element, and a viewport that cannot be pinch-zoomed.
 - In a browser, the footer, unless the page calls `content_for :hide_footer, true`.
 
 ## Licence

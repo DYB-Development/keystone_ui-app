@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html <%= helpers.keystone_theme_attributes %> class="<%= class_names("hotwire-native": native_app?) %>" lang="<%= I18n.locale %>">
+<html <%= helpers.keystone_theme_attributes %> class="<%= class_names(dark: dark_mode?, "hotwire-native": native_app?) %>" lang="<%= I18n.locale %>">
   <head>
     <%= tag.meta name: "viewport", content: viewport %>
     <%= head %>
   </head>
-  <body>
+  <%= tag.body(**body) do %>
     <header>
       <%= flash %>
+      <%= tag.div(phone_menus, class: PHONE_ONLY) if phone_menus? && !native_app? %>
       <% if phone_header_shown? %>
         <%= helpers.ui_mobile_header(title: page_signalled(:title), back_url: page_signalled(:back_url), subtitle: page_signalled(:subtitle)) %>
       <% elsif !native_app? %>
@@ -25,5 +26,5 @@
       <% end %>
     <% end %>
     <%= footer if footer_shown? %>
-  </body>
+  <% end %>
 </html>
