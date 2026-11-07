@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+- `ui_app_shell` takes `body:`, the attributes for the page's `body` element, and the body carries them.
+- The `phone_menus` slot draws the app's menus at the top of the header on a phone browser, on every page including form and show pages, and inside the native app it is not drawn.
+- The `html` element carries the `dark` class when the theme mode keystone_ui chooses for the person is dark.
+
 ## [0.1.0] - 2026-11-06
 
 ### Added
