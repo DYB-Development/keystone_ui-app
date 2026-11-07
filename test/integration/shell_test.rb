@@ -120,4 +120,9 @@ class ShellTest < ActionDispatch::IntegrationTest
 
     assert_select "body[data-controller=trail][data-trail-url-value='/pages/plain']"
   end
+  test "on a phone browser the shell draws the app's phone menus in the header" do
+    get "/pages/plain"
+
+    assert_select "header div[class~='lg:hidden'] #phone-menus", text: "Phone menu"
+  end
 end

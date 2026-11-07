@@ -7,8 +7,10 @@ module KeystoneUi
       renders_one :flash
       renders_one :logo
       renders_one :menus
+      renders_one :phone_menus
       renders_one :footer
 
+      PHONE_ONLY = "lg:hidden"
       PAGE_SIGNALS = %i[show_page form_page].freeze
       VIEWPORT = "width=device-width, initial-scale=1"
       NATIVE_APP_VIEWPORT = "#{VIEWPORT}, maximum-scale=1.0, user-scalable=0"
