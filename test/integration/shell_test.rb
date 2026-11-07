@@ -125,4 +125,9 @@ class ShellTest < ActionDispatch::IntegrationTest
 
     assert_select "header div[class~='lg:hidden'] #phone-menus", text: "Phone menu"
   end
+  test "on a show page the shell draws the app's phone menus in the header" do
+    get "/pages/show"
+
+    assert_select "header div[class~='lg:hidden'] #phone-menus", text: "Phone menu"
+  end
 end
