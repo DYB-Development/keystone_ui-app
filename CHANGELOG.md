@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-11-07
+
 ### Added
 - `ui_app_shell` takes `body:`, the attributes for the page's `body` element, and the body carries them.
 - The `phone_menus` slot draws the app's menus at the top of the header on a phone browser, on every page including form and show pages, and inside the native app it is not drawn.
