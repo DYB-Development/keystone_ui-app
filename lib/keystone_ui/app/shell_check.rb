@@ -5,6 +5,8 @@ module KeystoneUi
     class ShellCheck
       class Error < StandardError; end
 
+      MOST_BOTTOM_TABS = 5
+
       def initialize(bottom_tabs:, native_rules:, sections:)
         @bottom_tabs = bottom_tabs
         @native_rules = native_rules
@@ -21,6 +23,7 @@ module KeystoneUi
           raise Error, "The #{tab.label} bottom tab names the #{tab.section} section, which is not a declared navigation group." if tab.section && !@sections.include?(tab.section)
         end
         raise Error, "More than one bottom tab has the label #{shared_label}." if shared_label
+        raise Error, "#{@bottom_tabs.size} bottom tabs are declared, and no more than #{MOST_BOTTOM_TABS} are allowed." if @bottom_tabs.size > MOST_BOTTOM_TABS
         nil
       end
 

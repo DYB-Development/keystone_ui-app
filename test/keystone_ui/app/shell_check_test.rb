@@ -46,6 +46,14 @@ class KeystoneUi::App::ShellCheckTest < ActiveSupport::TestCase
     assert_equal "More than one bottom tab has the label Sales.", error.message
   end
 
+  test "more than five bottom tabs are refused, giving the count" do
+    tabs = 6.times.map { |number| tab(label: "Tab #{number}", section: nil) }
+
+    error = assert_raises(KeystoneUi::App::ShellCheck::Error) { check(bottom_tabs: tabs) }
+
+    assert_equal "6 bottom tabs are declared, and no more than 5 are allowed.", error.message
+  end
+
   private
 
   def check(bottom_tabs: [ tab ], native_rules: [], sections: [ "Sales" ])
