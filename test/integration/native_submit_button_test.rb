@@ -22,4 +22,10 @@ class NativeSubmitButtonTest < ActionDispatch::IntegrationTest
 
     assert_select "head style", text: /\[data-bridge-components~="form"\] \[data-controller~="bridge--form"\] \[type="submit"\] \{ display: none; \}/
   end
+
+  test "in a browser the page leaves the web submit button of a marked form showing" do
+    get "/pages/native_form"
+
+    assert_select "head style", count: 0
+  end
 end
