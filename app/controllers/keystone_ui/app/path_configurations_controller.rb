@@ -3,14 +3,19 @@
 module KeystoneUi
   module App
     class PathConfigurationsController < ::ApplicationController
-      MODAL_RULE = { patterns: [ "/new$", "/edit$" ], properties: { context: "modal" } }.freeze
+      MODAL_PATTERNS = [ "/new$", "/edit$" ].freeze
+      IOS_RULES = [ { patterns: MODAL_PATTERNS, properties: { context: "modal" } } ].freeze
+      ANDROID_RULES = [
+        { patterns: [ ".*" ], properties: { context: "default", uri: "hotwire://fragment/web", fallback_uri: "hotwire://fragment/web", pull_to_refresh_enabled: true } },
+        { patterns: MODAL_PATTERNS, properties: { context: "modal", pull_to_refresh_enabled: false } }
+      ].freeze
 
       def ios
-        render json: { settings: { tabs: ios_tabs }, rules: [ MODAL_RULE ] }
+        render json: { settings: { tabs: ios_tabs }, rules: IOS_RULES }
       end
 
       def android
-        render json: { settings: { tabs: android_tabs.to_json } }
+        render json: { settings: { tabs: android_tabs.to_json }, rules: ANDROID_RULES }
       end
 
       private

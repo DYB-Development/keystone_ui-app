@@ -28,4 +28,13 @@ class PathConfigurationTest < ActionDispatch::IntegrationTest
 
     assert_equal [ { "patterns" => [ "/new$", "/edit$" ], "properties" => { "context" => "modal" } } ], response.parsed_body["rules"]
   end
+
+  test "the Android app opens every page in the web fragment and new and edit pages as modals" do
+    get "/hotwire/android/path_configuration.json"
+
+    assert_equal [
+      { "patterns" => [ ".*" ], "properties" => { "context" => "default", "uri" => "hotwire://fragment/web", "fallback_uri" => "hotwire://fragment/web", "pull_to_refresh_enabled" => true } },
+      { "patterns" => [ "/new$", "/edit$" ], "properties" => { "context" => "modal", "pull_to_refresh_enabled" => false } }
+    ], response.parsed_body["rules"]
+  end
 end
