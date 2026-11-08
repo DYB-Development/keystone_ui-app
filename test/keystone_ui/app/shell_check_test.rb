@@ -40,6 +40,12 @@ class KeystoneUi::App::ShellCheckTest < ActiveSupport::TestCase
     assert_equal "The Sales bottom tab names the Billing section, which is not a declared navigation group.", error.message
   end
 
+  test "two bottom tabs sharing a label are refused, naming the label" do
+    error = assert_raises(KeystoneUi::App::ShellCheck::Error) { check(bottom_tabs: [ tab, tab(href: "/orders") ]) }
+
+    assert_equal "More than one bottom tab has the label Sales.", error.message
+  end
+
   private
 
   def check(bottom_tabs: [ tab ], native_rules: [], sections: [ "Sales" ])

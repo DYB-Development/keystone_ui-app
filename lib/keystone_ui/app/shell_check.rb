@@ -20,10 +20,15 @@ module KeystoneUi
           raise Error, "The #{tab.label} bottom tab has no Android icon." if blank?(tab.android_icon)
           raise Error, "The #{tab.label} bottom tab names the #{tab.section} section, which is not a declared navigation group." if tab.section && !@sections.include?(tab.section)
         end
+        raise Error, "More than one bottom tab has the label #{shared_label}." if shared_label
         nil
       end
 
       private
+
+      def shared_label
+        @bottom_tabs.map(&:label).tally.find { |_label, count| count > 1 }&.first
+      end
 
       def blank?(value)
         value.nil? || value.to_s.strip.empty?
