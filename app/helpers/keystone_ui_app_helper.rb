@@ -6,6 +6,6 @@ module KeystoneUiAppHelper
   end
 
   def ui_native_form_data
-    { controller: "bridge--form" }
+    { controller: "bridge--form", action: "turbo:submit-start->bridge--form#submitStart turbo:submit-end->bridge--form#submitEnd" }
   end
 end

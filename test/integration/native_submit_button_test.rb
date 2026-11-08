@@ -10,4 +10,10 @@ class NativeSubmitButtonTest < ActionDispatch::IntegrationTest
 
     assert_select "form[data-controller='bridge--form']"
   end
+
+  test "a form marked for the native nav bar tells the native submit button when a submit starts and ends" do
+    get "/pages/native_form", headers: NATIVE_APP
+
+    assert_select "form[data-action='turbo:submit-start->bridge--form#submitStart turbo:submit-end->bridge--form#submitEnd']"
+  end
 end
