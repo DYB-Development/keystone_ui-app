@@ -54,6 +54,14 @@ class KeystoneUi::App::ShellCheckTest < ActiveSupport::TestCase
     assert_equal "6 bottom tabs are declared, and no more than 5 are allowed.", error.message
   end
 
+  test "a screen rule with no pattern is refused, named by its position" do
+    rules = [ { patterns: [ "/users/sign_in" ], properties: { context: "modal" } }, { patterns: [], properties: { context: "modal" } } ]
+
+    error = assert_raises(KeystoneUi::App::ShellCheck::Error) { check(native_rules: rules) }
+
+    assert_equal "Screen rule 2 has no pattern.", error.message
+  end
+
   private
 
   def check(bottom_tabs: [ tab ], native_rules: [], sections: [ "Sales" ])
