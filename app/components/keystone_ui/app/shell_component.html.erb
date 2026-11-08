@@ -14,6 +14,7 @@
       <% elsif !native_app? %>
         <%= render KeystoneUi::App::SectionMenuComponent.new %>
       <% end %>
+      <%= render KeystoneUi::App::PageActionsComponent.new unless native_app? %>
     </header>
     <% page = tag.main(content) %>
     <% if native_app? %>

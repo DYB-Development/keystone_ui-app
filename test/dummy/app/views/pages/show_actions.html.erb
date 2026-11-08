@@ -1,0 +1,5 @@
+<%= ui_show_page(title: "Invoice", back_url: "/pages/plain") %>
+<% content_for :show_page_actions do %>
+  <%= ui_action_menu_item(label: "Edit", href: "/invoices/1/edit") %>
+<% end %>
+An invoice with actions
