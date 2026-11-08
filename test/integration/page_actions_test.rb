@@ -22,4 +22,10 @@ class PageActionsTest < ActionDispatch::IntegrationTest
 
     assert_select "header button[aria-label=Add] + .ks-action-menu a[href='/lists/import']", text: "Import a list"
   end
+
+  test "inside the native app a show page draws no action menu" do
+    get "/pages/show_actions", headers: NATIVE_APP
+
+    assert_select ".ks-action-menu", count: 0
+  end
 end
