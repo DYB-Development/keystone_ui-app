@@ -7,10 +7,18 @@ module KeystoneUi
         render json: { settings: { tabs: ios_tabs } }
       end
 
+      def android
+        render json: { settings: { tabs: android_tabs.to_json } }
+      end
+
       private
 
       def ios_tabs
         permitted_tabs.map { |tab| { title: tab.label, path: tab.href_for(view), ios_system_image_name: tab.ios_system_image } }
+      end
+
+      def android_tabs
+        permitted_tabs.map { |tab| { title: tab.label, path: tab.href_for(view), icon: tab.android_icon } }
       end
 
       def permitted_tabs

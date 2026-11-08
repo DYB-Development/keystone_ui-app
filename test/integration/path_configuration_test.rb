@@ -12,4 +12,14 @@ class PathConfigurationTest < ActionDispatch::IntegrationTest
       { "title" => "Orders", "path" => "/pages/plain?tab=orders&from=/hotwire/ios/path_configuration.json", "ios_system_image_name" => "shippingbox" }
     ], response.parsed_body.dig("settings", "tabs")
   end
+
+  test "the Android app receives the same tabs with each tab's icon as one JSON-encoded string" do
+    get "/hotwire/android/path_configuration.json"
+
+    assert_equal [
+      { "title" => "Home", "path" => "/pages/plain", "icon" => "home" },
+      { "title" => "Sales", "path" => "/pages/plain?tab=quotes", "icon" => "shopping_cart" },
+      { "title" => "Orders", "path" => "/pages/plain?tab=orders&from=/hotwire/android/path_configuration.json", "icon" => "inventory" }
+    ], JSON.parse(response.parsed_body.dig("settings", "tabs"))
+  end
 end
