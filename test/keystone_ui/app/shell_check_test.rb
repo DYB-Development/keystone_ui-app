@@ -16,6 +16,12 @@ class KeystoneUi::App::ShellCheckTest < ActiveSupport::TestCase
     assert_equal "The Sales bottom tab has no address.", error.message
   end
 
+  test "a bottom tab with no icon is refused, named by its label" do
+    error = assert_raises(KeystoneUi::App::ShellCheck::Error) { check(bottom_tabs: [ tab(icon: nil) ]) }
+
+    assert_equal "The Sales bottom tab has no icon.", error.message
+  end
+
   private
 
   def check(bottom_tabs: [ tab ], native_rules: [], sections: [ "Sales" ])
