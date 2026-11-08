@@ -1,0 +1,5 @@
+<%= render Keystone::Ui::BottomNavComponent.new do %>
+  <% tabs.each do |tab| %>
+    <%= render Keystone::Ui::BottomNavItemComponent.new(label: tab.label, href: tab.href, icon: tab.icon) %>
+  <% end %>
+<% end %>
