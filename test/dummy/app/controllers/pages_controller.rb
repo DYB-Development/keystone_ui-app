@@ -18,4 +18,7 @@ class PagesController < ApplicationController
 
   def no_bottom_tabs
   end
+
+  def add
+  end
 end

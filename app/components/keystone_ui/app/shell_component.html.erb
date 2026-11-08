@@ -17,6 +17,7 @@
     <% page = tag.main(content) %>
     <% if native_app? %>
       <%= render KeystoneUi::App::NativeMenuButtonComponent.new %>
+      <%= render KeystoneUi::App::NativeAddButtonComponent.new %>
       <%= page %>
     <% else %>
       <%= helpers.ui_navigation do |navigation| %>
