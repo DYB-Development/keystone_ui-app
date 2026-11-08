@@ -28,4 +28,10 @@ class PageActionsTest < ActionDispatch::IntegrationTest
 
     assert_select ".ks-action-menu", count: 0
   end
+
+  test "on a phone browser a show page that gives no actions shows no action button in the top bar" do
+    get "/pages/show"
+
+    assert_select "header .ks-action-menu-button", count: 0
+  end
 end
