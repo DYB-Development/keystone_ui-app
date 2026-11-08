@@ -50,7 +50,7 @@ module KeystoneUi
       end
 
       def bottom_tabs_shown?
-        !native_app?
+        !native_app? && !helpers.content_for?(:hide_bottom_tabs)
       end
 
       def page_signal

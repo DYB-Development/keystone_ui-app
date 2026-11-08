@@ -34,4 +34,10 @@ class BottomTabsTest < ActionDispatch::IntegrationTest
 
     assert_select "nav.ks-bottom-nav", count: 0
   end
+
+  test "a page that asks for no bottom tabs is drawn without them" do
+    get "/pages/no_bottom_tabs"
+
+    assert_select "nav.ks-bottom-nav", count: 0
+  end
 end
