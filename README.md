@@ -71,6 +71,24 @@ The app refuses to boot when its bottom tabs or screen rules are declared wrong,
 
 A tab with no label and a screen rule with no pattern are named by their position in the order they were declared, counting from 1.
 
+## Page actions
+
+On a phone browser a page puts its extra actions in the top bar, after the title, by filling one of three `content_for` blocks:
+
+```erb
+<%= ui_show_page(title: @invoice.number, back_url: invoices_path) %>
+<% content_for :show_page_actions do %>
+  <%= ui_action_menu_item(label: "Edit", href: edit_invoice_path(@invoice)) %>
+  <%= ui_action_menu_item(label: "Delete", href: invoice_path(@invoice), method: :delete) %>
+<% end %>
+```
+
+- `:show_page_actions` on a page drawn with `ui_show_page` shows an ellipsis button that opens a menu of what the block holds.
+- `:form_page_action` on a page drawn with `ui_form_page` shows what the block holds, such as one link.
+- `:mobile_action_menu` on any other page shows a plus button that opens a menu of what the block holds, for a page with several ways to add a record.
+
+A page that fills none of them shows no action in the top bar. Each is hidden from the `lg` breakpoint up, where the page draws its own action buttons, and none is drawn inside the native app. A page header's single add action is drawn by keystone_ui's phone plus icon and the native add button, not by these blocks.
+
 ## Native add and submit buttons
 
 Inside the native app, a page whose `ui_page_header` has an `action_url:` shows a plus button in the native nav bar with the action's label, and tapping it opens the action's page. A header that also passes `action_method: :post` makes the plus button post to the action's address, the same as its desktop button and its phone plus icon:
@@ -128,6 +146,7 @@ end
 - On a phone browser, the phone menus at the top of the header on every page, including form and show pages, inside an element hidden from the `lg` breakpoint up.
 - On a phone browser, keystone_ui's phone header for a page drawn with `ui_form_page` or `ui_show_page`, with its back link, title and subtitle.
 - On a phone browser, a page that is not a form or show page shows a menu of the current section's tabs, with the tab the page belongs to marked as active. The section is the navigation group holding the tab keystone_ui's current tab supplier names, and the menu leaves out tabs the person is not permitted to see. A page in no section shows no menu.
+- On a phone browser, the page's actions after the title in the header: an ellipsis menu of a show page's `:show_page_actions`, a form page's `:form_page_action`, or a plus menu of another page's `:mobile_action_menu`. Inside the native app none of them is drawn.
 - Inside the native app, the `menu-button` bridge component sends the section's label and tabs to the native menu button, and choosing a tab opens its page in place of the current one. A page in no section sends an empty list.
 - Inside the native app, the `add-button` bridge component sends a page header's add action to the native plus button, and a page with no add action sends none.
 - Inside the native app, a `style` element in the head that hides the web submit button of a form marked with `ui_native_form_data` once the native app has connected its `form` bridge component.

@@ -17,6 +17,11 @@ All notable changes to this project will be documented in this file.
 - `ui_native_form_data` marks a form whose submit button the native app shows in its nav bar, and inside the native app the web submit button is hidden.
 - While a marked form is submitting, its native submit button cannot be tapped again.
 - `registerControllers` registers the `bridge--add-button` and `bridge--form` controllers.
+- On a phone browser a show page that fills `content_for :show_page_actions` shows an ellipsis button in the top bar that opens a menu of those actions.
+- On a phone browser a form page that fills `content_for :form_page_action` shows that action in the top bar.
+- On a phone browser a page that fills `content_for :mobile_action_menu` shows a plus button in the top bar that opens a menu of those ways to add a record.
+- Inside the native app none of a page's actions is drawn in the top bar.
+- A page that fills none of the three blocks shows no action in the top bar.
 
 ### Changed
 - The gem requires keystone_ui 0.69.0 or later, whose page header can mark its add action to post.
