@@ -16,4 +16,10 @@ class NativeSubmitButtonTest < ActionDispatch::IntegrationTest
 
     assert_select "form[data-action='turbo:submit-start->bridge--form#submitStart turbo:submit-end->bridge--form#submitEnd']"
   end
+
+  test "inside the native app the page hides the web submit button of a form the native submit button connected to" do
+    get "/pages/native_form", headers: NATIVE_APP
+
+    assert_select "head style", text: /\[data-bridge-components~="form"\] \[data-controller~="bridge--form"\] \[type="submit"\] \{ display: none; \}/
+  end
 end
