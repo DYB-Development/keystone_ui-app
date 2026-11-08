@@ -10,7 +10,7 @@ module KeystoneUi
       end
 
       def active?(tab)
-        tab.section == section&.label
+        section.present? && tab.section == section.label
       end
 
       def section
