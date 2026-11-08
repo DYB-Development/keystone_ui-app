@@ -25,6 +25,9 @@ class PagesController < ApplicationController
   def post_add
   end
 
+  def show_actions
+  end
+
   def native_form
   end
 end
