@@ -15,4 +15,10 @@ class NativeAddButtonTest < ActionDispatch::IntegrationTest
 
     assert_equal "/quotes/new", add_button["data-bridge--add-button-url-value"]
   end
+
+  test "inside the native app the native add button carries the add action's label" do
+    get "/pages/add", headers: NATIVE_APP
+
+    assert_equal "New quote", add_button["data-bridge--add-button-label-value"]
+  end
 end
