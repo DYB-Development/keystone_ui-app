@@ -21,4 +21,7 @@ class PagesController < ApplicationController
 
   def add
   end
+
+  def post_add
+  end
 end

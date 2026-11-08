@@ -6,7 +6,7 @@ module KeystoneUi
       CONTROLLER = "bridge--add-button"
 
       def call
-        tag.div(data: { controller: CONTROLLER, "#{CONTROLLER}-url-value": signal(:url), "#{CONTROLLER}-label-value": signal(:label) })
+        tag.div(data: { controller: CONTROLLER, "#{CONTROLLER}-url-value": signal(:url), "#{CONTROLLER}-label-value": signal(:label), "#{CONTROLLER}-method-value": signal(:method).presence })
       end
 
       def signal(name)
