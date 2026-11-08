@@ -8,10 +8,11 @@ All notable changes to this project will be documented in this file.
 - `KeystoneUi::App.configure` takes `bottom_tab` declarations, each with a label, an address, an icon, a permission check and the navigation group it stands for.
 - On a phone browser the shell draws the declared bottom tabs at the foot of every page, with the tab for the page's section marked as active and tabs the person may not see left out.
 - The bottom tabs are not drawn inside the native app, on a page that calls `content_for :hide_bottom_tabs, true`, or when no tab is declared.
-- A bottom tab takes an optional `ios_system_image:` and `android_icon:` for the native apps' tab bars.
+- A bottom tab takes an `ios_system_image:` and an `android_icon:` for the native apps' tab bars.
 - Mounting the engine serves the Hotwire Native path configuration at `/hotwire/ios/path_configuration` and `/hotwire/android/path_configuration`, with one native tab for each bottom tab the person is permitted to see.
 - Both native apps open new and edit pages as modals, and the Android app opens every other page in the web fragment.
 - `KeystoneUi::App.configure` takes `native_rule` and `native_setting`, and both native apps receive the app's rules after the shipped rules and its settings beside the tabs.
+- The app refuses to boot when a bottom tab has no label, address, icon, iOS image or Android icon, names a section that is not a declared navigation group, or shares its label with another tab, when more than five bottom tabs are declared, or when a screen rule has no pattern.
 
 ## [0.2.0] - 2026-11-07
 
