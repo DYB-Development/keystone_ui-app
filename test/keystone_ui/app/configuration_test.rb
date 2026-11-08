@@ -20,4 +20,12 @@ class KeystoneUi::App::ConfigurationTest < ActiveSupport::TestCase
 
     assert_equal [ "cart", "shopping_cart" ], configuration.bottom_tabs.first.to_h.values_at(:ios_system_image, :android_icon)
   end
+
+  test "an app's screen rule records its patterns and properties" do
+    configuration = KeystoneUi::App::Configuration.new
+
+    configuration.native_rule(patterns: [ "/users/sign_in" ], properties: { context: "modal" })
+
+    assert_equal [ { patterns: [ "/users/sign_in" ], properties: { context: "modal" } } ], configuration.native_rules
+  end
 end

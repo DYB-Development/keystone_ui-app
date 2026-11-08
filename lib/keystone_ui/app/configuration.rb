@@ -13,14 +13,19 @@ module KeystoneUi
         end
       end
 
-      attr_reader :bottom_tabs
+      attr_reader :bottom_tabs, :native_rules
 
       def initialize
         @bottom_tabs = []
+        @native_rules = []
       end
 
       def bottom_tab(label:, href:, icon:, permitted:, section:, ios_system_image: nil, android_icon: nil)
         @bottom_tabs << BottomTab.new(label: label, href: href, icon: icon, permitted: permitted, section: section, ios_system_image: ios_system_image, android_icon: android_icon)
+      end
+
+      def native_rule(patterns:, properties:)
+        @native_rules << { patterns: patterns, properties: properties }
       end
     end
   end
