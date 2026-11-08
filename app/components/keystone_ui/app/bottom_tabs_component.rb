@@ -6,7 +6,7 @@ module KeystoneUi
   module App
     class BottomTabsComponent < ViewComponent::Base
       def tabs
-        KeystoneUi::App.configuration.bottom_tabs
+        KeystoneUi::App.configuration.bottom_tabs.select { |tab| tab.permitted.call(helpers) }
       end
 
       def active?(tab)

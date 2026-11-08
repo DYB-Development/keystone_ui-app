@@ -20,4 +20,10 @@ class BottomTabsTest < ActionDispatch::IntegrationTest
 
     assert_select "nav.ks-bottom-nav a.active", count: 0
   end
+
+  test "a bottom tab the person is not permitted to see is left out" do
+    get "/pages/plain"
+
+    assert_select "nav.ks-bottom-nav a", text: "Refunds", count: 0
+  end
 end
