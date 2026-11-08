@@ -7,6 +7,10 @@ module KeystoneUi
         def href_for(view)
           href.respond_to?(:call) ? href.call(view) : href
         end
+
+        def icon_for(view)
+          icon.respond_to?(:call) ? icon.call(view) : icon
+        end
       end
 
       attr_reader :bottom_tabs

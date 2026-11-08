@@ -53,4 +53,10 @@ class BottomTabsTest < ActionDispatch::IntegrationTest
 
     assert_select "nav.ks-bottom-nav a[href='/pages/plain?tab=orders&from=/pages/plain']", text: "Orders"
   end
+
+  test "a bottom tab whose icon is drawn by the page shows that icon" do
+    get "/pages/plain"
+
+    assert_select "nav.ks-bottom-nav a svg#orders-icon"
+  end
 end
