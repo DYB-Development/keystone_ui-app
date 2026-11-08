@@ -15,4 +15,7 @@ class PagesController < ApplicationController
 
   def header
   end
+
+  def no_bottom_tabs
+  end
 end

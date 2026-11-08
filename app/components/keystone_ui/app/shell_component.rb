@@ -49,6 +49,10 @@ module KeystoneUi
         !native_app? && !helpers.content_for?(:hide_footer)
       end
 
+      def bottom_tabs_shown?
+        !native_app? && !helpers.content_for?(:hide_bottom_tabs)
+      end
+
       def page_signal
         PAGE_SIGNALS.find { |signal| helpers.content_for?(signal) }
       end

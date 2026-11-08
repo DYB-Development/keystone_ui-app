@@ -38,6 +38,25 @@ registerKeystoneUiAppControllers(application)
 
 Every slot is optional. The shell writes the `<!DOCTYPE html>`, the `html`, `head` and `body` elements and the viewport meta tag, so the app's head leaves out its own viewport tag.
 
+## Bottom tabs
+
+Declare the tabs for the bar at the foot of the page on a phone browser in an initializer. They are their own list, apart from keystone_ui's navigation groups:
+
+```ruby
+KeystoneUi::App.configure do |config|
+  config.bottom_tab(label: "Home", href: "/", icon: HOME_ICON_SVG, permitted: ->(view) { view.user_signed_in? }, section: nil)
+  config.bottom_tab(label: "Sales", href: ->(view) { view.main_app.quotes_path }, icon: ->(view) { view.render("icons/sales") }, permitted: ->(view) { view.user_signed_in? }, section: "Sales")
+end
+```
+
+- `label:` is the text under the icon.
+- `href:` is the address, either a string or a callable given the view.
+- `icon:` is the icon's SVG markup, either a string or a callable given the view.
+- `permitted:` is a callable given the view, and the tab is left out when it returns false.
+- `section:` is the label of the keystone_ui navigation group the tab stands for, or `nil` for a tab that stands for none.
+
+A page that should show no bottom tabs calls `content_for :hide_bottom_tabs, true`.
+
 ## What it draws
 
 - The `html` element carries keystone_ui's theme attributes and the current locale.
@@ -49,6 +68,7 @@ Every slot is optional. The shell writes the `<!DOCTYPE html>`, the `html`, `hea
 - On a phone browser, a page that is not a form or show page shows a menu of the current section's tabs, with the tab the page belongs to marked as active. The section is the navigation group holding the tab keystone_ui's current tab supplier names, and the menu leaves out tabs the person is not permitted to see. A page in no section shows no menu.
 - Inside the native app, the `menu-button` bridge component sends the section's label and tabs to the native menu button, and choosing a tab opens its page in place of the current one. A page in no section sends an empty list.
 - Inside the native app, no navigation bar, no phone menus, no phone header and no footer, the `hotwire-native` class on the `html` element, and a viewport that cannot be pinch-zoomed.
+- On a phone browser, keystone_ui's bottom nav at the foot of every page with the tabs the app declares, leaving out tabs the person is not permitted to see. The tab whose section is the navigation group holding the current tab is marked as active. The bar is hidden from the `lg` breakpoint up, and is not drawn inside the native app, on a page that calls `content_for :hide_bottom_tabs, true`, or when the person may see none of the declared tabs.
 - In a browser, the footer, unless the page calls `content_for :hide_footer, true`.
 
 ## Licence
