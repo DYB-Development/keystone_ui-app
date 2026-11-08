@@ -16,6 +16,7 @@ module KeystoneUi
       PAGE_SIGNALS = %i[show_page form_page].freeze
       VIEWPORT = "width=device-width, initial-scale=1"
       NATIVE_APP_VIEWPORT = "#{VIEWPORT}, maximum-scale=1.0, user-scalable=0"
+      NATIVE_APP_STYLE = '[data-bridge-components~="form"] [data-controller~="bridge--form"] [type="submit"] { display: none; }'
 
       attr_reader :body
 

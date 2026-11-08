@@ -2,6 +2,7 @@
 <html <%= helpers.keystone_theme_attributes %> class="<%= class_names(dark: dark_mode?, "hotwire-native": native_app?) %>" lang="<%= I18n.locale %>">
   <head>
     <%= tag.meta name: "viewport", content: viewport %>
+    <%= tag.style(NATIVE_APP_STYLE.html_safe) if native_app? %>
     <%= head %>
   </head>
   <%= tag.body(**body) do %>
@@ -17,6 +18,7 @@
     <% page = tag.main(content) %>
     <% if native_app? %>
       <%= render KeystoneUi::App::NativeMenuButtonComponent.new %>
+      <%= render KeystoneUi::App::NativeAddButtonComponent.new %>
       <%= page %>
     <% else %>
       <%= helpers.ui_navigation do |navigation| %>

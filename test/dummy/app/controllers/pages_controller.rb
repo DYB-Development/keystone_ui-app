@@ -18,4 +18,13 @@ class PagesController < ApplicationController
 
   def no_bottom_tabs
   end
+
+  def add
+  end
+
+  def post_add
+  end
+
+  def native_form
+  end
 end
