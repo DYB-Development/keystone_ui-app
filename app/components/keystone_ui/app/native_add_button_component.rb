@@ -5,6 +5,10 @@ module KeystoneUi
     class NativeAddButtonComponent < ViewComponent::Base
       CONTROLLER = "bridge--add-button"
 
+      def render?
+        helpers.content_for?(:mobile_action_url)
+      end
+
       def call
         tag.div(data: { controller: CONTROLLER, "#{CONTROLLER}-url-value": signal(:url), "#{CONTROLLER}-label-value": signal(:label), "#{CONTROLLER}-method-value": signal(:method).presence })
       end

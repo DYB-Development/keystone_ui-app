@@ -27,4 +27,10 @@ class NativeAddButtonTest < ActionDispatch::IntegrationTest
 
     assert_equal "post", add_button["data-bridge--add-button-method-value"]
   end
+
+  test "inside the native app a page whose header has no add action draws no native add button" do
+    get "/pages/header", headers: NATIVE_APP
+
+    assert_select ADD_BUTTON, count: 0
+  end
 end
