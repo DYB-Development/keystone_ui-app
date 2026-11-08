@@ -1,8 +1,11 @@
 # frozen_string_literal: true
 
 require "test_helper"
+require "minitest/mock"
 
 class PathConfigurationTest < ActionDispatch::IntegrationTest
+  SIGN_IN_RULE = { "patterns" => [ "/users/sign_in" ], "properties" => { "context" => "modal" } }.freeze
+
   test "the iOS app receives a native tab for each bottom tab the person is permitted to see with its system image" do
     get "/hotwire/ios/path_configuration.json"
 
@@ -36,5 +39,19 @@ class PathConfigurationTest < ActionDispatch::IntegrationTest
       { "patterns" => [ ".*" ], "properties" => { "context" => "default", "uri" => "hotwire://fragment/web", "fallback_uri" => "hotwire://fragment/web", "pull_to_refresh_enabled" => true } },
       { "patterns" => [ "/new$", "/edit$" ], "properties" => { "context" => "modal", "pull_to_refresh_enabled" => false } }
     ], response.parsed_body["rules"]
+  end
+
+  test "the iOS app receives the app's own screen rules after the shipped rules" do
+    get_with_app_declarations "/hotwire/ios/path_configuration.json"
+
+    assert_equal SIGN_IN_RULE, response.parsed_body["rules"].last
+  end
+
+  private
+
+  def get_with_app_declarations(path)
+    configuration = KeystoneUi::App::Configuration.new
+    configuration.native_rule(patterns: [ "/users/sign_in" ], properties: { context: "modal" })
+    KeystoneUi::App.stub(:configuration, configuration) { get path }
   end
 end

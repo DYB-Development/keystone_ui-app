@@ -11,7 +11,7 @@ module KeystoneUi
       ].freeze
 
       def ios
-        render json: { settings: { tabs: ios_tabs }, rules: IOS_RULES }
+        render json: { settings: { tabs: ios_tabs }, rules: IOS_RULES + app_rules }
       end
 
       def android
@@ -26,6 +26,10 @@ module KeystoneUi
 
       def android_tabs
         permitted_tabs.map { |tab| { title: tab.label, path: tab.href_for(view), icon: tab.android_icon } }
+      end
+
+      def app_rules
+        KeystoneUi::App.configuration.native_rules
       end
 
       def permitted_tabs
