@@ -47,6 +47,12 @@ class PathConfigurationTest < ActionDispatch::IntegrationTest
     assert_equal SIGN_IN_RULE, response.parsed_body["rules"].last
   end
 
+  test "the Android app receives the app's own screen rules after the shipped rules" do
+    get_with_app_declarations "/hotwire/android/path_configuration.json"
+
+    assert_equal SIGN_IN_RULE, response.parsed_body["rules"].last
+  end
+
   private
 
   def get_with_app_declarations(path)
