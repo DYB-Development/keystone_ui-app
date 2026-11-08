@@ -22,4 +22,10 @@ class PathConfigurationTest < ActionDispatch::IntegrationTest
       { "title" => "Orders", "path" => "/pages/plain?tab=orders&from=/hotwire/android/path_configuration.json", "icon" => "inventory" }
     ], JSON.parse(response.parsed_body.dig("settings", "tabs"))
   end
+
+  test "the iOS app opens new and edit pages as modals" do
+    get "/hotwire/ios/path_configuration.json"
+
+    assert_equal [ { "patterns" => [ "/new$", "/edit$" ], "properties" => { "context" => "modal" } } ], response.parsed_body["rules"]
+  end
 end

@@ -3,8 +3,10 @@
 module KeystoneUi
   module App
     class PathConfigurationsController < ::ApplicationController
+      MODAL_RULE = { patterns: [ "/new$", "/edit$" ], properties: { context: "modal" } }.freeze
+
       def ios
-        render json: { settings: { tabs: ios_tabs } }
+        render json: { settings: { tabs: ios_tabs }, rules: [ MODAL_RULE ] }
       end
 
       def android
