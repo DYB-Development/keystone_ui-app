@@ -13,6 +13,13 @@ All notable changes to this project will be documented in this file.
 - Both native apps open new and edit pages as modals, and the Android app opens every other page in the web fragment.
 - `KeystoneUi::App.configure` takes `native_rule` and `native_setting`, and both native apps receive the app's rules after the shipped rules and its settings beside the tabs.
 - The app refuses to boot when a bottom tab has no label, address, icon, iOS image or Android icon, names a section that is not a declared navigation group, or shares its label with another tab, when more than five bottom tabs are declared, or when a screen rule has no pattern.
+- Inside the native app a page whose header has an add action shows a plus button in the native nav bar that opens the action's page, or posts to it when the header passes `action_method:`.
+- `ui_native_form_data` marks a form whose submit button the native app shows in its nav bar, and inside the native app the web submit button is hidden.
+- While a marked form is submitting, its native submit button cannot be tapped again.
+- `registerControllers` registers the `bridge--add-button` and `bridge--form` controllers.
+
+### Changed
+- The gem requires keystone_ui 0.69.0 or later, whose page header can mark its add action to post.
 
 ## [0.2.0] - 2026-11-07
 

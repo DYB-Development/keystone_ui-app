@@ -71,6 +71,26 @@ The app refuses to boot when its bottom tabs or screen rules are declared wrong,
 
 A tab with no label and a screen rule with no pattern are named by their position in the order they were declared, counting from 1.
 
+## Native add and submit buttons
+
+Inside the native app, a page whose `ui_page_header` has an `action_url:` shows a plus button in the native nav bar with the action's label, and tapping it opens the action's page. A header that also passes `action_method: :post` makes the plus button post to the action's address, the same as its desktop button and its phone plus icon:
+
+```erb
+<%= ui_page_header(title: "Conversations", action_url: conversations_path, action_label: "New conversation", action_method: :post) %>
+```
+
+A form shows its submit button in the native nav bar when it takes its data from `ui_native_form_data`:
+
+```erb
+<%= ui_form(action: quotes_path, data: ui_native_form_data) do %>
+  <%= ui_button(label: "Save") %>
+<% end %>
+```
+
+Inside the native app the native button carries the title of the form's first submit button and submits the form when tapped. The web submit button is hidden. The native button cannot be tapped again until the submit ends. In a browser the form and its submit button are drawn as before.
+
+The `bridge--add-button` and `bridge--form` controllers are registered by `registerControllers` with the gem's own copy of the Hotwire Native Bridge library, so the app pins no bridge library of its own.
+
 ## Native tabs and screen rules
 
 The Hotwire Native apps read their tabs and screen rules from a path configuration the gem serves. Mount the engine at the root of the host's routes:
@@ -109,6 +129,8 @@ end
 - On a phone browser, keystone_ui's phone header for a page drawn with `ui_form_page` or `ui_show_page`, with its back link, title and subtitle.
 - On a phone browser, a page that is not a form or show page shows a menu of the current section's tabs, with the tab the page belongs to marked as active. The section is the navigation group holding the tab keystone_ui's current tab supplier names, and the menu leaves out tabs the person is not permitted to see. A page in no section shows no menu.
 - Inside the native app, the `menu-button` bridge component sends the section's label and tabs to the native menu button, and choosing a tab opens its page in place of the current one. A page in no section sends an empty list.
+- Inside the native app, the `add-button` bridge component sends a page header's add action to the native plus button, and a page with no add action sends none.
+- Inside the native app, a `style` element in the head that hides the web submit button of a form marked with `ui_native_form_data` once the native app has connected its `form` bridge component.
 - Inside the native app, no navigation bar, no phone menus, no phone header and no footer, the `hotwire-native` class on the `html` element, and a viewport that cannot be pinch-zoomed.
 - On a phone browser, keystone_ui's bottom nav at the foot of every page with the tabs the app declares, leaving out tabs the person is not permitted to see. The tab whose section is the navigation group holding the current tab is marked as active. The bar is hidden from the `lg` breakpoint up, and is not drawn inside the native app, on a page that calls `content_for :hide_bottom_tabs, true`, or when the person may see none of the declared tabs.
 - In a browser, the footer, unless the page calls `content_for :hide_footer, true`.
