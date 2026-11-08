@@ -34,6 +34,12 @@ class KeystoneUi::App::ShellCheckTest < ActiveSupport::TestCase
     assert_equal "The Sales bottom tab has no Android icon.", error.message
   end
 
+  test "a bottom tab naming a section that is not declared is refused, naming the tab and the section" do
+    error = assert_raises(KeystoneUi::App::ShellCheck::Error) { check(bottom_tabs: [ tab(section: "Billing") ]) }
+
+    assert_equal "The Sales bottom tab names the Billing section, which is not a declared navigation group.", error.message
+  end
+
   private
 
   def check(bottom_tabs: [ tab ], native_rules: [], sections: [ "Sales" ])

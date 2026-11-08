@@ -18,6 +18,7 @@ module KeystoneUi
           raise Error, "The #{tab.label} bottom tab has no icon." if blank?(tab.icon)
           raise Error, "The #{tab.label} bottom tab has no iOS image." if blank?(tab.ios_system_image)
           raise Error, "The #{tab.label} bottom tab has no Android icon." if blank?(tab.android_icon)
+          raise Error, "The #{tab.label} bottom tab names the #{tab.section} section, which is not a declared navigation group." if tab.section && !@sections.include?(tab.section)
         end
         nil
       end
