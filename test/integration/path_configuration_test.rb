@@ -59,6 +59,12 @@ class PathConfigurationTest < ActionDispatch::IntegrationTest
     assert_equal true, response.parsed_body.dig("settings", "require_authentication")
   end
 
+  test "the Android app receives the app's own settings" do
+    get_with_app_declarations "/hotwire/android/path_configuration.json"
+
+    assert_equal true, response.parsed_body.dig("settings", "require_authentication")
+  end
+
   private
 
   def get_with_app_declarations(path)

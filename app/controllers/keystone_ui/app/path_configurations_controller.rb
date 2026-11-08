@@ -15,7 +15,7 @@ module KeystoneUi
       end
 
       def android
-        render json: { settings: { tabs: android_tabs.to_json }, rules: ANDROID_RULES + app_rules }
+        render json: { settings: { tabs: android_tabs.to_json }.merge(app_settings), rules: ANDROID_RULES + app_rules }
       end
 
       private
