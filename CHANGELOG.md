@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-11-08
+
 ### Added
 - `KeystoneUi::App.configure` takes `bottom_tab` declarations, each with a label, an address, an icon, a permission check and the navigation group it stands for.
 - On a phone browser the shell draws the declared bottom tabs at the foot of every page, with the tab for the page's section marked as active and tabs the person may not see left out.
