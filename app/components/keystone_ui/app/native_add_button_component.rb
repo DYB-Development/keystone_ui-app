@@ -6,7 +6,11 @@ module KeystoneUi
       CONTROLLER = "bridge--add-button"
 
       def call
-        tag.div(data: { controller: CONTROLLER, "#{CONTROLLER}-url-value": helpers.content_for(:mobile_action_url) })
+        tag.div(data: { controller: CONTROLLER, "#{CONTROLLER}-url-value": signal(:url), "#{CONTROLLER}-label-value": signal(:label) })
+      end
+
+      def signal(name)
+        helpers.content_for(:"mobile_action_#{name}")
       end
     end
   end
