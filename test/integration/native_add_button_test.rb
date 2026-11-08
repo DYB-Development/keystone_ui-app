@@ -33,4 +33,10 @@ class NativeAddButtonTest < ActionDispatch::IntegrationTest
 
     assert_select ADD_BUTTON, count: 0
   end
+
+  test "in a browser a page whose header has an add action draws no native add button" do
+    get "/pages/add"
+
+    assert_select ADD_BUTTON, count: 0
+  end
 end
