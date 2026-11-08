@@ -14,6 +14,7 @@ module KeystoneUi
       def call
         @bottom_tabs.each.with_index(1) do |tab, position|
           raise Error, "Bottom tab #{position} has no label." if blank?(tab.label)
+          raise Error, "The #{tab.label} bottom tab has no address." if blank?(tab.href)
         end
         nil
       end
