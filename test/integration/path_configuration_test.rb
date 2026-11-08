@@ -53,11 +53,18 @@ class PathConfigurationTest < ActionDispatch::IntegrationTest
     assert_equal SIGN_IN_RULE, response.parsed_body["rules"].last
   end
 
+  test "the iOS app receives the app's own settings" do
+    get_with_app_declarations "/hotwire/ios/path_configuration.json"
+
+    assert_equal true, response.parsed_body.dig("settings", "require_authentication")
+  end
+
   private
 
   def get_with_app_declarations(path)
     configuration = KeystoneUi::App::Configuration.new
     configuration.native_rule(patterns: [ "/users/sign_in" ], properties: { context: "modal" })
+    configuration.native_setting(:require_authentication, true)
     KeystoneUi::App.stub(:configuration, configuration) { get path }
   end
 end
