@@ -47,4 +47,10 @@ class BottomTabsTest < ActionDispatch::IntegrationTest
 
     assert_select "nav.ks-bottom-nav", count: 0
   end
+
+  test "a bottom tab whose address is worked out from the page links to that address" do
+    get "/pages/plain"
+
+    assert_select "nav.ks-bottom-nav a[href='/pages/plain?tab=orders&from=/pages/plain']", text: "Orders"
+  end
 end

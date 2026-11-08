@@ -3,7 +3,11 @@
 module KeystoneUi
   module App
     class Configuration
-      BottomTab = Struct.new(:label, :href, :icon, :permitted, :section, keyword_init: true)
+      BottomTab = Struct.new(:label, :href, :icon, :permitted, :section, keyword_init: true) do
+        def href_for(view)
+          href.respond_to?(:call) ? href.call(view) : href
+        end
+      end
 
       attr_reader :bottom_tabs
 
