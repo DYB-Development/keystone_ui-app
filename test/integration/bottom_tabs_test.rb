@@ -3,6 +3,8 @@
 require "test_helper"
 
 class BottomTabsTest < ActionDispatch::IntegrationTest
+  NATIVE_APP = { "User-Agent" => "Hotwire Native iOS; Turbo Native iOS" }.freeze
+
   test "on a phone browser the shell draws the declared bottom tabs at the foot of the page" do
     get "/pages/plain"
 
@@ -25,5 +27,11 @@ class BottomTabsTest < ActionDispatch::IntegrationTest
     get "/pages/plain"
 
     assert_select "nav.ks-bottom-nav a", text: "Refunds", count: 0
+  end
+
+  test "inside the native app the shell draws no bottom tabs" do
+    get "/pages/plain", headers: NATIVE_APP
+
+    assert_select "nav.ks-bottom-nav", count: 0
   end
 end
