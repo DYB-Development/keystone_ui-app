@@ -16,4 +16,10 @@ class PageActionsTest < ActionDispatch::IntegrationTest
 
     assert_select "header [class~='lg:hidden'] a#form-action[href='/additions/new']", text: "Add"
   end
+
+  test "on a phone browser a page with several ways to add opens them from a plus button in the top bar" do
+    get "/pages/add_menu"
+
+    assert_select "header button[aria-label=Add] + .ks-action-menu a[href='/lists/import']", text: "Import a list"
+  end
 end

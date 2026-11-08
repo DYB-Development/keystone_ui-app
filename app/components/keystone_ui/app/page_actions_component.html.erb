@@ -1,5 +1,18 @@
 <% if form_action? %>
   <%= tag.div(helpers.content_for(:form_page_action), class: FORM_ACTION_CLASSES) %>
-<% else %>
+<% elsif show_actions? %>
   <%= helpers.ui_mobile_actions { helpers.content_for(:show_page_actions) } %>
+<% else %>
+  <div class="<%= ADD_MENU_CLASSES %>" data-controller="action-menu" data-action="scroll@window->action-menu#follow resize@window->action-menu#close">
+    <button type="button"
+            data-action="click->action-menu#toggle pointerup@window->action-menu#hide"
+            data-action-menu-target="button"
+            class="<%= ADD_BUTTON_CLASSES %>"
+            aria-label="Add">
+      <%= PLUS_ICON.html_safe %>
+    </button>
+    <div data-action-menu-target="menu" class="<%= ADD_OPTIONS_CLASSES %>">
+      <%= helpers.content_for(:mobile_action_menu) %>
+    </div>
+  </div>
 <% end %>

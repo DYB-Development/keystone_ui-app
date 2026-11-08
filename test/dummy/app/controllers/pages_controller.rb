@@ -31,6 +31,9 @@ class PagesController < ApplicationController
   def form_action
   end
 
+  def add_menu
+  end
+
   def native_form
   end
 end
