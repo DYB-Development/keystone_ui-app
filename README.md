@@ -54,8 +54,38 @@ end
 - `icon:` is the icon's SVG markup, either a string or a callable given the view.
 - `permitted:` is a callable given the view, and the tab is left out when it returns false.
 - `section:` is the label of the keystone_ui navigation group the tab stands for, or `nil` for a tab that stands for none.
+- `ios_system_image:` is the name of the SF Symbol the iOS app shows for the tab, such as `"house"`. It is optional.
+- `android_icon:` is the name of the icon the Android app shows for the tab, such as `"home"`. It is optional.
 
 A page that should show no bottom tabs calls `content_for :hide_bottom_tabs, true`.
+
+## Native tabs and screen rules
+
+The Hotwire Native apps read their tabs and screen rules from a path configuration the gem serves. Mount the engine at the root of the host's routes:
+
+```ruby
+mount KeystoneUi::App::Engine, at: "/"
+```
+
+That adds two addresses:
+
+- `/hotwire/ios/path_configuration` serves the iOS app's configuration.
+- `/hotwire/android/path_configuration` serves the Android app's configuration.
+
+The controller behind them inherits from the host's `ApplicationController`, so a bottom tab's `permitted:` and `href:` callables are given a view with the host's helpers. The host keeps both addresses open to a person who is not signed in, since the native app reads them before sign-in.
+
+Each configuration's `settings.tabs` holds one native tab for each bottom tab the person is permitted to see, with its label as the title and its address as the path. The iOS app gets a list with each tab's `ios_system_image_name`. The Android app gets the same tabs with each tab's `icon`, encoded as one JSON string.
+
+Both configurations ship a rule that opens a page whose address ends in `/new` or `/edit` as a modal. The Android configuration also ships a rule before it that opens every page in the `hotwire://fragment/web` fragment with pull to refresh.
+
+An app adds its own screen rules and settings in the initializer, and both native apps receive them. Its rules come after the shipped rules, and its settings sit beside `tabs`:
+
+```ruby
+KeystoneUi::App.configure do |config|
+  config.native_rule(patterns: [ "/users/sign_in", "/users/sign_up" ], properties: { context: "modal" })
+  config.native_setting(:require_authentication, false)
+end
+```
 
 ## What it draws
 
