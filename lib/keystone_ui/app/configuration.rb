@@ -3,7 +3,7 @@
 module KeystoneUi
   module App
     class Configuration
-      BottomTab = Struct.new(:label, :href, :icon, :permitted, :section, keyword_init: true) do
+      BottomTab = Struct.new(:label, :href, :icon, :permitted, :section, :ios_system_image, :android_icon, keyword_init: true) do
         def href_for(view)
           href.respond_to?(:call) ? href.call(view) : href
         end
@@ -19,8 +19,8 @@ module KeystoneUi
         @bottom_tabs = []
       end
 
-      def bottom_tab(label:, href:, icon:, permitted:, section:)
-        @bottom_tabs << BottomTab.new(label: label, href: href, icon: icon, permitted: permitted, section: section)
+      def bottom_tab(label:, href:, icon:, permitted:, section:, ios_system_image: nil, android_icon: nil)
+        @bottom_tabs << BottomTab.new(label: label, href: href, icon: icon, permitted: permitted, section: section, ios_system_image: ios_system_image, android_icon: android_icon)
       end
     end
   end
