@@ -28,4 +28,12 @@ class KeystoneUi::App::ConfigurationTest < ActiveSupport::TestCase
 
     assert_equal [ { patterns: [ "/users/sign_in" ], properties: { context: "modal" } } ], configuration.native_rules
   end
+
+  test "an app's native setting records its value under its name" do
+    configuration = KeystoneUi::App::Configuration.new
+
+    configuration.native_setting(:require_authentication, true)
+
+    assert_equal({ require_authentication: true }, configuration.native_settings)
+  end
 end
