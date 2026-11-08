@@ -7,4 +7,6 @@ Rails.application.routes.draw do
   get "/pages/form", to: "pages#form"
   get "/pages/header", to: "pages#header"
   get "/pages/no_bottom_tabs", to: "pages#no_bottom_tabs"
+
+  mount KeystoneUi::App::Engine, at: "/"
 end
