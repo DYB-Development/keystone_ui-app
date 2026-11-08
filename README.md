@@ -44,8 +44,8 @@ Declare the tabs for the bar at the foot of the page on a phone browser in an in
 
 ```ruby
 KeystoneUi::App.configure do |config|
-  config.bottom_tab(label: "Home", href: "/", icon: HOME_ICON_SVG, permitted: ->(view) { view.user_signed_in? }, section: nil)
-  config.bottom_tab(label: "Sales", href: ->(view) { view.main_app.quotes_path }, icon: ->(view) { view.render("icons/sales") }, permitted: ->(view) { view.user_signed_in? }, section: "Sales")
+  config.bottom_tab(label: "Home", href: "/", icon: HOME_ICON_SVG, permitted: ->(view) { view.user_signed_in? }, section: nil, ios_system_image: "house", android_icon: "home")
+  config.bottom_tab(label: "Sales", href: ->(view) { view.main_app.quotes_path }, icon: ->(view) { view.render("icons/sales") }, permitted: ->(view) { view.user_signed_in? }, section: "Sales", ios_system_image: "cart", android_icon: "shopping_cart")
 end
 ```
 
@@ -54,10 +54,22 @@ end
 - `icon:` is the icon's SVG markup, either a string or a callable given the view.
 - `permitted:` is a callable given the view, and the tab is left out when it returns false.
 - `section:` is the label of the keystone_ui navigation group the tab stands for, or `nil` for a tab that stands for none.
-- `ios_system_image:` is the name of the SF Symbol the iOS app shows for the tab, such as `"house"`. It is optional.
-- `android_icon:` is the name of the icon the Android app shows for the tab, such as `"home"`. It is optional.
+- `ios_system_image:` is the name of the SF Symbol the iOS app shows for the tab, such as `"house"`.
+- `android_icon:` is the name of the icon the Android app shows for the tab, such as `"home"`.
 
 A page that should show no bottom tabs calls `content_for :hide_bottom_tabs, true`.
+
+## Boot check
+
+The app refuses to boot when its bottom tabs or screen rules are declared wrong, and the error says which one:
+
+- A bottom tab with no label, address, icon, iOS image or Android icon.
+- A bottom tab whose `section:` is not the label of a declared keystone_ui navigation group.
+- Two bottom tabs with the same label.
+- More than five bottom tabs.
+- A screen rule with no pattern.
+
+A tab with no label and a screen rule with no pattern are named by their position in the order they were declared, counting from 1.
 
 ## Native tabs and screen rules
 
