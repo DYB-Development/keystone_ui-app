@@ -28,6 +28,9 @@ class PagesController < ApplicationController
   def show_actions
   end
 
+  def form_action
+  end
+
   def native_form
   end
 end

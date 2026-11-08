@@ -10,4 +10,10 @@ class PageActionsTest < ActionDispatch::IntegrationTest
 
     assert_select "header button[aria-label=Actions] + .ks-action-menu a[href='/invoices/1/edit']", text: "Edit"
   end
+
+  test "on a phone browser a form page's one action shows in the top bar" do
+    get "/pages/form_action"
+
+    assert_select "header [class~='lg:hidden'] a#form-action[href='/additions/new']", text: "Add"
+  end
 end

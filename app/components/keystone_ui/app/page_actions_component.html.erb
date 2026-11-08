@@ -1,1 +1,5 @@
-<%= helpers.ui_mobile_actions { helpers.content_for(:show_page_actions) } %>
+<% if form_action? %>
+  <%= tag.div(helpers.content_for(:form_page_action), class: FORM_ACTION_CLASSES) %>
+<% else %>
+  <%= helpers.ui_mobile_actions { helpers.content_for(:show_page_actions) } %>
+<% end %>
