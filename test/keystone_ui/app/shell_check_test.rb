@@ -22,6 +22,12 @@ class KeystoneUi::App::ShellCheckTest < ActiveSupport::TestCase
     assert_equal "The Sales bottom tab has no icon.", error.message
   end
 
+  test "a bottom tab with no iOS image is refused" do
+    error = assert_raises(KeystoneUi::App::ShellCheck::Error) { check(bottom_tabs: [ tab(ios_system_image: nil) ]) }
+
+    assert_equal "The Sales bottom tab has no iOS image.", error.message
+  end
+
   private
 
   def check(bottom_tabs: [ tab ], native_rules: [], sections: [ "Sales" ])

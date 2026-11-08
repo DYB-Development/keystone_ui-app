@@ -16,6 +16,7 @@ module KeystoneUi
           raise Error, "Bottom tab #{position} has no label." if blank?(tab.label)
           raise Error, "The #{tab.label} bottom tab has no address." if blank?(tab.href)
           raise Error, "The #{tab.label} bottom tab has no icon." if blank?(tab.icon)
+          raise Error, "The #{tab.label} bottom tab has no iOS image." if blank?(tab.ios_system_image)
         end
         nil
       end
