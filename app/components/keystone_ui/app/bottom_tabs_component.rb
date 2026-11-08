@@ -5,8 +5,12 @@ require "keystone_ui/app/current_section"
 module KeystoneUi
   module App
     class BottomTabsComponent < ViewComponent::Base
+      def render?
+        tabs.any?
+      end
+
       def tabs
-        KeystoneUi::App.configuration.bottom_tabs.select { |tab| tab.permitted.call(helpers) }
+        @tabs ||= KeystoneUi::App.configuration.bottom_tabs.select { |tab| tab.permitted.call(helpers) }
       end
 
       def active?(tab)

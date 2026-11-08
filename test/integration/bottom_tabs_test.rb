@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "test_helper"
+require "minitest/mock"
 
 class BottomTabsTest < ActionDispatch::IntegrationTest
   NATIVE_APP = { "User-Agent" => "Hotwire Native iOS; Turbo Native iOS" }.freeze
@@ -37,6 +38,12 @@ class BottomTabsTest < ActionDispatch::IntegrationTest
 
   test "a page that asks for no bottom tabs is drawn without them" do
     get "/pages/no_bottom_tabs"
+
+    assert_select "nav.ks-bottom-nav", count: 0
+  end
+
+  test "an app that declares no bottom tabs shows no bottom bar" do
+    KeystoneUi::App.stub(:configuration, KeystoneUi::App::Configuration.new) { get "/pages/plain" }
 
     assert_select "nav.ks-bottom-nav", count: 0
   end
