@@ -16,7 +16,7 @@
       <% end %>
       <%= render KeystoneUi::App::PageActionsComponent.new unless native_app? %>
     </header>
-    <% page = tag.main(content) %>
+    <% page = tag.main { safe_join([content, (footer if footer_shown?)]) } %>
     <% if native_app? %>
       <%= render KeystoneUi::App::NativeMenuButtonComponent.new %>
       <%= render KeystoneUi::App::NativeAddButtonComponent.new %>
@@ -29,6 +29,5 @@
       <% end %>
     <% end %>
     <%= render KeystoneUi::App::BottomTabsComponent.new if bottom_tabs_shown? %>
-    <%= footer if footer_shown? %>
   <% end %>
 </html>
