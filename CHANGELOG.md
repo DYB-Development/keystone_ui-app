@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.3.1] - 2026-11-10
+
+### Fixed
+- The shell draws the footer inside the page's main content, so on a phone the bottom tab bar no longer covers it.
+
 ## [0.3.0] - 2026-11-08
 
 ### Added
