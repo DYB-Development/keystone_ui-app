@@ -8,7 +8,7 @@ class ShellTest < ActionDispatch::IntegrationTest
   test "a layout that calls the shell draws the page inside the main element" do
     get "/pages/plain"
 
-    assert_select "html > body main", text: "Plain page"
+    assert_select "html > body main", text: /\APlain page/
   end
 
   test "the shell draws the app's head inside the head element" do
@@ -43,10 +43,10 @@ class ShellTest < ActionDispatch::IntegrationTest
     assert_select "nav #menus", text: "Account menu"
   end
 
-  test "in a browser the shell draws the app's footer at the end of the body" do
+  test "in a browser the shell draws the app's footer inside the page's main content, where the phone bottom tab bar leaves room" do
     get "/pages/plain"
 
-    assert_select "body > #footer", text: "Dummy footer"
+    assert_select "main > #footer", text: "Dummy footer"
   end
 
   test "a page that asks for no footer is drawn without the app's footer" do
