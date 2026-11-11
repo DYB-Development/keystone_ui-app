@@ -62,6 +62,14 @@ class AreaTabsTest < ActionDispatch::IntegrationTest
     assert_equal "/pages/plain?tab=quotes", tab_href("Selling")
   end
 
+  test "an area's tab is marked current on a page in any of the area's groups" do
+    get_with_areas "/pages/plain?tab=invoices" do |config|
+      config.app_area(**area(name: "Back office", groups: [ "Stock", "Billing" ]))
+    end
+
+    assert_select "nav.ks-bottom-nav a.active .ks-bottom-nav-label", text: "Back office"
+  end
+
   private
 
   def get_with_areas(path, saved_order: nil, &declare)
