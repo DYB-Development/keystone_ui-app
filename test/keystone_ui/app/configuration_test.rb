@@ -52,4 +52,13 @@ class KeystoneUi::App::ConfigurationTest < ActiveSupport::TestCase
 
     assert_equal({ require_authentication: true }, configuration.native_settings)
   end
+  test "account links record their label, address, permission check and whether they sign out, in the order declared" do
+    permitted = ->(_view) { true }
+    configuration = KeystoneUi::App::Configuration.new
+
+    configuration.account_link(label: "Settings", href: "/settings", permitted: permitted)
+    configuration.account_link(label: "Sign out", href: "/sign_out", permitted: permitted, sign_out: true)
+
+    assert_equal [ { label: "Settings", href: "/settings", permitted: permitted, sign_out: false }, { label: "Sign out", href: "/sign_out", permitted: permitted, sign_out: true } ], configuration.account_links.map(&:to_h)
+  end
 end
