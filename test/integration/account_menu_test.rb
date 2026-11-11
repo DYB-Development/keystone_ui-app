@@ -38,6 +38,15 @@ class AccountMenuTest < ActionDispatch::IntegrationTest
     assert_select ".ks-app-account-menu .ks-nav-dropdown-trigger .ks-app-avatar", text: "A"
   end
 
+  test "with a picture the avatar on the dropdown shows it" do
+    get_with_account do |config|
+      config.account_link(label: "Settings", href: "/settings", permitted: ->(_view) { true })
+      config.person_supplier = ->(_view) { { name: "Ada", email: "ada@example.com", avatar_url: "/ada.png" } }
+    end
+
+    assert_select ".ks-app-account-menu .ks-nav-dropdown-trigger .ks-app-avatar img[src='/ada.png']"
+  end
+
   private
 
   def get_with_account(path = "/pages/plain", &declare)

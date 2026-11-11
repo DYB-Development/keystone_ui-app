@@ -6,13 +6,17 @@ module KeystoneUi
       CLASSES = "ks-app-avatar inline-flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-gray-200 text-sm font-semibold text-gray-700 dark:bg-gray-700 dark:text-gray-100"
 
       def call
-        tag.span(initial, class: CLASSES)
+        tag.span(picture || initial, class: CLASSES)
       end
 
       private
 
       def person
         KeystoneUi::App.configuration.person(helpers)
+      end
+
+      def picture
+        tag.img(src: person[:avatar_url], alt: person[:name].to_s, class: "size-full object-cover") if person[:avatar_url].present?
       end
 
       def initial
