@@ -12,4 +12,13 @@ class KeystoneUi::App::EngineTest < ActiveSupport::TestCase
       assert_raises(KeystoneUi::App::ShellCheck::Error) { KeystoneUi::App::Engine.check_shell }
     end
   end
+
+  test "the shell check at boot refuses the app's own areas when one names an undeclared group" do
+    configuration = KeystoneUi::App::Configuration.new
+    configuration.app_area(name: "Selling", description: "Quotes and orders", groups: [ "Billing" ], on_by_default: true, icon: "<svg></svg>", ios_system_image: "cart", android_icon: "shopping_cart")
+
+    KeystoneUi::App.stub(:configuration, configuration) do
+      assert_raises(KeystoneUi::App::ShellCheck::Error) { KeystoneUi::App::Engine.check_shell }
+    end
+  end
 end
