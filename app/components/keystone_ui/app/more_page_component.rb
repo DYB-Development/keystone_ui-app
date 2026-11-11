@@ -9,7 +9,7 @@ module KeystoneUi
 
       def groups
         visible_groups.map do |group|
-          Group.new(label: group.label, rows: group.tabs.map { |page| { label: page.label, href: page.href } })
+          Group.new(label: (group.label unless group.standalone), rows: group.tabs.map { |page| { label: page.label, href: page.href } })
         end
       end
 

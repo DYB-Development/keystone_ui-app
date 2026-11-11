@@ -56,6 +56,14 @@ class MorePageTest < ActionDispatch::IntegrationTest
     assert_equal [ "Orders", "Quotes" ], links_in_group("Sales")
   end
 
+  test "a page declared outside any group is a single row with no group heading" do
+    get_more_page do |navigation|
+      navigation.navigation_tab(:inbox, label: "Inbox", href: "/pages/plain?tab=inbox", permitted: ->(_view) { true })
+    end
+
+    assert_select "main h2", text: "Inbox", count: 0
+  end
+
   private
 
   def get_more_page(saved_order: nil)
