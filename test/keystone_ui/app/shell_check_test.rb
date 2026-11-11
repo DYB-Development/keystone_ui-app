@@ -62,10 +62,53 @@ class KeystoneUi::App::ShellCheckTest < ActiveSupport::TestCase
     assert_equal "Screen rule 2 has no pattern.", error.message
   end
 
+  test "an area naming a group that is not declared is refused, naming the area and the group" do
+    error = assert_raises(KeystoneUi::App::ShellCheck::Error) { check(app_areas: [ area(groups: [ "Billing" ]) ]) }
+
+    assert_equal "The Selling area names the Billing group, which is not a declared navigation group.", error.message
+  end
+
+  test "two areas covering the same group are refused, naming the group" do
+    error = assert_raises(KeystoneUi::App::ShellCheck::Error) { check(app_areas: [ area, area(name: "Orders") ]) }
+
+    assert_equal "More than one area covers the Sales group.", error.message
+  end
+
+  test "an area whose tab has no icon is refused, naming the area" do
+    error = assert_raises(KeystoneUi::App::ShellCheck::Error) { check(app_areas: [ area(icon: nil) ]) }
+
+    assert_equal "The Selling area's tab has no icon.", error.message
+  end
+
+  test "an area whose tab has no iOS image is refused, naming the area" do
+    error = assert_raises(KeystoneUi::App::ShellCheck::Error) { check(app_areas: [ area(ios_system_image: nil) ]) }
+
+    assert_equal "The Selling area's tab has no iOS image.", error.message
+  end
+
+  test "an area whose tab has no Android icon is refused, naming the area" do
+    error = assert_raises(KeystoneUi::App::ShellCheck::Error) { check(app_areas: [ area(android_icon: nil) ]) }
+
+    assert_equal "The Selling area's tab has no Android icon.", error.message
+  end
+
+  test "a More page with more than four fixed bottom tabs is refused, giving the count" do
+    tabs = 5.times.map { |number| tab(label: "Tab #{number}", section: nil) }
+    more_page = KeystoneUi::App::Configuration::MorePage.new(href: "/more", icon: "<svg></svg>", ios_system_image: "ellipsis", android_icon: "more_horiz")
+
+    error = assert_raises(KeystoneUi::App::ShellCheck::Error) { check(bottom_tabs: tabs, more_page: more_page) }
+
+    assert_equal "5 bottom tabs are declared with a More page, and no more than 4 are allowed.", error.message
+  end
+
   private
 
-  def check(bottom_tabs: [ tab ], native_rules: [], sections: [ "Sales" ])
-    KeystoneUi::App::ShellCheck.new(bottom_tabs: bottom_tabs, native_rules: native_rules, sections: sections).call
+  def check(bottom_tabs: [ tab ], native_rules: [], sections: [ "Sales" ], app_areas: [], more_page: nil)
+    KeystoneUi::App::ShellCheck.new(bottom_tabs: bottom_tabs, native_rules: native_rules, sections: sections, app_areas: app_areas, more_page: more_page).call
+  end
+
+  def area(**overrides)
+    KeystoneUi::App::Configuration::AppArea.new(name: "Selling", description: "Quotes and orders", groups: [ "Sales" ], on_by_default: true, icon: "<svg></svg>", ios_system_image: "cart", android_icon: "shopping_cart", **overrides)
   end
 
   def tab(**overrides)
