@@ -73,6 +73,15 @@ class AccountMenuTest < ActionDispatch::IntegrationTest
     assert_select ".ks-app-account-switcher form[action='/accounts/acme/switch'] input[name='_method'][value='patch']"
   end
 
+  test "when the app supplies notifications, desktop shows a bell with the unread count that opens the notifications page" do
+    get_with_account do |config|
+      config.account_link(label: "Settings", href: "/settings", permitted: ->(_view) { true })
+      config.notifications(href: ->(_view) { "/notifications" }, unread_count: ->(_view) { 4 })
+    end
+
+    assert_select ".ks-app-account-menu a.ks-app-notifications-bell[href='/notifications'] .ks-badge", text: "4"
+  end
+
   private
 
   def get_with_account(path = "/pages/plain", &declare)
