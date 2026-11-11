@@ -36,6 +36,14 @@ class AccountPageTest < ActionDispatch::IntegrationTest
     assert_select "main .ks-app-account-accounts form[action='/accounts/acme/switch'] input[name='_method'][value='patch']"
   end
 
+  test "when the app supplies notifications, the Account page has a Notifications row showing the unread count" do
+    get_account_page do |config|
+      config.notifications(href: "/notifications", unread_count: 4)
+    end
+
+    assert_select "main a[href='/notifications'] .ks-badge", text: "4"
+  end
+
   private
 
   def get_account_page(headers: {}, &declare)

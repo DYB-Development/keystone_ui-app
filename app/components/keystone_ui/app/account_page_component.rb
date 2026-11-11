@@ -15,6 +15,16 @@ module KeystoneUi
         KeystoneUi::App.configuration.accounts(helpers)
       end
 
+      def notifications
+        KeystoneUi::App.configuration.notifications_link
+      end
+
+      def notifications_row
+        count = notifications.unread_count_for(helpers).to_i
+        row = { label: "Notifications", href: notifications.href_for(helpers) }
+        count.positive? ? row.merge(badge: { label: count.to_s, variant: :info }) : row
+      end
+
       def person
         KeystoneUi::App.configuration.person(helpers)
       end

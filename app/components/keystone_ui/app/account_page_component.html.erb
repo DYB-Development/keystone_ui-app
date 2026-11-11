@@ -30,3 +30,10 @@
     <% end %>
   </section>
 <% end %>
+<% if notifications %>
+  <section>
+    <%= render Keystone::Ui::SectionComponent.new do %>
+      <%= render Keystone::Ui::LinkListComponent.new(rows: [ notifications_row ]) %>
+    <% end %>
+  </section>
+<% end %>
