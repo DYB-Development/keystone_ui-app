@@ -54,6 +54,14 @@ class AreaTabsTest < ActionDispatch::IntegrationTest
     assert_equal "/pages/plain?tab=orders", tab_href("Selling")
   end
 
+  test "an area's tab opens the first page in the area the person may open when they may not open the page it names" do
+    get_with_areas "/pages/plain" do |config|
+      config.app_area(**area(name: "Selling", groups: [ "Sales" ], opens: :refunds))
+    end
+
+    assert_equal "/pages/plain?tab=quotes", tab_href("Selling")
+  end
+
   private
 
   def get_with_areas(path, saved_order: nil, &declare)
