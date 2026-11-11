@@ -7,6 +7,8 @@ module KeystoneUi
       NAME_CLASSES = "ks-paragraph block font-semibold break-words"
       EMAIL_CLASSES = "ks-value-list-note block truncate"
       ROW_CLASSES = "ks-value-list-row items-center no-underline"
+      BUTTON_ROW_CLASSES = "#{ROW_CLASSES} w-full text-left cursor-pointer"
+      CHEVRON_ICON = Keystone::Ui::SettingsLinkComponent::CHEVRON_ICON
       LABEL_CLASSES = "ks-paragraph ks-settings-link-label block min-w-0 flex-1 break-words"
 
       def accounts
