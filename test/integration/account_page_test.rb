@@ -20,6 +20,14 @@ class AccountPageTest < ActionDispatch::IntegrationTest
     assert_select "main .ks-app-account-person", text: /ada@example.com/
   end
 
+  test "the Account page lists every account and marks the current one" do
+    get_account_page do |config|
+      config.accounts_supplier = ->(_view) { [ { name: "Acme", href: "/accounts/acme/switch", current: false }, { name: "Globex", href: "/accounts/globex/switch", current: true } ] }
+    end
+
+    assert_select "main .ks-app-account-accounts [aria-current='true']", text: /Globex/
+  end
+
   private
 
   def get_account_page(headers: {}, &declare)

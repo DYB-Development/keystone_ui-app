@@ -9,3 +9,19 @@
     </div>
   <% end %>
 </section>
+<% if accounts.any? %>
+  <section class="ks-app-account-accounts">
+    <%= render Keystone::Ui::SectionComponent.new(title: "Accounts") do %>
+      <div class="ks-value-list">
+        <% accounts.each do |account| %>
+          <div class="<%= ROW_CLASSES %>"<%= ' aria-current="true"'.html_safe if account[:current] %>>
+            <span class="<%= LABEL_CLASSES %>"><%= account[:name] %></span>
+            <% if account[:current] %>
+              <%= render Keystone::Ui::BadgeComponent.new(label: "Current", variant: :success, class: "shrink-0") %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </section>
+<% end %>
