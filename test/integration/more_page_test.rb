@@ -64,6 +64,12 @@ class MorePageTest < ActionDispatch::IntegrationTest
     assert_select "main h2", text: "Inbox", count: 0
   end
 
+  test "inside the native app the More page is drawn as an ordinary web page" do
+    get "/pages/more", headers: { "User-Agent" => "Hotwire Native iOS; Turbo Native iOS" }
+
+    assert_equal [ "Quotes", "Orders" ], links_in_group("Sales")
+  end
+
   private
 
   def get_more_page(saved_order: nil)
