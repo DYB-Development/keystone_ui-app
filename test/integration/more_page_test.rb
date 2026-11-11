@@ -8,4 +8,10 @@ class MorePageTest < ActionDispatch::IntegrationTest
 
     assert_select "main a[href='/pages/plain?tab=quotes']", text: "Quotes"
   end
+
+  test "a page the person may not open is left off the More page" do
+    get "/pages/more"
+
+    assert_select "main a", text: "Refunds", count: 0
+  end
 end
