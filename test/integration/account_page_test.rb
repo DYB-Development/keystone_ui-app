@@ -54,6 +54,14 @@ class AccountPageTest < ActionDispatch::IntegrationTest
     assert_equal [ "Settings", "Profile" ], css_select("main .ks-app-account-links a").map { |link| link.text.strip }
   end
 
+  test "an account link marked as signing out is a button on the Account page that sends DELETE to its address" do
+    get_account_page do |config|
+      config.account_link(label: "Sign out", href: "/sign_out", permitted: ->(_view) { true }, sign_out: true)
+    end
+
+    assert_select "main .ks-app-account-links form[action='/sign_out'] input[name='_method'][value='delete']"
+  end
+
   private
 
   def get_account_page(headers: {}, &declare)

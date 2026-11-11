@@ -40,7 +40,21 @@
 <% if links.any? %>
   <section class="ks-app-account-links">
     <%= render Keystone::Ui::SectionComponent.new do %>
-      <%= render Keystone::Ui::LinkListComponent.new(rows: links.map { |link| { label: link.label, href: link.href_for(helpers) } }) %>
+      <div class="ks-value-list">
+        <% links.each do |link| %>
+          <% if link.sign_out %>
+            <%= button_to link.href_for(helpers), method: :delete, class: BUTTON_ROW_CLASSES do %>
+              <span class="<%= LABEL_CLASSES %>"><%= link.label %></span>
+              <%= CHEVRON_ICON.html_safe %>
+            <% end %>
+          <% else %>
+            <%= link_to link.href_for(helpers), class: ROW_CLASSES do %>
+              <span class="<%= LABEL_CLASSES %>"><%= link.label %></span>
+              <%= CHEVRON_ICON.html_safe %>
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
     <% end %>
   </section>
 <% end %>
