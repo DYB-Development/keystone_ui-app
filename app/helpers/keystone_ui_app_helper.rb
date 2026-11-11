@@ -9,6 +9,10 @@ module KeystoneUiAppHelper
     render KeystoneUi::App::MorePageComponent.new
   end
 
+  def ui_account_page
+    render KeystoneUi::App::AccountPageComponent.new
+  end
+
   def ui_native_form_data
     { controller: "bridge--form", action: "turbo:submit-start->bridge--form#submitStart turbo:submit-end->bridge--form#submitEnd" }
   end
