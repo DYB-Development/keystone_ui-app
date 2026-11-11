@@ -4,7 +4,7 @@ module KeystoneUi
   module App
     class MorePageComponent < ViewComponent::Base
       def rows
-        KeystoneUi.configuration.navigation_groups.flat_map(&:tabs).map do |page|
+        KeystoneUi.configuration.navigation_groups.flat_map { |group| group.tabs_permitted_for(helpers) }.map do |page|
           { label: page.label, href: page.href_for(helpers) }
         end
       end
