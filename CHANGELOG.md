@@ -17,6 +17,14 @@ All notable changes to this project will be documented in this file.
 - The iOS and Android path configurations list the same tabs, in the same order, as the person's web bar.
 - The app refuses to boot when an area names a group that is not declared, when two areas cover the same group, when an area's tab has no icon, iOS image or Android icon, or when the app declares a More page and more than four bottom tabs.
 - `ui_more_page` draws the More page in one of the app's own pages, listing every navigation group the person may see with the pages they may open under it, in the order and with the labels of their desktop menu, and each page declared outside a group as a single row.
+- `KeystoneUi::App.configure` takes `account_link` declarations, each with a label, an address, a permission check and whether it signs the person out, and lists them in the order declared.
+- An account link marked with `sign_out: true` is drawn as a button that sends DELETE to its address.
+- `KeystoneUi::App.configure` takes an `account_page` declaration with an address, a `person_supplier` returning the person's name, email and optional picture, an `accounts_supplier` returning the person's accounts, and a `notifications` declaration with an address and an unread count.
+- Once the app declares account links, the right of the desktop top bar shows a bell with the unread count, an account switcher named after the current account, and the person's avatar opening a dropdown of the account links they may see, in place of the menus the layout passes.
+- Choosing another account in the switcher or on the Account page sends PATCH to that account's address.
+- When the app declares an Account page, the top of every screen on a phone browser shows the person's avatar as a link to it, and inside the native app it is not drawn.
+- The avatar shows the person's picture when the app supplies one, and otherwise the first letter of their name.
+- `ui_account_page` draws the Account page in one of the app's own pages, with the person's name and email, their accounts with the current one marked, a Notifications row with the unread count, and the account links they may see in the order of the desktop dropdown.
 
 ## [0.3.2] - 2026-11-10
 
