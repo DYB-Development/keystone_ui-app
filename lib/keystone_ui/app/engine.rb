@@ -12,7 +12,8 @@ module KeystoneUi
           bottom_tabs: configuration.bottom_tabs,
           native_rules: configuration.native_rules,
           sections: KeystoneUi.configuration.navigation_groups.map(&:label),
-          app_areas: configuration.app_areas
+          app_areas: configuration.app_areas,
+          more_page: configuration.more_page_tab
         ).call
       end
 
