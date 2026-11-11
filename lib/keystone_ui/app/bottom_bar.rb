@@ -35,7 +35,7 @@ module KeystoneUi
       end
 
       def area_tab(area)
-        Tab.new(label: area.name, href: opened_page(area).href_for(@view), icon: area.icon, ios_system_image: area.ios_system_image, android_icon: area.android_icon, sections: area.groups)
+        Tab.new(label: area.name, href: opened_page(area).href_for(@view), icon: area.icon_for(@view), ios_system_image: area.ios_system_image, android_icon: area.android_icon, sections: area.groups)
       end
 
       def more_tab_needed?(shown)

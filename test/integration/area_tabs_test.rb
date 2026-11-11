@@ -123,6 +123,14 @@ class AreaTabsTest < ActionDispatch::IntegrationTest
     assert_equal [ "Home", "Inbox", "Calendar", "Selling", "Goods" ], tab_labels
   end
 
+  test "an area's tab whose icon is drawn by the page shows that icon" do
+    get_with_areas "/pages/plain" do |config|
+      config.app_area(**area(name: "Selling", groups: [ "Sales" ], icon: ->(view) { view.tag.svg(id: "selling-icon") }))
+    end
+
+    assert_select "nav.ks-bottom-nav a svg#selling-icon"
+  end
+
   private
 
   def get_with_areas(path, saved_order: nil, navigation: navigation(saved_order), &declare)
@@ -155,8 +163,8 @@ class AreaTabsTest < ActionDispatch::IntegrationTest
     configuration
   end
 
-  def area(name:, groups:, on_by_default: true, opens: nil)
-    { name: name, description: "#{name} pages", groups: groups, on_by_default: on_by_default, opens: opens, icon: "<svg></svg>", ios_system_image: "square", android_icon: "square" }
+  def area(name:, groups:, on_by_default: true, opens: nil, icon: "<svg></svg>")
+    { name: name, description: "#{name} pages", groups: groups, on_by_default: on_by_default, opens: opens, icon: icon, ios_system_image: "square", android_icon: "square" }
   end
 
   def declare_two_more_fixed_tabs(config)

@@ -13,7 +13,11 @@ module KeystoneUi
         end
       end
 
-      AppArea = Struct.new(:name, :description, :groups, :on_by_default, :opens, :icon, :ios_system_image, :android_icon, keyword_init: true)
+      AppArea = Struct.new(:name, :description, :groups, :on_by_default, :opens, :icon, :ios_system_image, :android_icon, keyword_init: true) do
+        def icon_for(view)
+          icon.respond_to?(:call) ? icon.call(view) : icon
+        end
+      end
 
       MorePage = Struct.new(:href, :icon, :ios_system_image, :android_icon, keyword_init: true)
 
