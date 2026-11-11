@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "uri"
+require "rack/utils"
 require "keystone_ui/app/current_section"
 
 module KeystoneUi
@@ -14,7 +16,15 @@ module KeystoneUi
       end
 
       def active?(tab)
-        section.present? && tab.section == section.label
+        return section.present? && tab.section == section.label if tab.section
+
+        on_page?(tab)
+      end
+
+      def on_page?(tab)
+        address = URI.parse(tab.href_for(helpers))
+        address.path == request.path &&
+          Rack::Utils.parse_query(address.query).all? { |name, value| request.query_parameters[name] == value }
       end
 
       def section

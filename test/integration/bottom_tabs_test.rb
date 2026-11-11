@@ -18,8 +18,14 @@ class BottomTabsTest < ActionDispatch::IntegrationTest
     assert_select "nav.ks-bottom-nav a.active", text: "Sales"
   end
 
-  test "on a page in no section no bottom tab is marked active" do
+  test "on the page a bottom tab with no section links to, that tab is marked active" do
     get "/pages/plain"
+
+    assert_select "nav.ks-bottom-nav a.active", text: "Home"
+  end
+
+  test "on a page in no section that no bottom tab links to, no bottom tab is marked active" do
+    get "/pages/show"
 
     assert_select "nav.ks-bottom-nav a.active", count: 0
   end
