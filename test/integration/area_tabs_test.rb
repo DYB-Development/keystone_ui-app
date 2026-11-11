@@ -79,13 +79,25 @@ class AreaTabsTest < ActionDispatch::IntegrationTest
     assert_equal [ "Home", "Selling", "More" ], tab_labels
   end
 
+  test "when every page the person may open has a tab, the bar has no More tab" do
+    single_page = KeystoneUi::Configuration.new
+    single_page.navigation_group("Sales") { |group| group.tab(:quotes, label: "Quotes", href: "/pages/plain?tab=quotes", permitted: ->(_view) { true }) }
+
+    get_with_areas "/pages/plain", navigation: single_page do |config|
+      config.app_area(**area(name: "Selling", groups: [ "Sales" ]))
+      config.more_page(**more_page)
+    end
+
+    assert_equal [ "Home", "Selling" ], tab_labels
+  end
+
   private
 
-  def get_with_areas(path, saved_order: nil, &declare)
+  def get_with_areas(path, saved_order: nil, navigation: navigation(saved_order), &declare)
     app = KeystoneUi::App::Configuration.new
     app.bottom_tab(label: "Home", href: "/pages/plain", icon: "<svg></svg>", permitted: ->(_view) { true }, section: nil, ios_system_image: "house", android_icon: "home")
     declare.call(app)
-    KeystoneUi.stub(:configuration, navigation(saved_order)) do
+    KeystoneUi.stub(:configuration, navigation) do
       KeystoneUi::App.stub(:configuration, app) { get path }
     end
   end
