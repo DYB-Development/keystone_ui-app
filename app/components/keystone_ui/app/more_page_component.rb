@@ -3,10 +3,18 @@
 module KeystoneUi
   module App
     class MorePageComponent < ViewComponent::Base
-      def rows
-        KeystoneUi.configuration.navigation_groups.flat_map { |group| group.tabs_permitted_for(helpers) }.map do |page|
-          { label: page.label, href: page.href_for(helpers) }
+      Group = Struct.new(:label, :rows, keyword_init: true)
+
+      def groups
+        KeystoneUi.configuration.navigation_groups.map do |group|
+          Group.new(label: group.label, rows: rows(group.tabs_permitted_for(helpers)))
         end
+      end
+
+      private
+
+      def rows(pages)
+        pages.map { |page| { label: page.label, href: page.href_for(helpers) } }
       end
     end
   end

@@ -1,1 +1,7 @@
-<%= render Keystone::Ui::LinkListComponent.new(rows: rows) %>
+<% groups.each do |group| %>
+  <section>
+    <%= render Keystone::Ui::SectionComponent.new(title: group.label) do %>
+      <%= render Keystone::Ui::LinkListComponent.new(rows: group.rows) %>
+    <% end %>
+  </section>
+<% end %>
