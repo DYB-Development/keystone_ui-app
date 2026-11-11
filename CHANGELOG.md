@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.3.2] - 2026-11-10
+
 ### Fixed
 - A bottom tab with no section is marked as the current tab on the page it links to, unless a section's tab is current.
 
