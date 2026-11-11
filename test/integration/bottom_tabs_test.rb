@@ -18,6 +18,12 @@ class BottomTabsTest < ActionDispatch::IntegrationTest
     assert_select "nav.ks-bottom-nav a.active", text: "Sales"
   end
 
+  test "on a section's page only that section's bottom tab is marked active" do
+    get "/pages/plain", params: { tab: "quotes" }
+
+    assert_select "nav.ks-bottom-nav a.active", count: 1
+  end
+
   test "on the page a bottom tab with no section links to, that tab is marked active" do
     get "/pages/plain"
 

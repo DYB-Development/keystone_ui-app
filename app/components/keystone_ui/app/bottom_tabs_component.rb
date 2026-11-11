@@ -16,9 +16,13 @@ module KeystoneUi
       end
 
       def active?(tab)
-        return section.present? && tab.section == section.label if tab.section
+        return in_section?(tab) if tab.section
 
-        on_page?(tab)
+        tabs.none? { |other| in_section?(other) } && on_page?(tab)
+      end
+
+      def in_section?(tab)
+        section.present? && tab.section == section.label
       end
 
       def on_page?(tab)
