@@ -36,6 +36,7 @@ module KeystoneUi
       private
 
       def check_area(area)
+        raise Error, "The #{area.name} area's tab has no icon." if blank?(area.icon)
         undeclared = area.groups.find { |group| !@sections.include?(group) }
         raise Error, "The #{area.name} area names the #{undeclared} group, which is not a declared navigation group." if undeclared
       end
