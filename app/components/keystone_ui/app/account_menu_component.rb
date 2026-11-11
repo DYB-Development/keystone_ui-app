@@ -31,7 +31,7 @@ module KeystoneUi
       end
 
       def links
-        KeystoneUi::App.configuration.account_links.select { |link| link.permitted.call(helpers) }
+        KeystoneUi::App.configuration.visible_account_links(helpers)
       end
     end
   end
