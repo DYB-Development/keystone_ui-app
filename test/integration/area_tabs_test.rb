@@ -20,6 +20,14 @@ class AreaTabsTest < ActionDispatch::IntegrationTest
     assert_equal [ "Home" ], tab_labels
   end
 
+  test "an area holding no page the person may open gets no tab" do
+    get_with_areas "/pages/plain" do |config|
+      config.app_area(**area(name: "Admin", groups: [ "Admin" ]))
+    end
+
+    assert_equal [ "Home" ], tab_labels
+  end
+
   private
 
   def get_with_areas(path, saved_order: nil, &declare)
