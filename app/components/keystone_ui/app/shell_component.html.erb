@@ -24,7 +24,11 @@
     <% else %>
       <%= helpers.ui_navigation do |navigation| %>
         <% navigation.with_logo { logo.to_s } if logo? %>
-        <% navigation.with_menus { safe_join([(render KeystoneUi::App::AccountMenuComponent.new if account_menu?), menus.to_s]) } if menus? || account_menu? %>
+        <% if account_menu? %>
+          <% navigation.with_menus { render KeystoneUi::App::AccountMenuComponent.new } %>
+        <% elsif menus? %>
+          <% navigation.with_menus { menus.to_s } %>
+        <% end %>
         <%= page %>
       <% end %>
     <% end %>

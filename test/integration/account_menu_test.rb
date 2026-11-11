@@ -47,6 +47,14 @@ class AccountMenuTest < ActionDispatch::IntegrationTest
     assert_select ".ks-app-account-menu .ks-nav-dropdown-trigger .ks-app-avatar img[src='/ada.png']"
   end
 
+  test "once the app declares account links, the account menu takes the place of the menus it passes to the frame" do
+    get_with_account do |config|
+      config.account_link(label: "Settings", href: "/settings", permitted: ->(_view) { true })
+    end
+
+    assert_select "#menus", count: 0
+  end
+
   private
 
   def get_with_account(path = "/pages/plain", &declare)
