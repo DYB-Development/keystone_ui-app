@@ -7,12 +7,15 @@ module KeystoneUi
     class BottomBar
       Tab = Struct.new(:label, :href, :icon, :ios_system_image, :android_icon, :sections, keyword_init: true)
 
+      MORE_LABEL = "More"
+
       def initialize(view)
         @view = view
       end
 
       def tabs
-        fixed_tabs + area_tabs
+        shown = fixed_tabs + area_tabs
+        more_tab_needed?(shown) ? shown + [ more_tab ] : shown
       end
 
       private
@@ -30,6 +33,15 @@ module KeystoneUi
 
       def area_tab(area)
         Tab.new(label: area.name, href: opened_page(area).href_for(@view), icon: area.icon, ios_system_image: area.ios_system_image, android_icon: area.android_icon, sections: area.groups)
+      end
+
+      def more_tab_needed?(shown)
+        configuration.more_page_tab && (permitted_groups.flat_map(&:last).map { |page| page.href_for(@view) } - shown.map(&:href)).any?
+      end
+
+      def more_tab
+        more = configuration.more_page_tab
+        Tab.new(label: MORE_LABEL, href: more.href, icon: more.icon, ios_system_image: more.ios_system_image, android_icon: more.android_icon, sections: [])
       end
 
       def opened_page(area)

@@ -70,6 +70,15 @@ class AreaTabsTest < ActionDispatch::IntegrationTest
     assert_select "nav.ks-bottom-nav a.active .ks-bottom-nav-label", text: "Back office"
   end
 
+  test "when the app declares a More page and the person may open a page no tab opens, the bar ends with a More tab" do
+    get_with_areas "/pages/plain" do |config|
+      config.app_area(**area(name: "Selling", groups: [ "Sales" ]))
+      config.more_page(**more_page)
+    end
+
+    assert_equal [ "Home", "Selling", "More" ], tab_labels
+  end
+
   private
 
   def get_with_areas(path, saved_order: nil, &declare)
@@ -104,6 +113,10 @@ class AreaTabsTest < ActionDispatch::IntegrationTest
 
   def area(name:, groups:, on_by_default: true, opens: nil)
     { name: name, description: "#{name} pages", groups: groups, on_by_default: on_by_default, opens: opens, icon: "<svg></svg>", ios_system_image: "square", android_icon: "square" }
+  end
+
+  def more_page
+    { href: "/pages/show", icon: "<svg></svg>", ios_system_image: "ellipsis", android_icon: "more_horiz" }
   end
 
   def tab_href(label)
