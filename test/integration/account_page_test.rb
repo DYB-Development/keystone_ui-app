@@ -62,6 +62,14 @@ class AccountPageTest < ActionDispatch::IntegrationTest
     assert_select "main .ks-app-account-links form[action='/sign_out'] input[name='_method'][value='delete']"
   end
 
+  test "inside the native app the Account page is drawn as an ordinary web page" do
+    get_account_page(headers: { "User-Agent" => "Hotwire Native iOS; Turbo Native iOS" }) do |config|
+      config.account_link(label: "Settings", href: "/settings", permitted: ->(_view) { true })
+    end
+
+    assert_select "main .ks-app-account-links a[href='/settings']", text: "Settings"
+  end
+
   private
 
   def get_account_page(headers: {}, &declare)
