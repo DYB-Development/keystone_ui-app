@@ -37,6 +37,15 @@ class AreaTabsTest < ActionDispatch::IntegrationTest
     assert_equal [ "Home", "Back office", "Selling" ], tab_labels
   end
 
+  test "with no saved group order, area tabs follow the order the app declares the areas" do
+    get_with_areas "/pages/plain" do |config|
+      config.app_area(**area(name: "Back office", groups: [ "Stock", "Billing" ]))
+      config.app_area(**area(name: "Selling", groups: [ "Sales" ]))
+    end
+
+    assert_equal [ "Home", "Back office", "Selling" ], tab_labels
+  end
+
   private
 
   def get_with_areas(path, saved_order: nil, &declare)
