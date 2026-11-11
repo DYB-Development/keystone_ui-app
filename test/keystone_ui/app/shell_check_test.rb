@@ -68,6 +68,12 @@ class KeystoneUi::App::ShellCheckTest < ActiveSupport::TestCase
     assert_equal "The Selling area names the Billing group, which is not a declared navigation group.", error.message
   end
 
+  test "two areas covering the same group are refused, naming the group" do
+    error = assert_raises(KeystoneUi::App::ShellCheck::Error) { check(app_areas: [ area, area(name: "Orders") ]) }
+
+    assert_equal "More than one area covers the Sales group.", error.message
+  end
+
   private
 
   def check(bottom_tabs: [ tab ], native_rules: [], sections: [ "Sales" ], app_areas: [])

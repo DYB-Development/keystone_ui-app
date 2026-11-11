@@ -26,6 +26,7 @@ module KeystoneUi
         raise Error, "More than one bottom tab has the label #{shared_label}." if shared_label
         raise Error, "#{@bottom_tabs.size} bottom tabs are declared, and no more than #{MOST_BOTTOM_TABS} are allowed." if @bottom_tabs.size > MOST_BOTTOM_TABS
         @app_areas.each { |area| check_area(area) }
+        raise Error, "More than one area covers the #{shared_group} group." if shared_group
         @native_rules.each.with_index(1) do |rule, position|
           raise Error, "Screen rule #{position} has no pattern." if Array(rule[:patterns]).all? { |pattern| blank?(pattern) }
         end
@@ -37,6 +38,10 @@ module KeystoneUi
       def check_area(area)
         undeclared = area.groups.find { |group| !@sections.include?(group) }
         raise Error, "The #{area.name} area names the #{undeclared} group, which is not a declared navigation group." if undeclared
+      end
+
+      def shared_group
+        @app_areas.flat_map { |area| area.groups.uniq }.tally.find { |_group, count| count > 1 }&.first
       end
 
       def shared_label
