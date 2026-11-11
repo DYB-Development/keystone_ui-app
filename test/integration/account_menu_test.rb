@@ -91,11 +91,19 @@ class AccountMenuTest < ActionDispatch::IntegrationTest
     assert_select "header div[class~='lg:hidden'] a[href='/account'] .ks-app-avatar", text: "A"
   end
 
+  test "inside the native app the top of the screen shows no avatar" do
+    get_with_account("/pages/plain", headers: { "User-Agent" => "Hotwire Native iOS; Turbo Native iOS" }) do |config|
+      config.account_page(href: "/account")
+    end
+
+    assert_select "a[href='/account']", count: 0
+  end
+
   private
 
-  def get_with_account(path = "/pages/plain", &declare)
+  def get_with_account(path = "/pages/plain", headers: {}, &declare)
     app = KeystoneUi::App::Configuration.new
     declare.call(app)
-    KeystoneUi::App.stub(:configuration, app) { get path }
+    KeystoneUi::App.stub(:configuration, app) { get path, headers: headers }
   end
 end

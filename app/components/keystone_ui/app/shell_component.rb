@@ -52,7 +52,7 @@ module KeystoneUi
       end
 
       def phone_avatar_shown?
-        account_page
+        account_page && !native_app?
       end
 
       def account_menu?
