@@ -75,6 +75,16 @@ class PathConfigurationTest < ActionDispatch::IntegrationTest
     ], response.parsed_body.dig("settings", "tabs")
   end
 
+  test "the Android app receives the same tabs, in the same order, as the person's web bar" do
+    get_with_areas "/hotwire/android/path_configuration.json"
+
+    assert_equal [
+      { "title" => "Home", "path" => "/pages/plain", "icon" => "home" },
+      { "title" => "Selling", "path" => "/pages/plain?tab=quotes", "icon" => "shopping_cart" },
+      { "title" => "More", "path" => "/more", "icon" => "more_horiz" }
+    ], JSON.parse(response.parsed_body.dig("settings", "tabs"))
+  end
+
   private
 
   def get_with_areas(path)
