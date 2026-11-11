@@ -46,6 +46,10 @@ module KeystoneUi
         page_signal && !native_app?
       end
 
+      def account_menu?
+        KeystoneUi::App.configuration.account_links.any?
+      end
+
       def footer_shown?
         !native_app? && !helpers.content_for?(:hide_footer)
       end

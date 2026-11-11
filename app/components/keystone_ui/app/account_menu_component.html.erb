@@ -1,0 +1,7 @@
+<div class="<%= WRAPPER_CLASSES %>">
+  <%= render Keystone::Ui::NavDropdownComponent.new(title: "", area: "account") do %>
+    <% links.each do |link| %>
+      <%= render Keystone::Ui::NavItemComponent.new(label: link.label, href: link.href_for(helpers)) %>
+    <% end %>
+  <% end %>
+</div>
