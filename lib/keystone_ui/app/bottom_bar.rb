@@ -70,7 +70,7 @@ module KeystoneUi
       end
 
       def permitted_groups
-        KeystoneUi.configuration.navigation_groups
+        @permitted_groups ||= KeystoneUi.configuration.navigation_groups
           .map { |group| [ group, group.tabs_permitted_for(@view) ] }
           .reject { |_group, pages| pages.empty? }
       end
