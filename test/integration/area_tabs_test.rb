@@ -112,6 +112,17 @@ class AreaTabsTest < ActionDispatch::IntegrationTest
     assert_equal [ "Home", "Inbox", "Calendar", "Selling", "More" ], tab_labels
   end
 
+  test "a bar with no More page holds no more than five tabs, leaving out the areas that come last" do
+    get_with_areas "/pages/plain" do |config|
+      declare_two_more_fixed_tabs(config)
+      config.app_area(**area(name: "Selling", groups: [ "Sales" ]))
+      config.app_area(**area(name: "Goods", groups: [ "Stock" ]))
+      config.app_area(**area(name: "Money", groups: [ "Billing" ]))
+    end
+
+    assert_equal [ "Home", "Inbox", "Calendar", "Selling", "Goods" ], tab_labels
+  end
+
   private
 
   def get_with_areas(path, saved_order: nil, navigation: navigation(saved_order), &declare)
