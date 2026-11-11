@@ -19,7 +19,11 @@ module KeystoneUi
         end
       end
 
-      MorePage = Struct.new(:href, :icon, :ios_system_image, :android_icon, keyword_init: true)
+      MorePage = Struct.new(:href, :icon, :ios_system_image, :android_icon, keyword_init: true) do
+        def href_for(view)
+          href.respond_to?(:call) ? href.call(view) : href
+        end
+      end
 
       attr_reader :bottom_tabs, :app_areas, :more_page_tab, :native_rules, :native_settings
 

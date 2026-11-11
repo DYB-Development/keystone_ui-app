@@ -44,7 +44,7 @@ module KeystoneUi
 
       def more_tab
         more = configuration.more_page_tab
-        Tab.new(label: MORE_LABEL, href: more.href, icon: more.icon, ios_system_image: more.ios_system_image, android_icon: more.android_icon, sections: [])
+        Tab.new(label: MORE_LABEL, href: more.href_for(@view), icon: more.icon, ios_system_image: more.ios_system_image, android_icon: more.android_icon, sections: [])
       end
 
       def opened_page(area)

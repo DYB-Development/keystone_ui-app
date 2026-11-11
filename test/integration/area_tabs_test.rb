@@ -131,6 +131,14 @@ class AreaTabsTest < ActionDispatch::IntegrationTest
     assert_select "nav.ks-bottom-nav a svg#selling-icon"
   end
 
+  test "a More tab whose address is worked out from the page links to that address" do
+    get_with_areas "/pages/plain" do |config|
+      config.more_page(**more_page(href: ->(view) { "/pages/show?from=#{view.request.path}" }))
+    end
+
+    assert_equal "/pages/show?from=/pages/plain", tab_href("More")
+  end
+
   private
 
   def get_with_areas(path, saved_order: nil, navigation: navigation(saved_order), &declare)
@@ -172,8 +180,8 @@ class AreaTabsTest < ActionDispatch::IntegrationTest
     config.bottom_tab(label: "Calendar", href: "/pages/plain?tab=calendar", icon: "<svg></svg>", permitted: ->(_view) { true }, section: nil, ios_system_image: "calendar", android_icon: "event")
   end
 
-  def more_page
-    { href: "/pages/show", icon: "<svg></svg>", ios_system_image: "ellipsis", android_icon: "more_horiz" }
+  def more_page(href: "/pages/show")
+    { href: href, icon: "<svg></svg>", ios_system_image: "ellipsis", android_icon: "more_horiz" }
   end
 
   def tab_href(label)
