@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "keystone_ui/app/bottom_bar"
+
 module KeystoneUi
   module App
     class PathConfigurationsController < ::ApplicationController
@@ -21,11 +23,11 @@ module KeystoneUi
       private
 
       def ios_tabs
-        permitted_tabs.map { |tab| { title: tab.label, path: tab.href_for(view), ios_system_image_name: tab.ios_system_image } }
+        bar_tabs.map { |tab| { title: tab.label, path: tab.href, ios_system_image_name: tab.ios_system_image } }
       end
 
       def android_tabs
-        permitted_tabs.map { |tab| { title: tab.label, path: tab.href_for(view), icon: tab.android_icon } }
+        bar_tabs.map { |tab| { title: tab.label, path: tab.href, icon: tab.android_icon } }
       end
 
       def app_settings
@@ -36,8 +38,8 @@ module KeystoneUi
         KeystoneUi::App.configuration.native_rules
       end
 
-      def permitted_tabs
-        KeystoneUi::App.configuration.bottom_tabs.select { |tab| tab.permitted.call(view) }
+      def bar_tabs
+        @bar_tabs ||= KeystoneUi::App::BottomBar.new(view).tabs
       end
 
       def view

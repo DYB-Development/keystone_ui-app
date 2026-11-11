@@ -65,7 +65,32 @@ class PathConfigurationTest < ActionDispatch::IntegrationTest
     assert_equal true, response.parsed_body.dig("settings", "require_authentication")
   end
 
+  test "the iOS app receives the same tabs, in the same order, as the person's web bar" do
+    get_with_areas "/hotwire/ios/path_configuration.json"
+
+    assert_equal [
+      { "title" => "Home", "path" => "/pages/plain", "ios_system_image_name" => "house" },
+      { "title" => "Selling", "path" => "/pages/plain?tab=quotes", "ios_system_image_name" => "cart" },
+      { "title" => "More", "path" => "/more", "ios_system_image_name" => "ellipsis" }
+    ], response.parsed_body.dig("settings", "tabs")
+  end
+
   private
+
+  def get_with_areas(path)
+    navigation = KeystoneUi::Configuration.new
+    navigation.navigation_group("Sales") do |group|
+      group.tab(:quotes, label: "Quotes", href: "/pages/plain?tab=quotes", permitted: ->(_view) { true })
+      group.tab(:orders, label: "Orders", href: "/pages/plain?tab=orders", permitted: ->(_view) { true })
+    end
+    configuration = KeystoneUi::App::Configuration.new
+    configuration.bottom_tab(label: "Home", href: "/pages/plain", icon: "<svg></svg>", permitted: ->(_view) { true }, section: nil, ios_system_image: "house", android_icon: "home")
+    configuration.app_area(name: "Selling", description: "Quotes and orders", groups: [ "Sales" ], on_by_default: true, icon: "<svg></svg>", ios_system_image: "cart", android_icon: "shopping_cart")
+    configuration.more_page(href: "/more", icon: "<svg></svg>", ios_system_image: "ellipsis", android_icon: "more_horiz")
+    KeystoneUi.stub(:configuration, navigation) do
+      KeystoneUi::App.stub(:configuration, configuration) { get path }
+    end
+  end
 
   def get_with_app_declarations(path)
     configuration = KeystoneUi::App::Configuration.new
