@@ -1,5 +1,5 @@
 <div class="<%= WRAPPER_CLASSES %>">
-  <%= render Keystone::Ui::NavDropdownComponent.new(title: "", area: "account") do %>
+  <%= render Keystone::Ui::NavDropdownComponent.new(title: render(KeystoneUi::App::AvatarComponent.new), area: "account") do %>
     <% links.each do |link| %>
       <% if link.sign_out %>
         <%= button_to link.label, link.href_for(helpers), method: :delete, class: BUTTON_CLASSES %>

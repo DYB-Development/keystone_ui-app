@@ -29,6 +29,15 @@ class AccountMenuTest < ActionDispatch::IntegrationTest
     assert_select ".ks-app-account-menu form[action='/sign_out'] input[name='_method'][value='delete']"
   end
 
+  test "with no picture the avatar on the dropdown shows the first letter of the person's name" do
+    get_with_account do |config|
+      config.account_link(label: "Settings", href: "/settings", permitted: ->(_view) { true })
+      config.person_supplier = ->(_view) { { name: "ada Lovelace", email: "ada@example.com" } }
+    end
+
+    assert_select ".ks-app-account-menu .ks-nav-dropdown-trigger .ks-app-avatar", text: "A"
+  end
+
   private
 
   def get_with_account(path = "/pages/plain", &declare)
