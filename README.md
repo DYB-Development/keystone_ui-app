@@ -99,6 +99,43 @@ The app adds the route its `more_page` declaration points at, and draws the page
 
 It lists every navigation group the person may see, each under a heading with the group's label and with the pages they may open under it. Groups and pages follow the person's desktop menu, including an order they saved, and a page declared with `navigation_tab` outside any group is a single row with no heading. Each row opens its page.
 
+## The account menu
+
+The person's account links, accounts and notifications are declared once and drawn the same way on desktop and on a phone:
+
+```ruby
+KeystoneUi::App.configure do |config|
+  config.person_supplier = ->(view) { { name: view.current_user.name, email: view.current_user.email, avatar_url: view.current_user.avatar_url } }
+  config.accounts_supplier = ->(view) { view.current_user.accounts.map { |account| { name: account.name, href: view.main_app.switch_account_path(account), current: account == view.current_account } } }
+  config.notifications(href: ->(view) { view.main_app.notifications_path }, unread_count: ->(view) { view.current_user.notifications.unread.count })
+  config.account_page(href: ->(view) { view.main_app.account_path })
+  config.account_link(label: "Settings", href: ->(view) { view.main_app.edit_user_registration_path }, permitted: ->(view) { view.user_signed_in? })
+  config.account_link(label: "Sign out", href: ->(view) { view.main_app.destroy_user_session_path }, permitted: ->(view) { view.user_signed_in? }, sign_out: true)
+end
+```
+
+- `account_link` declares one link, and the links are listed in the order they are declared.
+- `label:` is the link's label, `href:` takes a string or a callable given the view, and `permitted:` is a callable given the view that says whether the person sees the link.
+- `sign_out: true` draws the link as a button that sends DELETE to its address.
+- `account_page` declares the address of the app's Account page, and `href:` takes a string or a callable given the view.
+- `person_supplier` returns the person's `name`, `email` and an optional `avatar_url`. The avatar shows the picture when `avatar_url` is given, and otherwise the first letter of the name.
+- `accounts_supplier` returns the person's accounts, each with a `name`, the `href` that switches to it and whether it is `current`. Choosing an account sends PATCH to its `href`.
+- `notifications` declares the notifications address and the unread count, and each takes a value or a callable given the view.
+
+Once the app declares an account link, the right of the desktop top bar shows the bell with the unread count, the account switcher named after the current account, and the person's avatar, which opens a dropdown of the account links they may see. These take the place of the menus the layout passes to the frame. An app that declares no account links keeps the menus it passes.
+
+When the app declares an Account page, the top of every screen on a phone browser shows the person's avatar as a link to it, beside the phone menus. Inside the native app the avatar is not drawn.
+
+### The Account page
+
+The app adds the route its `account_page` declaration points at, and draws the page in its own view with one call:
+
+```erb
+<%= ui_account_page %>
+```
+
+It shows the person's avatar, name and email, then every account with the current one marked, then a Notifications row with the unread count, then the account links the person may see in the same order as the desktop dropdown. A long name wraps and a long email is cut short. Inside the native app it is drawn as an ordinary web page.
+
 ## Boot check
 
 The app refuses to boot when its bottom tabs, areas, More page or screen rules are declared wrong, and the error says which one:
@@ -186,7 +223,8 @@ end
 - The `html` element carries keystone_ui's theme attributes and the current locale.
 - The `html` element carries the `dark` class when the theme mode keystone_ui chooses for the person is dark, and leaves it off for any other mode.
 - The `body` element carries the attributes the layout passes as `body:`.
-- On a desktop browser, keystone_ui's navigation bar with the logo and the menus.
+- On a desktop browser, keystone_ui's navigation bar with the logo and the menus, or the account menu once the app declares account links.
+- On a phone browser, the person's avatar at the top of the header, linking to the Account page, when the app declares one.
 - On a phone browser, the phone menus at the top of the header on every page, including form and show pages, inside an element hidden from the `lg` breakpoint up.
 - On a phone browser, keystone_ui's phone header for a page drawn with `ui_form_page` or `ui_show_page`, with its back link, title and subtitle.
 - On a phone browser, a page that is not a form or show page shows a menu of the current section's tabs, with the tab the page belongs to marked as active. The section is the navigation group holding the tab keystone_ui's current tab supplier names, and the menu leaves out tabs the person is not permitted to see. A page in no section shows no menu.

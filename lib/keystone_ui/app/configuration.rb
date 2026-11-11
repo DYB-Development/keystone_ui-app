@@ -29,11 +29,36 @@ module KeystoneUi
         end
       end
 
-      attr_reader :bottom_tabs, :app_areas, :more_page_tab, :native_rules, :native_settings
+      AccountLink = Struct.new(:label, :href, :permitted, :sign_out, keyword_init: true) do
+        def href_for(view)
+          href.respond_to?(:call) ? href.call(view) : href
+        end
+      end
+
+      AccountPage = Struct.new(:href, keyword_init: true) do
+        def href_for(view)
+          href.respond_to?(:call) ? href.call(view) : href
+        end
+      end
+
+      Notifications = Struct.new(:href, :unread_count, keyword_init: true) do
+        def href_for(view)
+          href.respond_to?(:call) ? href.call(view) : href
+        end
+
+        def unread_count_for(view)
+          unread_count.respond_to?(:call) ? unread_count.call(view) : unread_count
+        end
+      end
+
+      attr_accessor :person_supplier, :accounts_supplier
+
+      attr_reader :bottom_tabs, :app_areas, :more_page_tab, :account_links, :account_page_link, :notifications_link, :native_rules, :native_settings
 
       def initialize
         @bottom_tabs = []
         @app_areas = []
+        @account_links = []
         @native_rules = []
         @native_settings = {}
       end
@@ -48,6 +73,30 @@ module KeystoneUi
 
       def more_page(href:, icon:, ios_system_image:, android_icon:)
         @more_page_tab = MorePage.new(href: href, icon: icon, ios_system_image: ios_system_image, android_icon: android_icon)
+      end
+
+      def account_link(label:, href:, permitted:, sign_out: false)
+        @account_links << AccountLink.new(label: label, href: href, permitted: permitted, sign_out: sign_out)
+      end
+
+      def visible_account_links(view)
+        account_links.select { |link| link.permitted.call(view) }
+      end
+
+      def account_page(href:)
+        @account_page_link = AccountPage.new(href: href)
+      end
+
+      def notifications(href:, unread_count:)
+        @notifications_link = Notifications.new(href: href, unread_count: unread_count)
+      end
+
+      def person(view)
+        person_supplier ? person_supplier.call(view) : {}
+      end
+
+      def accounts(view)
+        accounts_supplier ? accounts_supplier.call(view) : []
       end
 
       def native_rule(patterns:, properties:)

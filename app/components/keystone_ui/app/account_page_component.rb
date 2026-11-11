@@ -1,0 +1,37 @@
+# frozen_string_literal: true
+
+module KeystoneUi
+  module App
+    class AccountPageComponent < ViewComponent::Base
+      PERSON_CLASSES = "ks-app-account-person flex min-w-0 items-center gap-3"
+      NAME_CLASSES = "ks-paragraph block font-semibold break-words"
+      EMAIL_CLASSES = "ks-value-list-note block truncate"
+      ROW_CLASSES = "ks-value-list-row items-center no-underline"
+      BUTTON_ROW_CLASSES = "#{ROW_CLASSES} w-full text-left cursor-pointer"
+      CHEVRON_ICON = Keystone::Ui::SettingsLinkComponent::CHEVRON_ICON
+      LABEL_CLASSES = "ks-paragraph ks-settings-link-label block min-w-0 flex-1 break-words"
+
+      def accounts
+        KeystoneUi::App.configuration.accounts(helpers)
+      end
+
+      def notifications
+        KeystoneUi::App.configuration.notifications_link
+      end
+
+      def notifications_row
+        count = notifications.unread_count_for(helpers).to_i
+        row = { label: "Notifications", href: notifications.href_for(helpers) }
+        count.positive? ? row.merge(badge: { label: count.to_s, variant: :info }) : row
+      end
+
+      def links
+        KeystoneUi::App.configuration.visible_account_links(helpers)
+      end
+
+      def person
+        KeystoneUi::App.configuration.person(helpers)
+      end
+    end
+  end
+end

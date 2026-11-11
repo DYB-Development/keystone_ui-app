@@ -13,6 +13,7 @@ module KeystoneUi
       renders_one :footer
 
       PHONE_ONLY = "lg:hidden"
+      PHONE_AVATAR_ROW = "#{PHONE_ONLY} flex items-center gap-2 pr-4"
       PAGE_SIGNALS = %i[show_page form_page].freeze
       VIEWPORT = "width=device-width, initial-scale=1"
       NATIVE_APP_VIEWPORT = "#{VIEWPORT}, maximum-scale=1.0, user-scalable=0"
@@ -44,6 +45,18 @@ module KeystoneUi
 
       def phone_header_shown?
         page_signal && !native_app?
+      end
+
+      def account_page
+        KeystoneUi::App.configuration.account_page_link
+      end
+
+      def phone_avatar_shown?
+        account_page && !native_app?
+      end
+
+      def account_menu?
+        KeystoneUi::App.configuration.account_links.any?
       end
 
       def footer_shown?

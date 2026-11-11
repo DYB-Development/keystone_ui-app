@@ -1,0 +1,60 @@
+<section>
+  <%= render Keystone::Ui::SectionComponent.new do %>
+    <div class="<%= PERSON_CLASSES %>">
+      <%= render KeystoneUi::App::AvatarComponent.new %>
+      <div class="min-w-0 flex-1">
+        <span class="<%= NAME_CLASSES %>"><%= person[:name] %></span>
+        <span class="<%= EMAIL_CLASSES %>"><%= person[:email] %></span>
+      </div>
+    </div>
+  <% end %>
+</section>
+<% if accounts.any? %>
+  <section class="ks-app-account-accounts">
+    <%= render Keystone::Ui::SectionComponent.new(title: "Accounts") do %>
+      <div class="ks-value-list">
+        <% accounts.each do |account| %>
+          <% if account[:current] %>
+            <div class="<%= ROW_CLASSES %>" aria-current="true">
+              <span class="<%= LABEL_CLASSES %>"><%= account[:name] %></span>
+              <%= render Keystone::Ui::BadgeComponent.new(label: "Current", variant: :success, class: "shrink-0") %>
+            </div>
+          <% else %>
+            <%= button_to account[:href], method: :patch, class: BUTTON_ROW_CLASSES do %>
+              <span class="<%= LABEL_CLASSES %>"><%= account[:name] %></span>
+              <%= CHEVRON_ICON.html_safe %>
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  </section>
+<% end %>
+<% if notifications %>
+  <section>
+    <%= render Keystone::Ui::SectionComponent.new do %>
+      <%= render Keystone::Ui::LinkListComponent.new(rows: [ notifications_row ]) %>
+    <% end %>
+  </section>
+<% end %>
+<% if links.any? %>
+  <section class="ks-app-account-links">
+    <%= render Keystone::Ui::SectionComponent.new do %>
+      <div class="ks-value-list">
+        <% links.each do |link| %>
+          <% if link.sign_out %>
+            <%= button_to link.href_for(helpers), method: :delete, class: BUTTON_ROW_CLASSES do %>
+              <span class="<%= LABEL_CLASSES %>"><%= link.label %></span>
+              <%= CHEVRON_ICON.html_safe %>
+            <% end %>
+          <% else %>
+            <%= link_to link.href_for(helpers), class: ROW_CLASSES do %>
+              <span class="<%= LABEL_CLASSES %>"><%= link.label %></span>
+              <%= CHEVRON_ICON.html_safe %>
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  </section>
+<% end %>

@@ -39,4 +39,7 @@ class PagesController < ApplicationController
 
   def more
   end
+
+  def account
+  end
 end

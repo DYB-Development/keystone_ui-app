@@ -8,7 +8,16 @@
   <%= tag.body(**body) do %>
     <header>
       <%= flash %>
-      <%= tag.div(phone_menus, class: PHONE_ONLY) if phone_menus? && !native_app? %>
+      <% if phone_avatar_shown? %>
+        <%= tag.div(class: PHONE_AVATAR_ROW) do %>
+          <%= tag.div(phone_menus, class: "min-w-0 flex-1") %>
+          <%= link_to account_page.href_for(helpers), class: "shrink-0", aria: { label: "Account" } do %>
+            <%= render KeystoneUi::App::AvatarComponent.new %>
+          <% end %>
+        <% end %>
+      <% elsif phone_menus? && !native_app? %>
+        <%= tag.div(phone_menus, class: PHONE_ONLY) %>
+      <% end %>
       <% if phone_header_shown? %>
         <%= helpers.ui_mobile_header(title: page_signalled(:title), back_url: page_signalled(:back_url), subtitle: page_signalled(:subtitle)) %>
       <% elsif !native_app? %>
@@ -24,7 +33,11 @@
     <% else %>
       <%= helpers.ui_navigation do |navigation| %>
         <% navigation.with_logo { logo.to_s } if logo? %>
-        <% navigation.with_menus { menus.to_s } if menus? %>
+        <% if account_menu? %>
+          <% navigation.with_menus { render KeystoneUi::App::AccountMenuComponent.new } %>
+        <% elsif menus? %>
+          <% navigation.with_menus { menus.to_s } %>
+        <% end %>
         <%= page %>
       <% end %>
     <% end %>
