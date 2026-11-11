@@ -69,4 +69,12 @@ class KeystoneUi::App::ConfigurationTest < ActiveSupport::TestCase
 
     assert_equal "/account", configuration.account_page_link.href
   end
+
+  test "notifications record their address and unread count" do
+    configuration = KeystoneUi::App::Configuration.new
+
+    configuration.notifications(href: "/notifications", unread_count: 3)
+
+    assert_equal [ "/notifications", 3 ], configuration.notifications_link.to_h.values_at(:href, :unread_count)
+  end
 end

@@ -41,7 +41,17 @@ module KeystoneUi
         end
       end
 
-      attr_reader :bottom_tabs, :app_areas, :more_page_tab, :account_links, :account_page_link, :native_rules, :native_settings
+      Notifications = Struct.new(:href, :unread_count, keyword_init: true) do
+        def href_for(view)
+          href.respond_to?(:call) ? href.call(view) : href
+        end
+
+        def unread_count_for(view)
+          unread_count.respond_to?(:call) ? unread_count.call(view) : unread_count
+        end
+      end
+
+      attr_reader :bottom_tabs, :app_areas, :more_page_tab, :account_links, :account_page_link, :notifications_link, :native_rules, :native_settings
 
       def initialize
         @bottom_tabs = []
@@ -69,6 +79,10 @@ module KeystoneUi
 
       def account_page(href:)
         @account_page_link = AccountPage.new(href: href)
+      end
+
+      def notifications(href:, unread_count:)
+        @notifications_link = Notifications.new(href: href, unread_count: unread_count)
       end
 
       def native_rule(patterns:, properties:)
