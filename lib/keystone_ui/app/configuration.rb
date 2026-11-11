@@ -51,7 +51,7 @@ module KeystoneUi
         end
       end
 
-      attr_accessor :person_supplier
+      attr_accessor :person_supplier, :accounts_supplier
 
       attr_reader :bottom_tabs, :app_areas, :more_page_tab, :account_links, :account_page_link, :notifications_link, :native_rules, :native_settings
 
@@ -89,6 +89,10 @@ module KeystoneUi
 
       def person(view)
         person_supplier ? person_supplier.call(view) : {}
+      end
+
+      def accounts(view)
+        accounts_supplier ? accounts_supplier.call(view) : []
       end
 
       def native_rule(patterns:, properties:)

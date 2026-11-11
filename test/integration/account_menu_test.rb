@@ -55,6 +55,15 @@ class AccountMenuTest < ActionDispatch::IntegrationTest
     assert_select "#menus", count: 0
   end
 
+  test "when the app supplies the person's accounts, desktop shows an account switcher named after the current account" do
+    get_with_account do |config|
+      config.account_link(label: "Settings", href: "/settings", permitted: ->(_view) { true })
+      config.accounts_supplier = ->(_view) { [ { name: "Acme", href: "/accounts/acme/switch", current: false }, { name: "Globex", href: "/accounts/globex/switch", current: true } ] }
+    end
+
+    assert_select ".ks-app-account-switcher .ks-nav-dropdown-trigger", text: "Globex"
+  end
+
   private
 
   def get_with_account(path = "/pages/plain", &declare)
