@@ -82,6 +82,15 @@ class AccountMenuTest < ActionDispatch::IntegrationTest
     assert_select ".ks-app-account-menu a.ks-app-notifications-bell[href='/notifications'] .ks-badge", text: "4"
   end
 
+  test "on a phone the top of the screen shows the avatar as a link to the Account page" do
+    get_with_account do |config|
+      config.account_page(href: "/account")
+      config.person_supplier = ->(_view) { { name: "Ada", email: "ada@example.com" } }
+    end
+
+    assert_select "header div[class~='lg:hidden'] a[href='/account'] .ks-app-avatar", text: "A"
+  end
+
   private
 
   def get_with_account(path = "/pages/plain", &declare)
