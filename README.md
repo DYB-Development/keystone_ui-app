@@ -59,14 +59,48 @@ end
 
 A page that should show no bottom tabs calls `content_for :hide_bottom_tabs, true`.
 
+## App areas
+
+An app area is a part of the app that covers one or more keystone_ui navigation groups and gets one bottom tab. Declare the areas and the More page in the same initializer as the bottom tabs:
+
+```ruby
+KeystoneUi::App.configure do |config|
+  config.bottom_tab(label: "Home", href: "/", icon: HOME_ICON_SVG, permitted: ->(view) { view.user_signed_in? }, section: nil, ios_system_image: "house", android_icon: "home")
+  config.app_area(name: "Selling", description: "Quotes and orders", groups: [ "Sales" ], on_by_default: true, opens: :quotes, icon: ->(view) { view.render("icons/sales") }, ios_system_image: "cart", android_icon: "shopping_cart")
+  config.more_page(href: ->(view) { view.main_app.more_path }, icon: MORE_ICON_SVG, ios_system_image: "ellipsis", android_icon: "more_horiz")
+end
+```
+
+- `name:` is the area's name, and its tab is labelled with it.
+- `description:` says what the area holds.
+- `groups:` lists the labels of the keystone_ui navigation groups the area covers.
+- `on_by_default:` says whether the area is on for an account, and until accounts can save a choice it decides for every account.
+- `opens:` is the key of the navigation page the area's tab opens, and is optional.
+- `icon:`, `ios_system_image:` and `android_icon:` are the tab's icons, given as a bottom tab's are.
+- `more_page` declares the address of the app's More page and its tab's icons, and `href:` and `icon:` take a string or a callable given the view.
+
+The bar on a phone shows, in this order:
+
+1. The bottom tabs the person may see.
+2. One tab for each area that is on and holds a page the person may open. The tabs follow the order the person saved for their navigation groups, each area in the place of its first group, or the order the areas are declared in when the person saved none.
+3. A More tab, when the app declares a More page and the person may open a page that no tab in the bar opens.
+
+The bar holds no more than five tabs, More included, and leaves out the areas that come last first. An area's tab opens the page `opens:` names when the person may open it, and otherwise the first page in the area the person may open, in their saved order. An area's tab is marked current on any page in one of its groups, and the More tab is marked current on the More page.
+
+An app that declares no areas and no More page keeps the bar its bottom tabs give it.
+
 ## Boot check
 
-The app refuses to boot when its bottom tabs or screen rules are declared wrong, and the error says which one:
+The app refuses to boot when its bottom tabs, areas, More page or screen rules are declared wrong, and the error says which one:
 
 - A bottom tab with no label, address, icon, iOS image or Android icon.
 - A bottom tab whose `section:` is not the label of a declared keystone_ui navigation group.
 - Two bottom tabs with the same label.
 - More than five bottom tabs.
+- A More page with more than four bottom tabs.
+- An area with no tab icon, iOS image or Android icon.
+- An area that names a group that is not a declared keystone_ui navigation group, named with the area.
+- Two areas that cover the same group, named with the group.
 - A screen rule with no pattern.
 
 A tab with no label and a screen rule with no pattern are named by their position in the order they were declared, counting from 1.
@@ -124,7 +158,7 @@ That adds two addresses:
 
 The controller behind them inherits from the host's `ApplicationController`, so a bottom tab's `permitted:` and `href:` callables are given a view with the host's helpers. The host keeps both addresses open to a person who is not signed in, since the native app reads them before sign-in.
 
-Each configuration's `settings.tabs` holds one native tab for each bottom tab the person is permitted to see, with its label as the title and its address as the path. The iOS app gets a list with each tab's `ios_system_image_name`. The Android app gets the same tabs with each tab's `icon`, encoded as one JSON string.
+Each configuration's `settings.tabs` holds the same tabs, in the same order, as the person's bar on a phone browser, with each tab's label as the title and its address as the path. The iOS app gets a list with each tab's `ios_system_image_name`. The Android app gets the same tabs with each tab's `icon`, encoded as one JSON string.
 
 Both configurations ship a rule that opens a page whose address ends in `/new` or `/edit` as a modal. The Android configuration also ships a rule before it that opens every page in the `hotwire://fragment/web` fragment with pull to refresh.
 
@@ -151,7 +185,7 @@ end
 - Inside the native app, the `add-button` bridge component sends a page header's add action to the native plus button, and a page with no add action sends none.
 - Inside the native app, a `style` element in the head that hides the web submit button of a form marked with `ui_native_form_data` once the native app has connected its `form` bridge component.
 - Inside the native app, no navigation bar, no phone menus, no phone header and no footer, the `hotwire-native` class on the `html` element, and a viewport that cannot be pinch-zoomed.
-- On a phone browser, keystone_ui's bottom nav at the foot of every page with the tabs the app declares, leaving out tabs the person is not permitted to see. The tab whose section is the navigation group holding the current tab is marked as active. The bar is hidden from the `lg` breakpoint up, and is not drawn inside the native app, on a page that calls `content_for :hide_bottom_tabs, true`, or when the person may see none of the declared tabs.
+- On a phone browser, keystone_ui's bottom nav at the foot of every page with the bottom tabs the person is permitted to see, then the tabs of the app's areas and the More tab as the App areas section says. The tab whose section, or whose area's groups, hold the current tab is marked as active. The bar is hidden from the `lg` breakpoint up, and is not drawn inside the native app, on a page that calls `content_for :hide_bottom_tabs, true`, or when the person may see none of the declared tabs.
 - In a browser, the footer, unless the page calls `content_for :hide_footer, true`.
 
 ## Licence

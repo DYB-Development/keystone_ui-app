@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+- `KeystoneUi::App.configure` takes `app_area` declarations, each with a name, a description, the navigation groups it covers, whether it is on by default, an optional page for its tab to open, and a tab icon, iOS image and Android icon.
+- An area that is on by default is on for every account.
+- The bottom bar shows the fixed bottom tabs the person may see, then one tab for each area that is on and holds a page the person may open, labelled with the area's name.
+- Area tabs follow the order the person saved for their navigation groups, each area in the place of its first group, and the order the app declares the areas in when the person saved none.
+- An area's tab opens the page the area names when the person may open it, and otherwise the first page in the area they may open.
+- An area's tab is marked current on any page in one of the area's groups.
+- `KeystoneUi::App.configure` takes a `more_page` declaration with an address, a tab icon, an iOS image and an Android icon.
+- When the app declares a More page and the person may open a page no tab in their bar opens, the bar ends with a More tab, which is marked current while the More page is open.
+- The bar never holds more than five tabs, More included, and leaves out the areas that come last in the person's order first.
+- The iOS and Android path configurations list the same tabs, in the same order, as the person's web bar.
+- The app refuses to boot when an area names a group that is not declared, when two areas cover the same group, when an area's tab has no icon, iOS image or Android icon, or when the app declares a More page and more than four bottom tabs.
+
 ## [0.3.2] - 2026-11-10
 
 ### Fixed
