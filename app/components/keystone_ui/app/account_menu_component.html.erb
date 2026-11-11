@@ -1,7 +1,11 @@
 <div class="<%= WRAPPER_CLASSES %>">
   <%= render Keystone::Ui::NavDropdownComponent.new(title: "", area: "account") do %>
     <% links.each do |link| %>
-      <%= render Keystone::Ui::NavItemComponent.new(label: link.label, href: link.href_for(helpers)) %>
+      <% if link.sign_out %>
+        <%= button_to link.label, link.href_for(helpers), method: :delete, class: BUTTON_CLASSES %>
+      <% else %>
+        <%= render Keystone::Ui::NavItemComponent.new(label: link.label, href: link.href_for(helpers)) %>
+      <% end %>
     <% end %>
   <% end %>
 </div>
