@@ -12,6 +12,15 @@ class AccountMenuTest < ActionDispatch::IntegrationTest
     assert_select ".ks-app-account-menu .ks-nav-dropdown-menu a[href='/settings']", text: "Settings"
   end
 
+  test "an account link the person may not see is left out of the dropdown" do
+    get_with_account do |config|
+      config.account_link(label: "Billing", href: "/billing", permitted: ->(_view) { false })
+      config.account_link(label: "Settings", href: "/settings", permitted: ->(_view) { true })
+    end
+
+    assert_select ".ks-app-account-menu a[href='/billing']", count: 0
+  end
+
   private
 
   def get_with_account(path = "/pages/plain", &declare)

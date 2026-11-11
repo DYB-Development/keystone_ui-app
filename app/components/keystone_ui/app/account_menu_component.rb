@@ -6,7 +6,7 @@ module KeystoneUi
       WRAPPER_CLASSES = "ks-app-account-menu flex items-center gap-2"
 
       def links
-        KeystoneUi::App.configuration.account_links
+        KeystoneUi::App.configuration.account_links.select { |link| link.permitted.call(helpers) }
       end
     end
   end
