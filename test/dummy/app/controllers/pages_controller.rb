@@ -36,4 +36,7 @@ class PagesController < ApplicationController
 
   def native_form
   end
+
+  def more
+  end
 end

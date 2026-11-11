@@ -89,6 +89,16 @@ The bar holds no more than five tabs, More included, and leaves out the areas th
 
 An app that declares no areas and no More page keeps the bar its bottom tabs give it.
 
+### The More page
+
+The app adds the route its `more_page` declaration points at, and draws the page in its own view with one call:
+
+```erb
+<%= ui_more_page %>
+```
+
+It lists every navigation group the person may see, each under a heading with the group's label and with the pages they may open under it. Groups and pages follow the person's desktop menu, including an order they saved, and a page declared with `navigation_tab` outside any group is a single row with no heading. Each row opens its page.
+
 ## Boot check
 
 The app refuses to boot when its bottom tabs, areas, More page or screen rules are declared wrong, and the error says which one:

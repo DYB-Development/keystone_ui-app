@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file.
 - The bar never holds more than five tabs, More included, and leaves out the areas that come last in the person's order first.
 - The iOS and Android path configurations list the same tabs, in the same order, as the person's web bar.
 - The app refuses to boot when an area names a group that is not declared, when two areas cover the same group, when an area's tab has no icon, iOS image or Android icon, or when the app declares a More page and more than four bottom tabs.
+- `ui_more_page` draws the More page in one of the app's own pages, listing every navigation group the person may see with the pages they may open under it, in the order and with the labels of their desktop menu, and each page declared outside a group as a single row.
 
 ## [0.3.2] - 2026-11-10
 
