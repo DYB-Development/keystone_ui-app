@@ -32,11 +32,25 @@ class MorePageTest < ActionDispatch::IntegrationTest
     assert_select "main h2", text: "Admin", count: 0
   end
 
+  test "groups follow the order the person saved for their desktop menu" do
+    get_more_page(saved_order: [ { "group" => "Billing" }, { "group" => "Sales" } ]) do |navigation|
+      navigation.navigation_group("Sales") do |group|
+        group.tab(:quotes, label: "Quotes", href: "/pages/plain?tab=quotes", permitted: ->(_view) { true })
+      end
+      navigation.navigation_group("Billing") do |group|
+        group.tab(:invoices, label: "Invoices", href: "/pages/plain?tab=invoices", permitted: ->(_view) { true })
+      end
+    end
+
+    assert_equal [ "Billing", "Sales" ], css_select("main h2").map { |heading| heading.text.strip }
+  end
+
   private
 
-  def get_more_page
+  def get_more_page(saved_order: nil)
     navigation = KeystoneUi::Configuration.new
     yield(navigation)
+    navigation.preference_supplier = ->(_view, _key) { { value: { "order" => saved_order } } } if saved_order
     KeystoneUi.stub(:configuration, navigation) { get "/pages/more" }
   end
 
