@@ -92,10 +92,19 @@ class KeystoneUi::App::ShellCheckTest < ActiveSupport::TestCase
     assert_equal "The Selling area's tab has no Android icon.", error.message
   end
 
+  test "a More page with more than four fixed bottom tabs is refused, giving the count" do
+    tabs = 5.times.map { |number| tab(label: "Tab #{number}", section: nil) }
+    more_page = KeystoneUi::App::Configuration::MorePage.new(href: "/more", icon: "<svg></svg>", ios_system_image: "ellipsis", android_icon: "more_horiz")
+
+    error = assert_raises(KeystoneUi::App::ShellCheck::Error) { check(bottom_tabs: tabs, more_page: more_page) }
+
+    assert_equal "5 bottom tabs are declared with a More page, and no more than 4 are allowed.", error.message
+  end
+
   private
 
-  def check(bottom_tabs: [ tab ], native_rules: [], sections: [ "Sales" ], app_areas: [])
-    KeystoneUi::App::ShellCheck.new(bottom_tabs: bottom_tabs, native_rules: native_rules, sections: sections, app_areas: app_areas).call
+  def check(bottom_tabs: [ tab ], native_rules: [], sections: [ "Sales" ], app_areas: [], more_page: nil)
+    KeystoneUi::App::ShellCheck.new(bottom_tabs: bottom_tabs, native_rules: native_rules, sections: sections, app_areas: app_areas, more_page: more_page).call
   end
 
   def area(**overrides)

@@ -7,8 +7,9 @@ module KeystoneUi
 
       MOST_BOTTOM_TABS = 5
 
-      def initialize(bottom_tabs:, native_rules:, sections:, app_areas: [])
+      def initialize(bottom_tabs:, native_rules:, sections:, app_areas: [], more_page: nil)
         @bottom_tabs = bottom_tabs
+        @more_page = more_page
         @app_areas = app_areas
         @native_rules = native_rules
         @sections = sections
@@ -25,6 +26,7 @@ module KeystoneUi
         end
         raise Error, "More than one bottom tab has the label #{shared_label}." if shared_label
         raise Error, "#{@bottom_tabs.size} bottom tabs are declared, and no more than #{MOST_BOTTOM_TABS} are allowed." if @bottom_tabs.size > MOST_BOTTOM_TABS
+        raise Error, "#{@bottom_tabs.size} bottom tabs are declared with a More page, and no more than #{MOST_BOTTOM_TABS - 1} are allowed." if @more_page && @bottom_tabs.size > MOST_BOTTOM_TABS - 1
         @app_areas.each { |area| check_area(area) }
         raise Error, "More than one area covers the #{shared_group} group." if shared_group
         @native_rules.each.with_index(1) do |rule, position|
