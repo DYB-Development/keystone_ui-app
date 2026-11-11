@@ -35,7 +35,13 @@ module KeystoneUi
         end
       end
 
-      attr_reader :bottom_tabs, :app_areas, :more_page_tab, :account_links, :native_rules, :native_settings
+      AccountPage = Struct.new(:href, keyword_init: true) do
+        def href_for(view)
+          href.respond_to?(:call) ? href.call(view) : href
+        end
+      end
+
+      attr_reader :bottom_tabs, :app_areas, :more_page_tab, :account_links, :account_page_link, :native_rules, :native_settings
 
       def initialize
         @bottom_tabs = []
@@ -59,6 +65,10 @@ module KeystoneUi
 
       def account_link(label:, href:, permitted:, sign_out: false)
         @account_links << AccountLink.new(label: label, href: href, permitted: permitted, sign_out: sign_out)
+      end
+
+      def account_page(href:)
+        @account_page_link = AccountPage.new(href: href)
       end
 
       def native_rule(patterns:, properties:)

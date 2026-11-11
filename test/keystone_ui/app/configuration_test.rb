@@ -61,4 +61,12 @@ class KeystoneUi::App::ConfigurationTest < ActiveSupport::TestCase
 
     assert_equal [ { label: "Settings", href: "/settings", permitted: permitted, sign_out: false }, { label: "Sign out", href: "/sign_out", permitted: permitted, sign_out: true } ], configuration.account_links.map(&:to_h)
   end
+
+  test "an Account page records its address" do
+    configuration = KeystoneUi::App::Configuration.new
+
+    configuration.account_page(href: "/account")
+
+    assert_equal "/account", configuration.account_page_link.href
+  end
 end
