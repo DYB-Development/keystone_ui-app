@@ -64,6 +64,15 @@ class AccountMenuTest < ActionDispatch::IntegrationTest
     assert_select ".ks-app-account-switcher .ks-nav-dropdown-trigger", text: "Globex"
   end
 
+  test "choosing another account in the switcher sends PATCH to that account's address" do
+    get_with_account do |config|
+      config.account_link(label: "Settings", href: "/settings", permitted: ->(_view) { true })
+      config.accounts_supplier = ->(_view) { [ { name: "Acme", href: "/accounts/acme/switch", current: false }, { name: "Globex", href: "/accounts/globex/switch", current: true } ] }
+    end
+
+    assert_select ".ks-app-account-switcher form[action='/accounts/acme/switch'] input[name='_method'][value='patch']"
+  end
+
   private
 
   def get_with_account(path = "/pages/plain", &declare)

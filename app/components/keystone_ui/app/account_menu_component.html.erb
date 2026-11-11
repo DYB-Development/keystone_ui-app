@@ -1,7 +1,15 @@
 <div class="<%= WRAPPER_CLASSES %>">
   <% if current_account %>
     <div class="<%= SWITCHER_CLASSES %>">
-      <%= render Keystone::Ui::NavDropdownComponent.new(title: current_account[:name], area: "accounts") %>
+      <%= render Keystone::Ui::NavDropdownComponent.new(title: current_account[:name], area: "accounts") do %>
+        <% accounts.each do |account| %>
+          <% if account[:current] %>
+            <span class="ks-nav-item active" aria-current="true"><%= account[:name] %></span>
+          <% else %>
+            <%= button_to account[:name], account[:href], method: :patch, class: BUTTON_CLASSES %>
+          <% end %>
+        <% end %>
+      <% end %>
     </div>
   <% end %>
   <%= render Keystone::Ui::NavDropdownComponent.new(title: render(KeystoneUi::App::AvatarComponent.new), area: "account") do %>
