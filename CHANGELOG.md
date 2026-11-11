@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-11-11
+
 ### Added
 - `KeystoneUi::App.configure` takes `app_area` declarations, each with a name, a description, the navigation groups it covers, whether it is on by default, an optional page for its tab to open, and a tab icon, iOS image and Android icon.
 - An area that is on by default is on for every account.
