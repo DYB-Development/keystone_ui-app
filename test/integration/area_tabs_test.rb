@@ -100,6 +100,18 @@ class AreaTabsTest < ActionDispatch::IntegrationTest
     assert_select "nav.ks-bottom-nav a.active .ks-bottom-nav-label", text: "More"
   end
 
+  test "a bar with a More tab holds no more than five tabs, leaving out the areas that come last" do
+    get_with_areas "/pages/plain" do |config|
+      declare_two_more_fixed_tabs(config)
+      config.app_area(**area(name: "Selling", groups: [ "Sales" ]))
+      config.app_area(**area(name: "Goods", groups: [ "Stock" ]))
+      config.app_area(**area(name: "Money", groups: [ "Billing" ]))
+      config.more_page(**more_page)
+    end
+
+    assert_equal [ "Home", "Inbox", "Calendar", "Selling", "More" ], tab_labels
+  end
+
   private
 
   def get_with_areas(path, saved_order: nil, navigation: navigation(saved_order), &declare)
@@ -134,6 +146,11 @@ class AreaTabsTest < ActionDispatch::IntegrationTest
 
   def area(name:, groups:, on_by_default: true, opens: nil)
     { name: name, description: "#{name} pages", groups: groups, on_by_default: on_by_default, opens: opens, icon: "<svg></svg>", ios_system_image: "square", android_icon: "square" }
+  end
+
+  def declare_two_more_fixed_tabs(config)
+    config.bottom_tab(label: "Inbox", href: "/pages/plain?tab=inbox", icon: "<svg></svg>", permitted: ->(_view) { true }, section: nil, ios_system_image: "tray", android_icon: "inbox")
+    config.bottom_tab(label: "Calendar", href: "/pages/plain?tab=calendar", icon: "<svg></svg>", permitted: ->(_view) { true }, section: nil, ios_system_image: "calendar", android_icon: "event")
   end
 
   def more_page

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "keystone_ui/navigation_order"
+require "keystone_ui/app/shell_check"
 
 module KeystoneUi
   module App
@@ -8,6 +9,7 @@ module KeystoneUi
       Tab = Struct.new(:label, :href, :icon, :ios_system_image, :android_icon, :sections, keyword_init: true)
 
       MORE_LABEL = "More"
+      MOST_TABS = ShellCheck::MOST_BOTTOM_TABS
 
       def initialize(view)
         @view = view
@@ -15,7 +17,8 @@ module KeystoneUi
 
       def tabs
         shown = fixed_tabs + area_tabs
-        more_tab_needed?(shown) ? shown + [ more_tab ] : shown
+        full = shown.first(MOST_TABS)
+        more_tab_needed?(full) ? shown.first(MOST_TABS - 1) + [ more_tab ] : full
       end
 
       private
