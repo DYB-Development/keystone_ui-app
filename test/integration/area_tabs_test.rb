@@ -91,6 +91,15 @@ class AreaTabsTest < ActionDispatch::IntegrationTest
     assert_equal [ "Home", "Selling" ], tab_labels
   end
 
+  test "the More tab is marked current while the More page is open" do
+    get_with_areas "/pages/show" do |config|
+      config.app_area(**area(name: "Selling", groups: [ "Sales" ]))
+      config.more_page(**more_page)
+    end
+
+    assert_select "nav.ks-bottom-nav a.active .ks-bottom-nav-label", text: "More"
+  end
+
   private
 
   def get_with_areas(path, saved_order: nil, navigation: navigation(saved_order), &declare)
