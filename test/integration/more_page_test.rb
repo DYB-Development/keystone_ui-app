@@ -45,6 +45,17 @@ class MorePageTest < ActionDispatch::IntegrationTest
     assert_equal [ "Billing", "Sales" ], css_select("main h2").map { |heading| heading.text.strip }
   end
 
+  test "pages inside a group follow the order the person saved for their desktop menu" do
+    get_more_page(saved_order: [ { "group" => "Sales", "tabs" => [ "orders", "quotes" ] } ]) do |navigation|
+      navigation.navigation_group("Sales") do |group|
+        group.tab(:quotes, label: "Quotes", href: "/pages/plain?tab=quotes", permitted: ->(_view) { true })
+        group.tab(:orders, label: "Orders", href: "/pages/plain?tab=orders", permitted: ->(_view) { true })
+      end
+    end
+
+    assert_equal [ "Orders", "Quotes" ], links_in_group("Sales")
+  end
+
   private
 
   def get_more_page(saved_order: nil)
