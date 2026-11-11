@@ -29,6 +29,14 @@ class KeystoneUi::App::ConfigurationTest < ActiveSupport::TestCase
     assert_equal({ name: "Selling", description: "Quotes and orders", groups: [ "Sales" ], on_by_default: true, opens: nil, icon: "<svg></svg>", ios_system_image: "cart", android_icon: "shopping_cart" }, configuration.app_areas.first.to_h)
   end
 
+  test "a More page records its address, tab icon, iOS image and Android icon" do
+    configuration = KeystoneUi::App::Configuration.new
+
+    configuration.more_page(href: "/more", icon: "<svg></svg>", ios_system_image: "ellipsis", android_icon: "more_horiz")
+
+    assert_equal({ href: "/more", icon: "<svg></svg>", ios_system_image: "ellipsis", android_icon: "more_horiz" }, configuration.more_page_tab.to_h)
+  end
+
   test "an app's screen rule records its patterns and properties" do
     configuration = KeystoneUi::App::Configuration.new
 

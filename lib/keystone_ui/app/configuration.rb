@@ -15,7 +15,9 @@ module KeystoneUi
 
       AppArea = Struct.new(:name, :description, :groups, :on_by_default, :opens, :icon, :ios_system_image, :android_icon, keyword_init: true)
 
-      attr_reader :bottom_tabs, :app_areas, :native_rules, :native_settings
+      MorePage = Struct.new(:href, :icon, :ios_system_image, :android_icon, keyword_init: true)
+
+      attr_reader :bottom_tabs, :app_areas, :more_page_tab, :native_rules, :native_settings
 
       def initialize
         @bottom_tabs = []
@@ -30,6 +32,10 @@ module KeystoneUi
 
       def app_area(name:, description:, groups:, on_by_default:, icon:, ios_system_image:, android_icon:, opens: nil)
         @app_areas << AppArea.new(name: name, description: description, groups: groups, on_by_default: on_by_default, opens: opens, icon: icon, ios_system_image: ios_system_image, android_icon: android_icon)
+      end
+
+      def more_page(href:, icon:, ios_system_image:, android_icon:)
+        @more_page_tab = MorePage.new(href: href, icon: icon, ios_system_image: ios_system_image, android_icon: android_icon)
       end
 
       def native_rule(patterns:, properties:)
