@@ -22,7 +22,7 @@ module KeystoneUi
       end
 
       def area_tabs
-        configuration.app_areas.filter_map { |area| area_tab(area) }
+        configuration.app_areas.select(&:on_by_default).filter_map { |area| area_tab(area) }
       end
 
       def area_tab(area)
