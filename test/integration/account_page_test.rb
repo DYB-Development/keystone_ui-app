@@ -12,6 +12,14 @@ class AccountPageTest < ActionDispatch::IntegrationTest
     assert_select "main .ks-app-account-person", text: /Ada Lovelace/
   end
 
+  test "the Account page shows the person's email" do
+    get_account_page do |config|
+      config.person_supplier = ->(_view) { { name: "Ada Lovelace", email: "ada@example.com" } }
+    end
+
+    assert_select "main .ks-app-account-person", text: /ada@example.com/
+  end
+
   private
 
   def get_account_page(headers: {}, &declare)

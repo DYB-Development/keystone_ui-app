@@ -5,6 +5,7 @@ module KeystoneUi
     class AccountPageComponent < ViewComponent::Base
       PERSON_CLASSES = "ks-app-account-person flex min-w-0 items-center gap-3"
       NAME_CLASSES = "ks-paragraph block font-semibold break-words"
+      EMAIL_CLASSES = "ks-value-list-note block truncate"
 
       def person
         KeystoneUi::App.configuration.person(helpers)
