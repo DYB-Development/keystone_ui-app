@@ -25,6 +25,10 @@ module KeystoneUi
         count.positive? ? row.merge(badge: { label: count.to_s, variant: :info }) : row
       end
 
+      def links
+        KeystoneUi::App.configuration.visible_account_links(helpers)
+      end
+
       def person
         KeystoneUi::App.configuration.person(helpers)
       end

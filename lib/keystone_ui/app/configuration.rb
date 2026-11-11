@@ -79,6 +79,10 @@ module KeystoneUi
         @account_links << AccountLink.new(label: label, href: href, permitted: permitted, sign_out: sign_out)
       end
 
+      def visible_account_links(view)
+        account_links.select { |link| link.permitted.call(view) }
+      end
+
       def account_page(href:)
         @account_page_link = AccountPage.new(href: href)
       end

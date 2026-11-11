@@ -37,3 +37,10 @@
     <% end %>
   </section>
 <% end %>
+<% if links.any? %>
+  <section class="ks-app-account-links">
+    <%= render Keystone::Ui::SectionComponent.new do %>
+      <%= render Keystone::Ui::LinkListComponent.new(rows: links.map { |link| { label: link.label, href: link.href_for(helpers) } }) %>
+    <% end %>
+  </section>
+<% end %>

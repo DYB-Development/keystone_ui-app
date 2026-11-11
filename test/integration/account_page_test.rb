@@ -44,6 +44,16 @@ class AccountPageTest < ActionDispatch::IntegrationTest
     assert_select "main a[href='/notifications'] .ks-badge", text: "4"
   end
 
+  test "the Account page lists the account links the person may see, in the order the app declares them" do
+    get_account_page do |config|
+      config.account_link(label: "Settings", href: "/settings", permitted: ->(_view) { true })
+      config.account_link(label: "Billing", href: "/billing", permitted: ->(_view) { false })
+      config.account_link(label: "Profile", href: ->(_view) { "/profile" }, permitted: ->(_view) { true })
+    end
+
+    assert_equal [ "Settings", "Profile" ], css_select("main .ks-app-account-links a").map { |link| link.text.strip }
+  end
+
   private
 
   def get_account_page(headers: {}, &declare)
