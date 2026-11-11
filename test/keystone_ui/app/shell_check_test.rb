@@ -80,6 +80,12 @@ class KeystoneUi::App::ShellCheckTest < ActiveSupport::TestCase
     assert_equal "The Selling area's tab has no icon.", error.message
   end
 
+  test "an area whose tab has no iOS image is refused, naming the area" do
+    error = assert_raises(KeystoneUi::App::ShellCheck::Error) { check(app_areas: [ area(ios_system_image: nil) ]) }
+
+    assert_equal "The Selling area's tab has no iOS image.", error.message
+  end
+
   private
 
   def check(bottom_tabs: [ tab ], native_rules: [], sections: [ "Sales" ], app_areas: [])
