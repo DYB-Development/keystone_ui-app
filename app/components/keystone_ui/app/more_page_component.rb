@@ -8,7 +8,7 @@ module KeystoneUi
       def groups
         KeystoneUi.configuration.navigation_groups.map do |group|
           Group.new(label: group.label, rows: rows(group.tabs_permitted_for(helpers)))
-        end
+        end.reject { |group| group.rows.empty? }
       end
 
       private

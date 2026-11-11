@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "test_helper"
+require "minitest/mock"
 
 class MorePageTest < ActionDispatch::IntegrationTest
   test "an app draws the More page in one of its own pages with one call" do
@@ -21,7 +22,23 @@ class MorePageTest < ActionDispatch::IntegrationTest
     assert_select "main a", text: "Refunds", count: 0
   end
 
+  test "a group holding no page the person may open is left off the More page" do
+    get_more_page do |navigation|
+      navigation.navigation_group("Admin") do |group|
+        group.tab(:audit, label: "Audit", href: "/pages/plain?tab=audit", permitted: ->(_view) { false })
+      end
+    end
+
+    assert_select "main h2", text: "Admin", count: 0
+  end
+
   private
+
+  def get_more_page
+    navigation = KeystoneUi::Configuration.new
+    yield(navigation)
+    KeystoneUi.stub(:configuration, navigation) { get "/pages/more" }
+  end
 
   def links_in_group(label)
     group = css_select("main section").find { |section| section.at_css("h2")&.text&.strip == label }
