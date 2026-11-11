@@ -2,6 +2,7 @@
 
 require "uri"
 require "rack/utils"
+require "keystone_ui/app/bottom_bar"
 require "keystone_ui/app/current_section"
 
 module KeystoneUi
@@ -12,21 +13,21 @@ module KeystoneUi
       end
 
       def tabs
-        @tabs ||= KeystoneUi::App.configuration.bottom_tabs.select { |tab| tab.permitted.call(helpers) }
+        @tabs ||= KeystoneUi::App::BottomBar.new(helpers).tabs
       end
 
       def active?(tab)
-        return in_section?(tab) if tab.section
+        return in_section?(tab) if tab.sections.any?
 
         tabs.none? { |other| in_section?(other) } && on_page?(tab)
       end
 
       def in_section?(tab)
-        section.present? && tab.section == section.label
+        section.present? && tab.sections.include?(section.label)
       end
 
       def on_page?(tab)
-        address = URI.parse(tab.href_for(helpers))
+        address = URI.parse(tab.href)
         address.path == request.path &&
           Rack::Utils.parse_query(address.query).all? { |name, value| request.query_parameters[name] == value }
       end
