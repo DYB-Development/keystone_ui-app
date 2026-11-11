@@ -29,7 +29,12 @@ module KeystoneUi
       end
 
       def area_tab(area)
-        Tab.new(label: area.name, href: area_pages(area).first.href_for(@view), icon: area.icon, ios_system_image: area.ios_system_image, android_icon: area.android_icon, sections: area.groups)
+        Tab.new(label: area.name, href: opened_page(area).href_for(@view), icon: area.icon, ios_system_image: area.ios_system_image, android_icon: area.android_icon, sections: area.groups)
+      end
+
+      def opened_page(area)
+        pages = area_pages(area)
+        pages.find { |page| page.key == area.opens } || pages.first
       end
 
       def in_person_order(areas)

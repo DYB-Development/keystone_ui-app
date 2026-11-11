@@ -46,6 +46,14 @@ class AreaTabsTest < ActionDispatch::IntegrationTest
     assert_equal [ "Home", "Back office", "Selling" ], tab_labels
   end
 
+  test "an area's tab opens the page the area names when the person may open it" do
+    get_with_areas "/pages/plain" do |config|
+      config.app_area(**area(name: "Selling", groups: [ "Sales" ], opens: :orders))
+    end
+
+    assert_equal "/pages/plain?tab=orders", tab_href("Selling")
+  end
+
   private
 
   def get_with_areas(path, saved_order: nil, &declare)
@@ -80,6 +88,10 @@ class AreaTabsTest < ActionDispatch::IntegrationTest
 
   def area(name:, groups:, on_by_default: true, opens: nil)
     { name: name, description: "#{name} pages", groups: groups, on_by_default: on_by_default, opens: opens, icon: "<svg></svg>", ios_system_image: "square", android_icon: "square" }
+  end
+
+  def tab_href(label)
+    css_select("nav.ks-bottom-nav a").find { |link| link.at_css(".ks-bottom-nav-label").text.strip == label }["href"]
   end
 
   def tab_labels
