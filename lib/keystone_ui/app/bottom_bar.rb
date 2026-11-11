@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "keystone_ui/navigation_order"
+
 module KeystoneUi
   module App
     class BottomBar
@@ -22,20 +24,42 @@ module KeystoneUi
       end
 
       def area_tabs
-        configuration.app_areas.select(&:on_by_default).filter_map { |area| area_tab(area) }
+        shown = configuration.app_areas.select { |area| area.on_by_default && area_pages(area).any? }
+        in_person_order(shown).map { |area| area_tab(area) }
       end
 
       def area_tab(area)
-        pages = area_pages(area)
-        return if pages.empty?
+        Tab.new(label: area.name, href: area_pages(area).first.href_for(@view), icon: area.icon, ios_system_image: area.ios_system_image, android_icon: area.android_icon, sections: area.groups)
+      end
 
-        Tab.new(label: area.name, href: pages.first.href_for(@view), icon: area.icon, ios_system_image: area.ios_system_image, android_icon: area.android_icon, sections: area.groups)
+      def in_person_order(areas)
+        return areas if saved_order.empty?
+
+        labels = arranged_groups.map { |group, _pages| group.label }
+        areas.each_with_index
+          .sort_by { |area, declared| [ area.groups.filter_map { |label| labels.index(label) }.min, declared ] }
+          .map(&:first)
       end
 
       def area_pages(area)
+        arranged_groups.select { |group, _pages| area.groups.include?(group.label) }.flat_map(&:last)
+      end
+
+      def arranged_groups
+        @arranged_groups ||= KeystoneUi::NavigationOrder.new(saved_order).arrange(permitted_groups)
+      end
+
+      def permitted_groups
         KeystoneUi.configuration.navigation_groups
-          .select { |group| area.groups.include?(group.label) }
-          .flat_map { |group| group.tabs_permitted_for(@view) }
+          .map { |group| [ group, group.tabs_permitted_for(@view) ] }
+          .reject { |_group, pages| pages.empty? }
+      end
+
+      def saved_order
+        @saved_order ||= begin
+          value = KeystoneUi.configuration.supplied_preference(@view, :navigation)&.dig(:value)
+          value.is_a?(Hash) && value["order"].is_a?(Array) ? value["order"] : []
+        end
       end
 
       def configuration
