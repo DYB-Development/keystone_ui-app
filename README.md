@@ -99,6 +99,16 @@ The app adds the route its `more_page` declaration points at, and draws the page
 
 It lists every navigation group the person may see, each under a heading with the group's label and with the pages they may open under it. Groups and pages follow the person's desktop menu, including an order they saved, and a page declared with `navigation_tab` outside any group is a single row with no heading. Each row opens its page.
 
+### An area's page
+
+An app draws a page for one area, such as the page its `opens:` names, in its own view with one call naming the area:
+
+```erb
+<%= ui_area_page("Offering") %>
+```
+
+It lists every page in the area's groups that the person may open, under a heading for each group, in the order the person saved for their navigation or the declared order when they saved none. The page the area's tab opens is left out, and a group with no other page is left out with it. Each row opens its page. Naming an area that is not declared raises an error naming it.
+
 ## The account menu
 
 The person's account links, accounts and notifications are declared once and drawn the same way on desktop and on a phone:
