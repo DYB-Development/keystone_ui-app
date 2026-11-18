@@ -42,4 +42,7 @@ class PagesController < ApplicationController
 
   def account
   end
+
+  def area
+  end
 end

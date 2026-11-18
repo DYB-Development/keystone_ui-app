@@ -9,6 +9,10 @@ module KeystoneUiAppHelper
     render KeystoneUi::App::MorePageComponent.new
   end
 
+  def ui_area_page(area_name)
+    render KeystoneUi::App::AreaPageComponent.new(area_name: area_name)
+  end
+
   def ui_account_page
     render KeystoneUi::App::AccountPageComponent.new
   end

@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   get "/pages/add_menu", to: "pages#add_menu"
   get "/pages/more", to: "pages#more"
   get "/pages/account", to: "pages#account"
+  get "/pages/area", to: "pages#area"
 
   mount KeystoneUi::App::Engine, at: "/"
 end
