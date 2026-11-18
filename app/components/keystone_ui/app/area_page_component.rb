@@ -13,7 +13,7 @@ module KeystoneUi
 
       def groups
         area_groups.map do |group, pages|
-          Group.new(label: group.label, rows: (pages - [ opened_page ]).map { |page| { label: page.label, href: page.href } })
+          Group.new(label: group.label, rows: (pages - [ opened_page ]).map { |page| { label: page.label, href: page.href_for(helpers) } })
         end.reject { |group| group.rows.empty? }
       end
 
