@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-11-18
+
+### Added
+- On a phone browser, a page that is not a form or show page shows a back link to the last breadcrumb of its trail, before the section menu, and a page with an empty trail shows none.
+
 ## [0.4.0] - 2026-11-11
 
 ### Added
