@@ -13,14 +13,18 @@ module KeystoneUi
 
       def groups
         area_groups.map do |group, pages|
-          Group.new(label: group.label, rows: pages.map { |page| { label: page.label, href: page.href } })
-        end
+          Group.new(label: group.label, rows: (pages - [ opened_page ]).map { |page| { label: page.label, href: page.href } })
+        end.reject { |group| group.rows.empty? }
       end
 
       private
 
       def area_groups
-        KeystoneUi::NavigationOrder.new([]).arrange(permitted_groups).select { |group, _pages| area.groups.include?(group.label) }
+        @area_groups ||= KeystoneUi::NavigationOrder.new([]).arrange(permitted_groups).select { |group, _pages| area.groups.include?(group.label) }
+      end
+
+      def opened_page
+        area_groups.flat_map(&:last).find { |page| page.key == area.opens }
       end
 
       def area

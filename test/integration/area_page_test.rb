@@ -6,10 +6,18 @@ require "minitest/mock"
 class AreaPageTest < ActionDispatch::IntegrationTest
   test "an area page lists the pages of each of the area's groups under the group's heading" do
     get_area_page("Selling") do |config|
-      config.app_area(**area(name: "Selling", groups: [ "Sales", "Billing" ]))
+      config.app_area(**area(name: "Selling", groups: [ "Sales", "Billing" ], opens: :invoices))
     end
 
-    assert_equal [ [ "Sales", [ "Quotes", "Orders" ] ], [ "Billing", [ "Invoices" ] ] ], listed_groups
+    assert_equal [ [ "Sales", [ "Quotes", "Orders" ] ] ], listed_groups
+  end
+
+  test "the page the area's tab opens is left out of the list" do
+    get_area_page("Selling") do |config|
+      config.app_area(**area(name: "Selling", groups: [ "Sales" ], opens: :orders))
+    end
+
+    assert_equal [ [ "Sales", [ "Quotes" ] ] ], listed_groups
   end
 
   private
