@@ -5,7 +5,7 @@ require "test_helper"
 class PhoneBackLinkTest < ActionDispatch::IntegrationTest
   setup do
     @trail_supplier = KeystoneUi.configuration.trail_supplier
-    KeystoneUi.configuration.trail_supplier = ->(view) { view.params[:parent] ? [["Sales", "/pages/plain"], ["Quote", view.params[:parent]]] : [] }
+    KeystoneUi.configuration.trail_supplier = ->(view) { view.params[:parent] ? [ [ "Sales", "/pages/plain" ], [ "Quote", view.params[:parent] ] ] : [] }
   end
 
   teardown do
