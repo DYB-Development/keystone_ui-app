@@ -28,6 +28,14 @@ class AreaPageTest < ActionDispatch::IntegrationTest
     assert_equal [ [ "Sales", [ "Orders" ] ] ], listed_groups
   end
 
+  test "pages follow the order the person saved for their navigation" do
+    get_area_page("Selling", saved_order: [ { "group" => "Billing" }, { "group" => "Sales", "tabs" => [ "orders", "quotes" ] } ]) do |config|
+      config.app_area(**area(name: "Selling", groups: [ "Sales", "Billing", "Stock" ], opens: :items))
+    end
+
+    assert_equal [ [ "Billing", [ "Invoices" ] ], [ "Sales", [ "Orders", "Quotes" ] ] ], listed_groups
+  end
+
   private
 
   def get_area_page(name, saved_order: nil, &declare)

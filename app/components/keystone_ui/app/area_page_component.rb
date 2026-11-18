@@ -20,7 +20,7 @@ module KeystoneUi
       private
 
       def area_groups
-        @area_groups ||= KeystoneUi::NavigationOrder.new([]).arrange(permitted_groups).select { |group, _pages| area.groups.include?(group.label) }
+        @area_groups ||= KeystoneUi::NavigationOrder.new(saved_order).arrange(permitted_groups).select { |group, _pages| area.groups.include?(group.label) }
       end
 
       def opened_page
@@ -30,6 +30,11 @@ module KeystoneUi
 
       def area
         KeystoneUi::App.configuration.app_areas.find { |declared| declared.name == @area_name }
+      end
+
+      def saved_order
+        value = KeystoneUi.configuration.supplied_preference(helpers, :navigation)&.dig(:value)
+        value.is_a?(Hash) && value["order"].is_a?(Array) ? value["order"] : []
       end
 
       def permitted_groups
