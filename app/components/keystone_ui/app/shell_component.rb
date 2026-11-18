@@ -14,7 +14,8 @@ module KeystoneUi
 
       PHONE_ONLY = "lg:hidden"
       PHONE_AVATAR_ROW = "#{PHONE_ONLY} flex items-center gap-2 pr-4"
-      PAGE_SIGNALS = %i[show_page form_page].freeze
+      PHONE_BACK_ROW = "#{PHONE_ONLY} flex items-center"
+      PAGE_SIGNALS =%i[show_page form_page].freeze
       VIEWPORT = "width=device-width, initial-scale=1"
       NATIVE_APP_VIEWPORT = "#{VIEWPORT}, maximum-scale=1.0, user-scalable=0"
       NATIVE_APP_STYLE = '[data-bridge-components~="form"] [data-controller~="bridge--form"] [type="submit"] { display: none; }'
@@ -45,6 +46,10 @@ module KeystoneUi
 
       def phone_header_shown?
         page_signal && !native_app?
+      end
+
+      def phone_back_url
+        KeystoneUi.configuration.supplied_trail(helpers)&.last&.last
       end
 
       def account_page
