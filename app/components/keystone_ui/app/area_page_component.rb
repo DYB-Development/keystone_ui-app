@@ -24,7 +24,8 @@ module KeystoneUi
       end
 
       def opened_page
-        area_groups.flat_map(&:last).find { |page| page.key == area.opens }
+        pages = area_groups.flat_map(&:last)
+        pages.find { |page| page.key == area.opens } || pages.first
       end
 
       def area

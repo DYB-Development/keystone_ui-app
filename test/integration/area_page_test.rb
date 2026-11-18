@@ -20,6 +20,14 @@ class AreaPageTest < ActionDispatch::IntegrationTest
     assert_equal [ [ "Sales", [ "Quotes" ] ] ], listed_groups
   end
 
+  test "an area that names no page to open leaves out its first page, which its tab opens" do
+    get_area_page("Selling") do |config|
+      config.app_area(**area(name: "Selling", groups: [ "Sales" ]))
+    end
+
+    assert_equal [ [ "Sales", [ "Orders" ] ] ], listed_groups
+  end
+
   private
 
   def get_area_page(name, saved_order: nil, &declare)
