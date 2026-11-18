@@ -36,6 +36,14 @@ class AreaPageTest < ActionDispatch::IntegrationTest
     assert_equal [ [ "Billing", [ "Invoices" ] ], [ "Sales", [ "Orders", "Quotes" ] ] ], listed_groups
   end
 
+  test "each row on an area page opens its page" do
+    get_area_page("Selling") do |config|
+      config.app_area(**area(name: "Selling", groups: [ "Sales" ], opens: :quotes))
+    end
+
+    assert_select "main a[href='/pages/plain?tab=orders']", text: "Orders"
+  end
+
   private
 
   def get_area_page(name, saved_order: nil, &declare)
