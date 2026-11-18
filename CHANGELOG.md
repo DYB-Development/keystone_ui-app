@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.6.1] - 2026-11-18
+
+### Fixed
+- A row on an area page opens a page whose address the app declares as a lambda, instead of raising an error.
+
 ## [0.6.0] - 2026-11-18
 
 ### Added
