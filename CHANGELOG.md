@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-11-18
+
+### Added
+- `ui_area_page` draws a page for one app area, listing the pages of the area's groups the person may open under a heading for each group, in the person's saved navigation order, leaving out the page the area's tab opens.
+
 ## [0.5.0] - 2026-11-18
 
 ### Added
