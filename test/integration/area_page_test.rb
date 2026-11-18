@@ -44,6 +44,14 @@ class AreaPageTest < ActionDispatch::IntegrationTest
     assert_select "main a[href='/pages/plain?tab=orders']", text: "Orders"
   end
 
+  test "naming an area that is not declared raises an error naming it" do
+    error = assert_raises(ActionView::Template::Error) do
+      get_area_page("Selling") { |_config| }
+    end
+
+    assert_match(/Selling/, error.cause.message)
+  end
+
   private
 
   def get_area_page(name, saved_order: nil, &declare)

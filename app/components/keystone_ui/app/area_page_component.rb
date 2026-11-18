@@ -29,7 +29,8 @@ module KeystoneUi
       end
 
       def area
-        KeystoneUi::App.configuration.app_areas.find { |declared| declared.name == @area_name }
+        @area ||= KeystoneUi::App.configuration.app_areas.find { |declared| declared.name == @area_name } ||
+          raise(ArgumentError, %(No app area is declared with the name "#{@area_name}".))
       end
 
       def saved_order
