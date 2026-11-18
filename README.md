@@ -227,6 +227,7 @@ end
 - On a phone browser, the person's avatar at the top of the header, linking to the Account page, when the app declares one.
 - On a phone browser, the phone menus at the top of the header on every page, including form and show pages, inside an element hidden from the `lg` breakpoint up.
 - On a phone browser, keystone_ui's phone header for a page drawn with `ui_form_page` or `ui_show_page`, with its back link, title and subtitle.
+- On a phone browser, a page that is not a form or show page shows a back link to the last breadcrumb of the trail keystone_ui's `trail_supplier` gives it, before the section menu. A page whose trail is empty, such as a nav tab's own page, shows no back link.
 - On a phone browser, a page that is not a form or show page shows a menu of the current section's tabs, with the tab the page belongs to marked as active. The section is the navigation group holding the tab keystone_ui's current tab supplier names, and the menu leaves out tabs the person is not permitted to see. A page in no section shows no menu.
 - On a phone browser, the page's actions after the title in the header: an ellipsis menu of a show page's `:show_page_actions`, a form page's `:form_page_action`, or a plus menu of another page's `:mobile_action_menu`. Inside the native app none of them is drawn.
 - Inside the native app, the `menu-button` bridge component sends the section's label and tabs to the native menu button, and choosing a tab opens its page in place of the current one. A page in no section sends an empty list.

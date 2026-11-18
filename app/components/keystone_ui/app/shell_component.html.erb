@@ -21,7 +21,14 @@
       <% if phone_header_shown? %>
         <%= helpers.ui_mobile_header(title: page_signalled(:title), back_url: page_signalled(:back_url), subtitle: page_signalled(:subtitle)) %>
       <% elsif !native_app? %>
-        <%= render KeystoneUi::App::SectionMenuComponent.new %>
+        <%= tag.div(class: PHONE_BACK_ROW) do %>
+          <% if phone_back_url %>
+            <%= link_to phone_back_url, class: Keystone::Ui::MobileHeaderComponent::BACK_LINK_CLASSES, aria: { label: "Back" } do %>
+              <%= Keystone::Ui::MobileHeaderComponent::BACK_ICON.html_safe %>
+            <% end %>
+          <% end %>
+          <%= render KeystoneUi::App::SectionMenuComponent.new %>
+        <% end %>
       <% end %>
       <%= render KeystoneUi::App::PageActionsComponent.new unless native_app? %>
     </header>
