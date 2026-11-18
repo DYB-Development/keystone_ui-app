@@ -52,6 +52,14 @@ class AreaPageTest < ActionDispatch::IntegrationTest
     assert_match(/Selling/, error.cause.message)
   end
 
+  test "a page whose address is worked out from the view opens that address" do
+    get_area_page("Selling") do |config|
+      config.app_area(**area(name: "Selling", groups: [ "Billing", "Sales" ], opens: :quotes))
+    end
+
+    assert_select "main a[href='/pages/plain?tab=invoices&from=/pages/area']", text: "Invoices"
+  end
+
   private
 
   def get_area_page(name, saved_order: nil, &declare)
@@ -73,7 +81,7 @@ class AreaPageTest < ActionDispatch::IntegrationTest
       group.tab(:items, label: "Items", href: "/pages/plain?tab=items", permitted: ->(_view) { true })
     end
     configuration.navigation_group("Billing") do |group|
-      group.tab(:invoices, label: "Invoices", href: "/pages/plain?tab=invoices", permitted: ->(_view) { true })
+      group.tab(:invoices, label: "Invoices", href: ->(view) { "/pages/plain?tab=invoices&from=#{view.request.path}" }, permitted: ->(_view) { true })
     end
     configuration.preference_supplier = ->(_view, _key) { { value: { "order" => saved_order } } } if saved_order
     configuration
