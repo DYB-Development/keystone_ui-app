@@ -22,7 +22,7 @@ class AreasSettingsSectionTest < ActionDispatch::IntegrationTest
   test "an area whose check fails for the person shows as not available yet, with no button" do
     get_section { |app| app.app_area(**area(name: "Selling", available: ->(_view) { false })) }
 
-    assert_equal [ [ "Selling", "Not available yet", nil ] ], css_select("[data-area]").map { |row| [ row.at_css("[data-area-name]").text.strip, row.at_css("[data-area-status]")&.text&.strip, row.at_css("button")&.text ] }
+    assert_equal [ [ "Selling", "Selling pages", "Not available yet" ] ], listed_areas
   end
 
   private
@@ -44,8 +44,8 @@ class AreasSettingsSectionTest < ActionDispatch::IntegrationTest
   end
 
   def listed_areas
-    css_select("[data-area]").map do |row|
-      [ row.at_css("[data-area-name]").text.strip, row.at_css("[data-area-description]").text.strip, row.at_css("button")&.text&.strip ]
+    css_select(".ks-value-list > div").map do |row|
+      [ row.at_css("dt").children.first.text.strip, row.at_css(".ks-value-list-note").text.strip, (row.at_css("dd button") || row.at_css("dd")).text.strip ]
     end
   end
 end
