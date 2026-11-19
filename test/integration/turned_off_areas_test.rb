@@ -10,6 +10,18 @@ class TurnedOffAreasTest < ActionDispatch::IntegrationTest
     assert_select "nav.top-nav a.ks-nav-item", text: "Quotes", count: 0
   end
 
+  test "the More page leaves out the groups of an area the account has turned off" do
+    get_with_selling("/pages/more", on: false)
+
+    assert_select "main a", text: "Quotes", count: 0
+  end
+
+  test "the phone group menu is not drawn on a page in an area the account has turned off" do
+    get_with_selling("/pages/plain?tab=quotes", on: false)
+
+    assert_select "header .ks-nav-dropdown-menu a", text: "Quotes", count: 0
+  end
+
   private
 
   def get_with_selling(path, on:)
