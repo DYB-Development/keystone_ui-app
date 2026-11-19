@@ -76,7 +76,27 @@ class MorePageTest < ActionDispatch::IntegrationTest
     assert_select "main form[method=get] input[name=find]"
   end
 
+  test "finding leaves only the pages whose label contains the typed text, ignoring letter case" do
+    get_more_page(find: "ORD") { |navigation| sales_and_billing(navigation) }
+
+    assert_equal [ [ "Sales", [ "Orders" ] ] ], listed_groups
+  end
+
   private
+
+  def sales_and_billing(navigation)
+    navigation.navigation_group("Sales") do |group|
+      group.tab(:quotes, label: "Quotes", href: "/pages/plain?tab=quotes", permitted: ->(_view) { true })
+      group.tab(:orders, label: "Orders", href: "/pages/plain?tab=orders", permitted: ->(_view) { true })
+    end
+    navigation.navigation_group("Billing") do |group|
+      group.tab(:invoices, label: "Invoices", href: "/pages/plain?tab=invoices", permitted: ->(_view) { true })
+    end
+  end
+
+  def listed_groups
+    css_select("main section").map { |section| [ section.at_css("h2").text.strip, section.css("a").map { |link| link.text.strip } ] }
+  end
 
   def get_more_page(saved_order: nil, find: nil)
     navigation = KeystoneUi::Configuration.new
