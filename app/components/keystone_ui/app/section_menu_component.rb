@@ -12,7 +12,7 @@ module KeystoneUi
       end
 
       def title
-        helpers.content_for(:mobile_page_title).presence || section.label
+        [ section.label, section.tabs.find(&:active)&.label ].compact.join(" · ")
       end
 
       def section

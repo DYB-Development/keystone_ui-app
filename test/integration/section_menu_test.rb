@@ -5,16 +5,10 @@ require "test_helper"
 class SectionMenuTest < ActionDispatch::IntegrationTest
   NATIVE_APP = { "User-Agent" => "Hotwire Native iOS; Turbo Native iOS" }.freeze
 
-  test "on a phone browser a page in a section shows the section's name in the top bar" do
-    get "/pages/plain", params: { tab: "quotes" }
-
-    assert_select "header [class~='lg:hidden'] .ks-nav-dropdown-trigger", text: /Sales/
-  end
-
-  test "on a phone browser a page with a page header shows the header's title in the top bar" do
+  test "on a phone browser a page in a group shows a bar reading the group's label, a dot and the page's label" do
     get "/pages/header", params: { tab: "quotes" }
 
-    assert_select "header [class~='lg:hidden'] .ks-nav-dropdown-trigger", text: /Quote Q-1/
+    assert_equal "Sales · Quotes", css_select("header [class~='lg:hidden'] .ks-nav-dropdown-trigger").first.text.squish
   end
 
   test "on a phone browser the section's button opens a menu of the section's tabs" do
