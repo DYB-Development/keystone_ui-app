@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.9.0] - 2026-11-19
+
+### Added
+- A fixed or area tab takes `count:`, a callable given the view, and a count above zero shows as a badge on the tab's icon (#34).
+- The More page has a find field that narrows its pages by name, ignoring letter case, through keystone_ui's `auto-submit` controller (#34).
+- On a phone, a page in a group shows a bar reading the group's label and the page's label, listing the group's pages, and a page declared outside any group shows none (#34).
+- The More page shows one collapsed, expandable row per area that is on, per group outside every area, and per page declared on its own, and finding expands each row still holding a match (#43).
+
+### Changed
+- The phone bar's title reads the group's label and the page's label instead of the page header's title (#34).
+
 ## [0.8.0] - 2026-11-19
 
 ### Added
