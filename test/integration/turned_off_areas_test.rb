@@ -31,6 +31,12 @@ class TurnedOffAreasTest < ActionDispatch::IntegrationTest
     assert_equal [ true, true ], shown
   end
 
+  test "an area on by default with no saved choice shows its groups in the desktop menu" do
+    get_with_selling("/pages/plain", on: nil)
+
+    assert_select "nav.top-nav a.ks-nav-item", text: "Quotes"
+  end
+
   private
 
   def get_with_selling(path, on:)
@@ -42,7 +48,7 @@ class TurnedOffAreasTest < ActionDispatch::IntegrationTest
     app.app_area(name: "Selling", description: "Quotes", groups: [ "Sales" ], on_by_default: true, icon: "<svg></svg>", ios_system_image: "cart", android_icon: "cart")
     app.more_page(href: "/pages/more", icon: "<svg></svg>", ios_system_image: "ellipsis", android_icon: "more_horiz")
     app.account_supplier = ->(_view) { "acme" }
-    KeystoneUi::App::AreaChoices.new(app, account: "acme").turn("Selling", on: on)
+    KeystoneUi::App::AreaChoices.new(app, account: "acme").turn("Selling", on: on) unless on.nil?
     KeystoneUi::App.stub(:configuration, app) do
       KeystoneUi::App.hide_turned_off_groups(navigation)
       KeystoneUi.stub(:configuration, navigation) { get path }
