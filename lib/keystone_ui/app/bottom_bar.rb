@@ -102,7 +102,7 @@ module KeystoneUi
       end
 
       def area_choices
-        @area_choices ||= AreaChoices.for(configuration, @view)
+        @area_choices ||= KeystoneUi::App.area_choices(@view)
       end
 
       def configuration
