@@ -2,6 +2,7 @@
 
 require "keystone_ui/navigation_order"
 require "keystone_ui/app/shell_check"
+require "keystone_ui/app/area_choices"
 
 module KeystoneUi
   module App
@@ -30,7 +31,7 @@ module KeystoneUi
       end
 
       def area_tabs
-        shown = configuration.app_areas.select { |area| area.on_by_default && area_pages(area).any? }
+        shown = configuration.app_areas.select { |area| area_choices.on?(area.name) && area_pages(area).any? }
         in_person_order(shown).map { |area| area_tab(area) }
       end
 
@@ -80,6 +81,10 @@ module KeystoneUi
           value = KeystoneUi.configuration.supplied_preference(@view, :navigation)&.dig(:value)
           value.is_a?(Hash) && value["order"].is_a?(Array) ? value["order"] : []
         end
+      end
+
+      def area_choices
+        @area_choices ||= AreaChoices.for(configuration, @view)
       end
 
       def configuration

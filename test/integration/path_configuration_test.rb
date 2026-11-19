@@ -85,9 +85,19 @@ class PathConfigurationTest < ActionDispatch::IntegrationTest
     ], JSON.parse(response.parsed_body.dig("settings", "tabs"))
   end
 
+  test "the native apps receive no tab for an area the account has turned off" do
+    titles = %w[ios android].map do |platform|
+      get_with_areas("/hotwire/#{platform}/path_configuration.json", selling_on: false)
+      tabs = response.parsed_body.dig("settings", "tabs")
+      (tabs.is_a?(String) ? JSON.parse(tabs) : tabs).map { |tab| tab["title"] }
+    end
+
+    assert_equal [ %w[Home More], %w[Home More] ], titles
+  end
+
   private
 
-  def get_with_areas(path)
+  def get_with_areas(path, selling_on: nil)
     navigation = KeystoneUi::Configuration.new
     navigation.navigation_group("Sales") do |group|
       group.tab(:quotes, label: "Quotes", href: "/pages/plain?tab=quotes", permitted: ->(_view) { true })
@@ -97,6 +107,10 @@ class PathConfigurationTest < ActionDispatch::IntegrationTest
     configuration.bottom_tab(label: "Home", href: "/pages/plain", icon: "<svg></svg>", permitted: ->(_view) { true }, section: nil, ios_system_image: "house", android_icon: "home")
     configuration.app_area(name: "Selling", description: "Quotes and orders", groups: [ "Sales" ], on_by_default: true, icon: "<svg></svg>", ios_system_image: "cart", android_icon: "shopping_cart")
     configuration.more_page(href: "/more", icon: "<svg></svg>", ios_system_image: "ellipsis", android_icon: "more_horiz")
+    unless selling_on.nil?
+      configuration.account_supplier = ->(_view) { "acme" }
+      KeystoneUi::App::AreaChoices.new(configuration, account: "acme").turn("Selling", on: selling_on)
+    end
     KeystoneUi.stub(:configuration, navigation) do
       KeystoneUi::App.stub(:configuration, configuration) { get path }
     end

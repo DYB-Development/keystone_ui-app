@@ -23,6 +23,7 @@ module KeystoneUi
       end
 
       config.after_initialize do
+        KeystoneUi::App.hide_turned_off_groups(KeystoneUi.configuration)
         KeystoneUi::App::Engine.check_shell
       end
     end
