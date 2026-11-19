@@ -1,0 +1,17 @@
+<% choices = KeystoneUi::App.area_choices(self) %>
+<div class="flex flex-col gap-4">
+  <% KeystoneUi::App.configuration.app_areas.each do |area| %>
+    <% on = choices.on?(area.name) %>
+    <div data-area class="flex flex-wrap items-center justify-between gap-3">
+      <div class="min-w-0 flex-1">
+        <div data-area-name class="font-semibold"><%= area.name %></div>
+        <div data-area-description class="text-sm"><%= area.description %></div>
+      </div>
+      <%= form_with(url: submit_url, method: :patch, data: { turbo: false }) do %>
+        <%= hidden_field_tag :area, area.name %>
+        <%= hidden_field_tag :on, (!on).to_s %>
+        <%= ui_button(label: on ? "Turn off" : "Turn on", type: :submit) %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
