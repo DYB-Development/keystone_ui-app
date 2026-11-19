@@ -15,8 +15,8 @@ class GemspecTest < ActiveSupport::TestCase
     assert_equal Gem::Requirement.new(">= 0.30.0"), requirement_for("keystone_ui-styles")
   end
 
-  test "the gem requires a keystone_ui whose page header signals an add action that posts" do
-    assert_equal Gem::Requirement.new(">= 0.69.0"), requirement_for("keystone_ui")
+  test "the gem requires a keystone_ui that lets it hide a navigation group from a person" do
+    assert_equal Gem::Requirement.new(">= 0.104.0"), requirement_for("keystone_ui")
   end
 
   test "the packaged gem holds the importmap its engine pins" do
