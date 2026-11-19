@@ -14,9 +14,10 @@ module KeystoneUi
       private
 
       def refuse_when_area_is_closed(area_name)
+        area = KeystoneUi::App.configuration.app_areas.find { |declared| declared.name == area_name }
+        raise ArgumentError, %(No app area is declared with the name "#{area_name}".) unless area
         return refuse("keystone_ui/app/areas/off", area_name) unless KeystoneUi::App.area_on?(view_context, area_name)
 
-        area = KeystoneUi::App.configuration.app_areas.find { |declared| declared.name == area_name }
         refuse("keystone_ui/app/areas/not_available", area_name) unless area.available_to?(view_context)
       end
 

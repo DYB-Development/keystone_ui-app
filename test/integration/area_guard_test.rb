@@ -46,6 +46,14 @@ class AreaGuardTest < ActionDispatch::IntegrationTest
     assert_select "main", text: /turned off/, count: 0
   end
 
+  test "a page declared in an area the app does not declare raises an error naming the area" do
+    error = assert_raises(ArgumentError) do
+      KeystoneUi::App.stub(:configuration, KeystoneUi::App::Configuration.new) { get "/selling" }
+    end
+
+    assert_match(/Selling/, error.message)
+  end
+
   private
 
   def get_selling(on:, format: nil, available: nil, settings: nil)
