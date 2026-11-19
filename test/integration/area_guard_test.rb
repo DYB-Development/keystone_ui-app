@@ -22,14 +22,27 @@ class AreaGuardTest < ActionDispatch::IntegrationTest
     assert_equal "Selling page", response.body
   end
 
+  test "the area is off page links to the areas settings for a person allowed to change them" do
+    get_selling(on: false, settings: ->(_view) { true })
+
+    assert_select "main a[href='/settings/areas']"
+  end
+
+  test "the area is off page has no settings link for a person not allowed to change areas" do
+    get_selling(on: false, settings: ->(_view) { false })
+
+    assert_select "main a[href='/settings/areas']", count: 0
+  end
+
   private
 
-  def get_selling(on:, format: nil, available: nil)
+  def get_selling(on:, format: nil, available: nil, settings: nil)
     navigation = KeystoneUi::Configuration.new
     navigation.navigation_group("Sales") { |group| group.tab(:quotes, label: "Quotes", href: "/selling", permitted: ->(_view) { true }) }
     app = KeystoneUi::App::Configuration.new
     app.app_area(name: "Selling", description: "Quotes", groups: [ "Sales" ], on_by_default: true, icon: "<svg></svg>", ios_system_image: "cart", android_icon: "cart", available: available)
     app.account_supplier = ->(_view) { "acme" }
+    app.areas_settings(href: "/settings/areas", permitted: settings) if settings
     KeystoneUi::App::AreaChoices.new(app, account: "acme").turn("Selling", on: on) unless on.nil?
     KeystoneUi::App.stub(:configuration, app) do
       KeystoneUi.stub(:configuration, navigation) { get "/selling", headers: (format == :json ? { "Accept" => "application/json" } : {}) }
