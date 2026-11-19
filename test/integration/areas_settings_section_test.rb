@@ -19,6 +19,12 @@ class AreasSettingsSectionTest < ActionDispatch::IntegrationTest
     assert_equal [ "Selling" ], listed_areas.map(&:first)
   end
 
+  test "an area whose check fails for the person shows as not available yet, with no button" do
+    get_section { |app| app.app_area(**area(name: "Selling", available: ->(_view) { false })) }
+
+    assert_equal [ [ "Selling", "Not available yet", nil ] ], css_select("[data-area]").map { |row| [ row.at_css("[data-area-name]").text.strip, row.at_css("[data-area-status]")&.text&.strip, row.at_css("button")&.text ] }
+  end
+
   private
 
   def get_section(&declare)

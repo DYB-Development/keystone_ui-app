@@ -7,10 +7,14 @@
         <div data-area-name class="font-semibold"><%= area.name %></div>
         <div data-area-description class="text-sm"><%= area.description %></div>
       </div>
-      <%= form_with(url: submit_url, method: :patch, data: { turbo: false }) do %>
-        <%= hidden_field_tag :area, area.name %>
-        <%= hidden_field_tag :on, (!on).to_s %>
-        <%= ui_button(label: on ? "Turn off" : "Turn on", type: :submit) %>
+      <% if area.available_to?(self) %>
+        <%= form_with(url: submit_url, method: :patch, data: { turbo: false }) do %>
+          <%= hidden_field_tag :area, area.name %>
+          <%= hidden_field_tag :on, (!on).to_s %>
+          <%= ui_button(label: on ? "Turn off" : "Turn on", type: :submit) %>
+        <% end %>
+      <% else %>
+        <span data-area-status class="text-sm">Not available yet</span>
       <% end %>
     </div>
   <% end %>

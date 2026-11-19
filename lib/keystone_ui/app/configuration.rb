@@ -13,9 +13,13 @@ module KeystoneUi
         end
       end
 
-      AppArea = Struct.new(:name, :description, :groups, :on_by_default, :opens, :icon, :ios_system_image, :android_icon, keyword_init: true) do
+      AppArea = Struct.new(:name, :description, :groups, :on_by_default, :opens, :icon, :ios_system_image, :android_icon, :available, keyword_init: true) do
         def icon_for(view)
           icon.respond_to?(:call) ? icon.call(view) : icon
+        end
+
+        def available_to?(view)
+          available.nil? || available.call(view)
         end
       end
 
@@ -67,8 +71,8 @@ module KeystoneUi
         @bottom_tabs << BottomTab.new(label: label, href: href, icon: icon, permitted: permitted, section: section, ios_system_image: ios_system_image, android_icon: android_icon)
       end
 
-      def app_area(name:, description:, groups:, on_by_default:, icon:, ios_system_image:, android_icon:, opens: nil)
-        @app_areas << AppArea.new(name: name, description: description, groups: groups, on_by_default: on_by_default, opens: opens, icon: icon, ios_system_image: ios_system_image, android_icon: android_icon)
+      def app_area(name:, description:, groups:, on_by_default:, icon:, ios_system_image:, android_icon:, opens: nil, available: nil)
+        @app_areas << AppArea.new(name: name, description: description, groups: groups, on_by_default: on_by_default, opens: opens, icon: icon, ios_system_image: ios_system_image, android_icon: android_icon, available: available)
       end
 
       def more_page(href:, icon:, ios_system_image:, android_icon:)
