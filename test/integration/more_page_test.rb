@@ -100,6 +100,12 @@ class MorePageTest < ActionDispatch::IntegrationTest
     assert_equal [ [ "Sales", [ "Quotes", "Orders" ] ], [ "Billing", [ "Invoices" ] ] ], listed_groups
   end
 
+  test "when nothing matches the More page says that no page matches" do
+    get_more_page(find: "payroll") { |navigation| sales_and_billing(navigation) }
+
+    assert_select "main", text: /No page matches/
+  end
+
   private
 
   def sales_and_billing(navigation)

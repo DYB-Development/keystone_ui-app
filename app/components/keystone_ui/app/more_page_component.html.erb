@@ -3,6 +3,9 @@
 <% end %>
 
 <%= helpers.turbo_frame_tag FRAME do %>
+  <% if groups.empty? && find.present? %>
+    <p class="ks-text-muted">No page matches “<%= find %>”.</p>
+  <% end %>
   <% groups.each do |group| %>
     <section>
       <%= render Keystone::Ui::SectionComponent.new(title: group.label) do %>

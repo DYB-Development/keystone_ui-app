@@ -13,7 +13,7 @@ module KeystoneUi
       end
 
       def groups
-        visible_groups.filter_map do |group|
+        @groups ||= visible_groups.filter_map do |group|
           label = group.label unless group.standalone
           pages = found(label) ? group.tabs : group.tabs.select { |page| found(page.label) }
           Group.new(label: label, rows: pages.map { |page| { label: page.label, href: page.href } }) if pages.any?
