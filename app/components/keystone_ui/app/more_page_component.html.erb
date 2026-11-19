@@ -3,14 +3,17 @@
 <% end %>
 
 <%= helpers.turbo_frame_tag FRAME do %>
-  <% if groups.empty? && find.present? %>
+  <% if rows.empty? && find.present? %>
     <p class="ks-text-muted">No page matches “<%= find %>”.</p>
   <% end %>
-  <% groups.each do |group| %>
-    <section>
-      <%= render Keystone::Ui::SectionComponent.new(title: group.label) do %>
-        <%= render Keystone::Ui::LinkListComponent.new(rows: group.rows) %>
+  <% rows.each do |row| %>
+    <% if row.pages %>
+      <%= render Keystone::Ui::DisclosureComponent.new(open: find.present?) do |disclosure| %>
+        <% disclosure.with_summary { row.href ? link_to(row.label, row.href) : row.label } %>
+        <%= render Keystone::Ui::LinkListComponent.new(rows: row.pages) %>
       <% end %>
-    </section>
+    <% else %>
+      <%= render Keystone::Ui::LinkListComponent.new(rows: [ { label: row.label, href: row.href } ]) %>
+    <% end %>
   <% end %>
 <% end %>
