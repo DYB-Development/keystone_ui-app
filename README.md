@@ -158,6 +158,7 @@ The app refuses to boot when its bottom tabs, areas, More page or screen rules a
 - An area with no tab icon, iOS image or Android icon.
 - An area that names a group that is not a declared keystone_ui navigation group, named with the area.
 - Two areas that cover the same group, named with the group.
+- An area whose `opens:` names a page in none of its groups, named with the area and the page.
 - A screen rule with no pattern.
 
 A tab with no label and a screen rule with no pattern are named by their position in the order they were declared, counting from 1.
