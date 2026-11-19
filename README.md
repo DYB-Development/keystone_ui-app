@@ -76,6 +76,7 @@ end
 - `groups:` lists the labels of the keystone_ui navigation groups the area covers.
 - `on_by_default:` says whether the area is on for an account that has saved no choice for it.
 - `opens:` is the key of the navigation page the area's tab opens, and is optional.
+- `available:` is an optional callable given the view, and an area whose check fails shows as not available yet in the areas settings section.
 - `icon:`, `ios_system_image:` and `android_icon:` are the tab's icons, given as a bottom tab's are.
 - `more_page` declares the address of the app's More page and its tab's icons, and `href:` and `icon:` take a string or a callable given the view.
 
@@ -109,6 +110,14 @@ end
 `KeystoneUi::App.area_on?(view, "Selling")` answers whether the area is on for the current account: the account's saved choice when it has one, and the area's `on_by_default:` when it has none. An app that declares no areas needs neither the table nor the supplier.
 
 An area that is off for the current account gets no bottom tab and no native tab, and its groups are left out of the desktop menu, the More page and the phone group menu. The gem hides those groups by setting keystone_ui's `hidden_group_supplier` at boot, unless the app has set its own.
+
+An account turns its areas on and off in a settings section the gem draws. Register it with settings_hub, and have `account_supplier` return the account's id, since the section saves the choice under the id of the account settings_hub hands it:
+
+```ruby
+SettingsHub.section :areas, area: :account, title: "Areas", renders: "keystone_ui/app/settings/areas", runs: "KeystoneUi::App::TurnArea"
+```
+
+The section lists each area holding a page the person may open, with its name, its description and a button to turn it on or off. An area declared with `available: ->(view) { ... }` shows as not available yet, with no button, when that check fails for the person. A request naming an area the app does not declare is refused and saves nothing.
 
 ### The More page
 
