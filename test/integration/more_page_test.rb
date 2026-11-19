@@ -70,13 +70,19 @@ class MorePageTest < ActionDispatch::IntegrationTest
     assert_equal [ "Quotes", "Orders" ], links_in_group("Sales")
   end
 
+  test "the More page has a field at its top for finding a page by name" do
+    get "/pages/more"
+
+    assert_select "main form[method=get] input[name=find]"
+  end
+
   private
 
-  def get_more_page(saved_order: nil)
+  def get_more_page(saved_order: nil, find: nil)
     navigation = KeystoneUi::Configuration.new
     yield(navigation)
     navigation.preference_supplier = ->(_view, _key) { { value: { "order" => saved_order } } } if saved_order
-    KeystoneUi.stub(:configuration, navigation) { get "/pages/more" }
+    KeystoneUi.stub(:configuration, navigation) { get "/pages/more", params: { find: find }.compact }
   end
 
   def links_in_group(label)

@@ -6,6 +6,11 @@ module KeystoneUi
   module App
     class MorePageComponent < ViewComponent::Base
       Group = Struct.new(:label, :rows, keyword_init: true)
+      FRAME = "keystone-ui-app-more-page-list"
+
+      def find
+        helpers.params[:find].to_s.strip
+      end
 
       def groups
         visible_groups.map do |group|
