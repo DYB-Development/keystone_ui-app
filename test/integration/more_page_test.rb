@@ -142,6 +142,12 @@ class MorePageTest < ActionDispatch::IntegrationTest
     assert_equal [ [ "Sales", [ "Quotes", "Orders" ] ], [ "Billing", [ "Invoices" ] ] ], listed_groups
   end
 
+  test "a page link on the More page opens the page itself rather than loading it into the list" do
+    get "/pages/more"
+
+    assert_select "turbo-frame#keystone-ui-app-more-page-list[target=_top]"
+  end
+
   private
 
   def get_more_page_with_areas(selling_on: nil, find: nil)
