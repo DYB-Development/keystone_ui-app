@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.7.0] - 2026-11-19
+
+### Added
+- The app refuses to boot when an area's `opens:` names a page in none of the area's groups, naming the area and the page.
+
 ## [0.6.1] - 2026-11-18
 
 ### Fixed
