@@ -13,7 +13,7 @@ module KeystoneUi
     end
 
     def self.area_on?(view, area_name)
-      AreaChoices.new(configuration, account: configuration.account_supplier.call(view)).on?(area_name)
+      AreaChoices.for(configuration, view).on?(area_name)
     end
 
     def self.configure

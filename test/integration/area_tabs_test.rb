@@ -12,6 +12,16 @@ class AreaTabsTest < ActionDispatch::IntegrationTest
     assert_equal [ "Home", "Selling" ], tab_labels
   end
 
+  test "an area the account has turned off gets no tab" do
+    get_with_areas "/pages/plain" do |config|
+      config.app_area(**area(name: "Selling", groups: [ "Sales" ]))
+      config.account_supplier = ->(_view) { "acme" }
+      KeystoneUi::App::AreaChoices.new(config, account: "acme").turn("Selling", on: false)
+    end
+
+    assert_equal [ "Home" ], tab_labels
+  end
+
   test "an area that is off by default gets no tab" do
     get_with_areas "/pages/plain" do |config|
       config.app_area(**area(name: "Selling", groups: [ "Sales" ], on_by_default: false))
