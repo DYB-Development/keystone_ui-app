@@ -108,6 +108,8 @@ end
 
 `KeystoneUi::App.area_on?(view, "Selling")` answers whether the area is on for the current account: the account's saved choice when it has one, and the area's `on_by_default:` when it has none. An app that declares no areas needs neither the table nor the supplier.
 
+An area that is off for the current account gets no bottom tab and no native tab, and its groups are left out of the desktop menu, the More page and the phone group menu. The gem hides those groups by setting keystone_ui's `hidden_group_supplier` at boot, unless the app has set its own.
+
 ### The More page
 
 The app adds the route its `more_page` declaration points at, and draws the page in its own view with one call:
