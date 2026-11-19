@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.9.1] - 2026-11-19
+
+### Fixed
+- A page link on the More page opens the page itself instead of loading it into the list's frame.
+
 ## [0.9.0] - 2026-11-19
 
 ### Added

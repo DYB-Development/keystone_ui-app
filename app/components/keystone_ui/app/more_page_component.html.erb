@@ -2,7 +2,7 @@
   <%= render Keystone::Ui::InputComponent.new(name: "find", type: :text, value: find, placeholder: "Find a page", autocomplete: "off") %>
 <% end %>
 
-<%= helpers.turbo_frame_tag FRAME do %>
+<%= helpers.turbo_frame_tag FRAME, target: "_top" do %>
   <% if rows.empty? && find.present? %>
     <p class="ks-text-muted">No page matches “<%= find %>”.</p>
   <% end %>
