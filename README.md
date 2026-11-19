@@ -78,6 +78,7 @@ end
 - `opens:` is the key of the navigation page the area's tab opens, and is optional.
 - `available:` is an optional callable given the view, and an area whose check fails shows as not available yet in the areas settings section.
 - `icon:`, `ios_system_image:` and `android_icon:` are the tab's icons, given as a bottom tab's are.
+- `count:` is an optional callable given the view, and a count above zero shows as a badge on the area's tab. A bottom tab takes `count:` the same way.
 - `more_page` declares the address of the app's More page and its tab's icons, and `href:` and `icon:` take a string or a callable given the view.
 
 The bar on a phone shows, in this order:
@@ -146,6 +147,8 @@ The app adds the route its `more_page` declaration points at, and draws the page
 ```
 
 It lists every navigation group the person may see, each under a heading with the group's label and with the pages they may open under it. Groups and pages follow the person's desktop menu, including an order they saved, and a page declared with `navigation_tab` outside any group is a single row with no heading. Each row opens its page.
+
+A field at the top of the More page finds a page by name. Typing submits it, and the list shows only the pages whose label holds the typed text, ignoring letter case, or every page of a group whose label does. A group with no page left is hidden with its label, and when nothing matches the page says so. The field uses keystone_ui's `auto-submit` controller, so the host registers keystone_ui's controllers, and it works the same inside the native app.
 
 ### An area's page
 
@@ -287,7 +290,7 @@ end
 - On a phone browser, the phone menus at the top of the header on every page, including form and show pages, inside an element hidden from the `lg` breakpoint up.
 - On a phone browser, keystone_ui's phone header for a page drawn with `ui_form_page` or `ui_show_page`, with its back link, title and subtitle.
 - On a phone browser, a page that is not a form or show page shows a back link to the last breadcrumb of the trail keystone_ui's `trail_supplier` gives it, before the section menu. A page whose trail is empty, such as a nav tab's own page, shows no back link.
-- On a phone browser, a page that is not a form or show page shows a menu of the current section's tabs, with the tab the page belongs to marked as active. The section is the navigation group holding the tab keystone_ui's current tab supplier names, and the menu leaves out tabs the person is not permitted to see. A page in no section shows no menu.
+- On a phone browser, a page that is not a form or show page shows a group bar reading the group's label, a dot and the page's label, such as "Sales · Quotes", and tapping it lists that group's pages, with the page marked as active. The group is the navigation group holding the tab keystone_ui's current tab supplier names, and the list leaves out tabs the person is not permitted to see. A page in no group, or declared on its own with `navigation_tab`, shows no bar.
 - On a phone browser, the page's actions after the title in the header: an ellipsis menu of a show page's `:show_page_actions`, a form page's `:form_page_action`, or a plus menu of another page's `:mobile_action_menu`. Inside the native app none of them is drawn.
 - Inside the native app, the `menu-button` bridge component sends the section's label and tabs to the native menu button, and choosing a tab opens its page in place of the current one. A page in no section sends an empty list.
 - Inside the native app, the `add-button` bridge component sends a page header's add action to the native plus button, and a page with no add action sends none.

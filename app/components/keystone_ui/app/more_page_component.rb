@@ -6,14 +6,25 @@ module KeystoneUi
   module App
     class MorePageComponent < ViewComponent::Base
       Group = Struct.new(:label, :rows, keyword_init: true)
+      FRAME = "keystone-ui-app-more-page-list"
+
+      def find
+        helpers.params[:find].to_s.strip
+      end
 
       def groups
-        visible_groups.map do |group|
-          Group.new(label: (group.label unless group.standalone), rows: group.tabs.map { |page| { label: page.label, href: page.href } })
+        @groups ||= visible_groups.filter_map do |group|
+          label = group.label unless group.standalone
+          pages = found(label) ? group.tabs : group.tabs.select { |page| found(page.label) }
+          Group.new(label: label, rows: pages.map { |page| { label: page.label, href: page.href } }) if pages.any?
         end
       end
 
       private
+
+      def found(text)
+        find.empty? || text.to_s.downcase.include?(find.downcase)
+      end
 
       def visible_groups
         KeystoneUi::VisibleNavigation.new(

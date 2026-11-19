@@ -70,13 +70,73 @@ class MorePageTest < ActionDispatch::IntegrationTest
     assert_equal [ "Quotes", "Orders" ], links_in_group("Sales")
   end
 
+  test "the More page has a field at its top for finding a page by name" do
+    get "/pages/more"
+
+    assert_select "main form[method=get] input[name=find]"
+  end
+
+  test "finding leaves only the pages whose label contains the typed text, ignoring letter case" do
+    get_more_page(find: "ORD") { |navigation| sales_and_billing(navigation) }
+
+    assert_equal [ [ "Sales", [ "Orders" ] ] ], listed_groups
+  end
+
+  test "typing a group's name shows that group with all its pages" do
+    get_more_page(find: "sales") { |navigation| sales_and_billing(navigation) }
+
+    assert_equal [ [ "Sales", [ "Quotes", "Orders" ] ] ], listed_groups
+  end
+
+  test "a group with no page left after finding is hidden along with its label" do
+    get_more_page(find: "invo") { |navigation| sales_and_billing(navigation) }
+
+    assert_equal [ "Billing" ], listed_groups.map(&:first)
+  end
+
+  test "clearing the field shows every group and page again" do
+    get_more_page(find: "") { |navigation| sales_and_billing(navigation) }
+
+    assert_equal [ [ "Sales", [ "Quotes", "Orders" ] ], [ "Billing", [ "Invoices" ] ] ], listed_groups
+  end
+
+  test "when nothing matches the More page says that no page matches" do
+    get_more_page(find: "payroll") { |navigation| sales_and_billing(navigation) }
+
+    assert_select "main", text: /No page matches/
+  end
+
+  test "inside the native app the find field narrows the pages the same way" do
+    navigation = KeystoneUi::Configuration.new
+    sales_and_billing(navigation)
+    KeystoneUi.stub(:configuration, navigation) do
+      get "/pages/more", params: { find: "ord" }, headers: { "User-Agent" => "Hotwire Native iOS; Turbo Native iOS" }
+    end
+
+    assert_equal [ true, [ [ "Sales", [ "Orders" ] ] ] ], [ css_select("main input[name=find]").any?, listed_groups ]
+  end
+
   private
 
-  def get_more_page(saved_order: nil)
+  def sales_and_billing(navigation)
+    navigation.navigation_group("Sales") do |group|
+      group.tab(:quotes, label: "Quotes", href: "/pages/plain?tab=quotes", permitted: ->(_view) { true })
+      group.tab(:orders, label: "Orders", href: "/pages/plain?tab=orders", permitted: ->(_view) { true })
+    end
+    navigation.navigation_group("Billing") do |group|
+      group.tab(:invoices, label: "Invoices", href: "/pages/plain?tab=invoices", permitted: ->(_view) { true })
+    end
+  end
+
+  def listed_groups
+    css_select("main section").map { |section| [ section.at_css("h2").text.strip, section.css("a").map { |link| link.text.strip } ] }
+  end
+
+  def get_more_page(saved_order: nil, find: nil)
     navigation = KeystoneUi::Configuration.new
     yield(navigation)
     navigation.preference_supplier = ->(_view, _key) { { value: { "order" => saved_order } } } if saved_order
-    KeystoneUi.stub(:configuration, navigation) { get "/pages/more" }
+    KeystoneUi.stub(:configuration, navigation) { get "/pages/more", params: { find: find }.compact }
   end
 
   def links_in_group(label)

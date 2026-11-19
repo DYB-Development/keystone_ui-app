@@ -10,7 +10,7 @@ class KeystoneUi::App::ConfigurationTest < ActiveSupport::TestCase
 
     configuration.bottom_tab(label: "Sales", href: "/quotes", icon: "<svg></svg>", permitted: permitted, section: "Sales")
 
-    assert_equal({ label: "Sales", href: "/quotes", icon: "<svg></svg>", permitted: permitted, section: "Sales", ios_system_image: nil, android_icon: nil }, configuration.bottom_tabs.first.to_h)
+    assert_equal({ label: "Sales", href: "/quotes", icon: "<svg></svg>", permitted: permitted, section: "Sales", ios_system_image: nil, android_icon: nil, count: nil }, configuration.bottom_tabs.first.to_h)
   end
 
   test "a bottom tab records its iOS system image and Android icon" do
@@ -26,7 +26,7 @@ class KeystoneUi::App::ConfigurationTest < ActiveSupport::TestCase
 
     configuration.app_area(name: "Selling", description: "Quotes and orders", groups: [ "Sales" ], on_by_default: true, icon: "<svg></svg>", ios_system_image: "cart", android_icon: "shopping_cart")
 
-    assert_equal({ name: "Selling", description: "Quotes and orders", groups: [ "Sales" ], on_by_default: true, opens: nil, icon: "<svg></svg>", ios_system_image: "cart", android_icon: "shopping_cart", available: nil }, configuration.app_areas.first.to_h)
+    assert_equal({ name: "Selling", description: "Quotes and orders", groups: [ "Sales" ], on_by_default: true, opens: nil, icon: "<svg></svg>", ios_system_image: "cart", android_icon: "shopping_cart", available: nil, count: nil }, configuration.app_areas.first.to_h)
   end
 
   test "a More page records its address, tab icon, iOS image and Android icon" do

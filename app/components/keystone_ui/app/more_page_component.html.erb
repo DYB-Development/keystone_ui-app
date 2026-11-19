@@ -1,7 +1,16 @@
-<% groups.each do |group| %>
-  <section>
-    <%= render Keystone::Ui::SectionComponent.new(title: group.label) do %>
-      <%= render Keystone::Ui::LinkListComponent.new(rows: group.rows) %>
-    <% end %>
-  </section>
+<%= form_with(url: helpers.request.path, method: :get, data: { controller: "auto-submit", action: "input->auto-submit#submit", turbo_frame: FRAME }) do %>
+  <%= render Keystone::Ui::InputComponent.new(name: "find", type: :text, value: find, placeholder: "Find a page", autocomplete: "off") %>
+<% end %>
+
+<%= helpers.turbo_frame_tag FRAME do %>
+  <% if groups.empty? && find.present? %>
+    <p class="ks-text-muted">No page matches “<%= find %>”.</p>
+  <% end %>
+  <% groups.each do |group| %>
+    <section>
+      <%= render Keystone::Ui::SectionComponent.new(title: group.label) do %>
+        <%= render Keystone::Ui::LinkListComponent.new(rows: group.rows) %>
+      <% end %>
+    </section>
+  <% end %>
 <% end %>

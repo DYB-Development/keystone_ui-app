@@ -157,6 +157,30 @@ class AreaTabsTest < ActionDispatch::IntegrationTest
     assert_select "nav.ks-bottom-nav a svg#more-icon"
   end
 
+  test "a fixed tab with a count above zero shows the count as a badge on its icon" do
+    get_with_areas "/pages/plain" do |config|
+      config.bottom_tab(label: "Inbox", href: "/pages/plain?tab=inbox", icon: "<svg></svg>", permitted: ->(_view) { true }, section: nil, ios_system_image: "tray", android_icon: "inbox", count: ->(_view) { 3 })
+    end
+
+    assert_equal "3", tab_badge("Inbox")
+  end
+
+  test "an area tab with a count above zero shows the count as a badge on its icon" do
+    get_with_areas "/pages/plain" do |config|
+      config.app_area(**area(name: "Selling", groups: [ "Sales" ]), count: ->(_view) { 12 })
+    end
+
+    assert_equal "12", tab_badge("Selling")
+  end
+
+  test "a tab whose count is zero shows no badge" do
+    get_with_areas "/pages/plain" do |config|
+      config.app_area(**area(name: "Selling", groups: [ "Sales" ]), count: ->(_view) { 0 })
+    end
+
+    assert_nil tab_badge("Selling")
+  end
+
   private
 
   def get_with_areas(path, saved_order: nil, navigation: navigation(saved_order), &declare)
@@ -204,6 +228,12 @@ class AreaTabsTest < ActionDispatch::IntegrationTest
 
   def tab_href(label)
     css_select("nav.ks-bottom-nav a").find { |link| link.at_css(".ks-bottom-nav-label").text.strip == label }["href"]
+  end
+
+  def tab_badge(label)
+    tab = css_select("nav.ks-bottom-nav a").find { |link| link.at_css(".ks-bottom-nav-label").text.strip == label }
+    badge = tab.css("span").find { |span| span["class"].to_s.include?("-top-2") }
+    badge&.text&.strip
   end
 
   def tab_labels

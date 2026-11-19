@@ -1,20 +1,15 @@
 # frozen_string_literal: true
 
 require "test_helper"
+require "minitest/mock"
 
 class SectionMenuTest < ActionDispatch::IntegrationTest
   NATIVE_APP = { "User-Agent" => "Hotwire Native iOS; Turbo Native iOS" }.freeze
 
-  test "on a phone browser a page in a section shows the section's name in the top bar" do
-    get "/pages/plain", params: { tab: "quotes" }
-
-    assert_select "header [class~='lg:hidden'] .ks-nav-dropdown-trigger", text: /Sales/
-  end
-
-  test "on a phone browser a page with a page header shows the header's title in the top bar" do
+  test "on a phone browser a page in a group shows a bar reading the group's label, a dot and the page's label" do
     get "/pages/header", params: { tab: "quotes" }
 
-    assert_select "header [class~='lg:hidden'] .ks-nav-dropdown-trigger", text: /Quote Q-1/
+    assert_equal "Sales · Quotes", css_select("header [class~='lg:hidden'] .ks-nav-dropdown-trigger").first.text.squish
   end
 
   test "on a phone browser the section's button opens a menu of the section's tabs" do
@@ -43,6 +38,16 @@ class SectionMenuTest < ActionDispatch::IntegrationTest
 
   test "on a phone browser a page that belongs to no section shows no section menu" do
     get "/pages/plain"
+
+    assert_select "header .ks-nav-dropdown", count: 0
+  end
+
+  test "on a phone browser a page declared on its own outside any group shows no bar" do
+    navigation = KeystoneUi::Configuration.new
+    navigation.navigation_tab(:inbox, label: "Inbox", href: "/pages/plain?tab=inbox", permitted: ->(_view) { true })
+    navigation.current_tab_supplier = ->(view) { view.params[:tab]&.to_sym }
+
+    KeystoneUi.stub(:configuration, navigation) { get "/pages/plain", params: { tab: "inbox" } }
 
     assert_select "header .ks-nav-dropdown", count: 0
   end
