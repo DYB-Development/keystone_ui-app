@@ -146,9 +146,9 @@ The app adds the route its `more_page` declaration points at, and draws the page
 <%= ui_more_page %>
 ```
 
-It lists every navigation group the person may see, each under a heading with the group's label and with the pages they may open under it. Groups and pages follow the person's desktop menu, including an order they saved, and a page declared with `navigation_tab` outside any group is a single row with no heading. Each row opens its page.
+It shows one row for each area that is on and holds a page the person may open, labelled with the area's name, which links to the page the area's tab opens. It shows one row for each navigation group outside every area, labelled with the group's label, and one row for each page declared with `navigation_tab` outside any group, which opens that page. An area or group row is keystone_ui's disclosure: it starts collapsed and expands to list its pages with no script, in a phone browser and inside the native app. Rows follow the person's desktop menu, including an order they saved, and each area's row sits where its first group does.
 
-A field at the top of the More page finds a page by name. Typing submits it, and the list shows only the pages whose label holds the typed text, ignoring letter case, or every page of a group whose label does. A group with no page left is hidden with its label, and when nothing matches the page says so. The field uses keystone_ui's `auto-submit` controller, so the host registers keystone_ui's controllers, and it works the same inside the native app.
+A field at the top of the More page finds a page by name. Typing submits it, and the list shows only the pages whose label holds the typed text, ignoring letter case, or every page of a group whose label does. A group with no page left is hidden with its label, every row still holding a match is expanded, and when nothing matches the page says so. The field uses keystone_ui's `auto-submit` controller, so the host registers keystone_ui's controllers, and it works the same inside the native app.
 
 ### An area's page
 
