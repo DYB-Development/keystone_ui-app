@@ -4,6 +4,7 @@ gemspec
 
 gem "rake"
 gem "rails"
+gem "sqlite3"
 gem "minitest", "~> 5.0"
 gem "rubocop-rails-omakase", require: false
 

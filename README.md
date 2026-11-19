@@ -74,7 +74,7 @@ end
 - `name:` is the area's name, and its tab is labelled with it.
 - `description:` says what the area holds.
 - `groups:` lists the labels of the keystone_ui navigation groups the area covers.
-- `on_by_default:` says whether the area is on for an account, and until accounts can save a choice it decides for every account.
+- `on_by_default:` says whether the area is on for an account that has saved no choice for it.
 - `opens:` is the key of the navigation page the area's tab opens, and is optional.
 - `icon:`, `ios_system_image:` and `android_icon:` are the tab's icons, given as a bottom tab's are.
 - `more_page` declares the address of the app's More page and its tab's icons, and `href:` and `icon:` take a string or a callable given the view.
@@ -88,6 +88,25 @@ The bar on a phone shows, in this order:
 The bar holds no more than five tabs, More included, and leaves out the areas that come last first. An area's tab opens the page `opens:` names when the person may open it, and otherwise the first page in the area the person may open, in their saved order. An area's tab is marked current on any page in one of its groups, and the More tab is marked current on the More page.
 
 An app that declares no areas and no More page keeps the bar its bottom tabs give it.
+
+### An account's choice of areas
+
+An account's choice of which areas are on is kept in a table the gem owns. Add it with the install generator, then migrate:
+
+```
+bin/rails generate keystone_ui:app:install
+bin/rails db:migrate
+```
+
+The app names the current account with `account_supplier`, a callable given the view that returns the account's identifier. The gem stores the identifier as text:
+
+```ruby
+KeystoneUi::App.configure do |config|
+  config.account_supplier = ->(view) { view.current_account.id }
+end
+```
+
+`KeystoneUi::App.area_on?(view, "Selling")` answers whether the area is on for the current account: the account's saved choice when it has one, and the area's `on_by_default:` when it has none. An app that declares no areas needs neither the table nor the supplier.
 
 ### The More page
 

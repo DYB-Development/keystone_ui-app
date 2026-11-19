@@ -1,0 +1,11 @@
+class CreateKeystoneUiAppAreaChoices < ActiveRecord::Migration<%= migration_version %>
+  def change
+    create_table :keystone_ui_app_area_choices do |t|
+      t.string :account_key, null: false
+      t.string :area_name, null: false
+      t.boolean :on, null: false
+      t.timestamps
+    end
+    add_index :keystone_ui_app_area_choices, [ :account_key, :area_name ], unique: true
+  end
+end
