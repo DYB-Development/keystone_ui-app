@@ -17,4 +17,14 @@ class KeystoneUi::App::TurnAreaTest < ActiveSupport::TestCase
 
     assert_equal false, on
   end
+
+  test "naming an area the app does not declare is refused and saves nothing" do
+    app = KeystoneUi::App::Configuration.new
+
+    result = KeystoneUi::App.stub(:configuration, app) do
+      KeystoneUi::App::TurnArea.new(values: { area: "Payroll", on: "true" }, person: nil, account: Account.new(7)).call
+    end
+
+    assert_equal [ false, 0 ], [ result.ok?, KeystoneUi::App::AreaChoice.count ]
+  end
 end
