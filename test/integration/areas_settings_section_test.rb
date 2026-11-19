@@ -10,6 +10,15 @@ class AreasSettingsSectionTest < ActionDispatch::IntegrationTest
     assert_equal [ [ "Selling", "Quotes and orders", "Turn off" ] ], listed_areas
   end
 
+  test "the areas section lists only areas holding a page the person may open" do
+    get_section do |app|
+      app.app_area(**area(name: "Selling"))
+      app.app_area(**area(name: "Admin", groups: [ "Admin" ]))
+    end
+
+    assert_equal [ "Selling" ], listed_areas.map(&:first)
+  end
+
   private
 
   def get_section(&declare)

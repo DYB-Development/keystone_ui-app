@@ -16,6 +16,11 @@ module KeystoneUi
       area_choices(view).on?(area_name)
     end
 
+    def self.areas_open_to(view)
+      groups = KeystoneUi.configuration.navigation_groups.select { |group| group.tabs_permitted_for(view).any? }.map(&:label)
+      configuration.app_areas.select { |area| area.groups.intersect?(groups) }
+    end
+
     def self.hide_turned_off_groups(navigation)
       navigation.hidden_group_supplier ||= ->(view, label) { group_turned_off?(view, label) }
     end
