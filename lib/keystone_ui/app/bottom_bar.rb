@@ -7,7 +7,7 @@ require "keystone_ui/app/area_choices"
 module KeystoneUi
   module App
     class BottomBar
-      Tab = Struct.new(:label, :href, :icon, :ios_system_image, :android_icon, :sections, keyword_init: true)
+      Tab = Struct.new(:label, :href, :icon, :ios_system_image, :android_icon, :sections, :count, keyword_init: true)
 
       MORE_LABEL = "More"
       MOST_TABS = ShellCheck::MOST_BOTTOM_TABS
@@ -26,7 +26,7 @@ module KeystoneUi
 
       def fixed_tabs
         configuration.bottom_tabs.select { |tab| tab.permitted.call(@view) }.map do |tab|
-          Tab.new(label: tab.label, href: tab.href_for(@view), icon: tab.icon_for(@view), ios_system_image: tab.ios_system_image, android_icon: tab.android_icon, sections: [ tab.section ].compact)
+          Tab.new(label: tab.label, href: tab.href_for(@view), icon: tab.icon_for(@view), ios_system_image: tab.ios_system_image, android_icon: tab.android_icon, sections: [ tab.section ].compact, count: tab.count&.call(@view))
         end
       end
 
@@ -36,7 +36,7 @@ module KeystoneUi
       end
 
       def area_tab(area)
-        Tab.new(label: area.name, href: opened_page(area).href_for(@view), icon: area.icon_for(@view), ios_system_image: area.ios_system_image, android_icon: area.android_icon, sections: area.groups)
+        Tab.new(label: area.name, href: opened_page(area).href_for(@view), icon: area.icon_for(@view), ios_system_image: area.ios_system_image, android_icon: area.android_icon, sections: area.groups, count: area.count&.call(@view))
       end
 
       def more_tab_needed?(shown)

@@ -3,7 +3,7 @@
 module KeystoneUi
   module App
     class Configuration
-      BottomTab = Struct.new(:label, :href, :icon, :permitted, :section, :ios_system_image, :android_icon, keyword_init: true) do
+      BottomTab = Struct.new(:label, :href, :icon, :permitted, :section, :ios_system_image, :android_icon, :count, keyword_init: true) do
         def href_for(view)
           href.respond_to?(:call) ? href.call(view) : href
         end
@@ -13,7 +13,7 @@ module KeystoneUi
         end
       end
 
-      AppArea = Struct.new(:name, :description, :groups, :on_by_default, :opens, :icon, :ios_system_image, :android_icon, :available, keyword_init: true) do
+      AppArea = Struct.new(:name, :description, :groups, :on_by_default, :opens, :icon, :ios_system_image, :android_icon, :available, :count, keyword_init: true) do
         def icon_for(view)
           icon.respond_to?(:call) ? icon.call(view) : icon
         end
@@ -77,12 +77,12 @@ module KeystoneUi
         @native_settings = {}
       end
 
-      def bottom_tab(label:, href:, icon:, permitted:, section:, ios_system_image: nil, android_icon: nil)
-        @bottom_tabs << BottomTab.new(label: label, href: href, icon: icon, permitted: permitted, section: section, ios_system_image: ios_system_image, android_icon: android_icon)
+      def bottom_tab(label:, href:, icon:, permitted:, section:, ios_system_image: nil, android_icon: nil, count: nil)
+        @bottom_tabs << BottomTab.new(label: label, href: href, icon: icon, permitted: permitted, section: section, ios_system_image: ios_system_image, android_icon: android_icon, count: count)
       end
 
-      def app_area(name:, description:, groups:, on_by_default:, icon:, ios_system_image:, android_icon:, opens: nil, available: nil)
-        @app_areas << AppArea.new(name: name, description: description, groups: groups, on_by_default: on_by_default, opens: opens, icon: icon, ios_system_image: ios_system_image, android_icon: android_icon, available: available)
+      def app_area(name:, description:, groups:, on_by_default:, icon:, ios_system_image:, android_icon:, opens: nil, available: nil, count: nil)
+        @app_areas << AppArea.new(name: name, description: description, groups: groups, on_by_default: on_by_default, opens: opens, icon: icon, ios_system_image: ios_system_image, android_icon: android_icon, available: available, count: count)
       end
 
       def more_page(href:, icon:, ios_system_image:, android_icon:)
