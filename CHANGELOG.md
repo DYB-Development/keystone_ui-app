@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.9.2] - 2026-11-19
+
+### Changed
+- The bottom bar, group bar, More page and native menu button share one person's groups per request, so each navigation page's permission check and count, and the account's area choices, are worked out once for them (#35).
+
 ## [0.9.1] - 2026-11-19
 
 ### Fixed
