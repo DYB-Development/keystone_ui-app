@@ -10,6 +10,18 @@ class AreaGuardTest < ActionDispatch::IntegrationTest
     assert_select "main", text: /Selling is turned off/
   end
 
+  test "a JSON request to a page whose area is off gets a forbidden response" do
+    get_selling(on: false, format: :json)
+
+    assert_equal [ 403, "" ], [ response.status, response.body ]
+  end
+
+  test "a page whose area is on opens as usual" do
+    get_selling(on: true)
+
+    assert_equal "Selling page", response.body
+  end
+
   private
 
   def get_selling(on:, format: nil, available: nil)
