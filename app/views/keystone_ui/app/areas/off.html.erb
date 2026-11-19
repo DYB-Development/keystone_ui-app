@@ -1,0 +1,8 @@
+<%= ui_page do %>
+  <%= ui_page_header(title: area_name) %>
+  <%= ui_alert(message: "#{area_name} is turned off for your account.") %>
+  <% settings = KeystoneUi::App.configuration.areas_settings_link %>
+  <% if settings&.shown_to?(self) %>
+    <%= link_to "Turn areas on or off", settings.href_for(self) %>
+  <% end %>
+<% end %>

@@ -39,6 +39,16 @@ module KeystoneUi
         end
       end
 
+      AreasSettings = Struct.new(:href, :permitted, keyword_init: true) do
+        def href_for(view)
+          href.respond_to?(:call) ? href.call(view) : href
+        end
+
+        def shown_to?(view)
+          permitted.call(view)
+        end
+      end
+
       AccountPage = Struct.new(:href, keyword_init: true) do
         def href_for(view)
           href.respond_to?(:call) ? href.call(view) : href
@@ -57,7 +67,7 @@ module KeystoneUi
 
       attr_accessor :person_supplier, :accounts_supplier, :account_supplier
 
-      attr_reader :bottom_tabs, :app_areas, :more_page_tab, :account_links, :account_page_link, :notifications_link, :native_rules, :native_settings
+      attr_reader :areas_settings_link, :bottom_tabs, :app_areas, :more_page_tab, :account_links, :account_page_link, :notifications_link, :native_rules, :native_settings
 
       def initialize
         @bottom_tabs = []
@@ -101,6 +111,10 @@ module KeystoneUi
 
       def accounts(view)
         accounts_supplier ? accounts_supplier.call(view) : []
+      end
+
+      def areas_settings(href:, permitted:)
+        @areas_settings_link = AreasSettings.new(href: href, permitted: permitted)
       end
 
       def native_rule(patterns:, properties:)
