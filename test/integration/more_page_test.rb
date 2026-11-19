@@ -128,6 +128,20 @@ class MorePageTest < ActionDispatch::IntegrationTest
     assert_equal [ "Billing" ], more_rows.map(&:first)
   end
 
+  test "typing in the find field expands each row that still holds a matching page" do
+    get_more_page_with_areas(find: "o") { |app| app.app_area(**selling_area) }
+
+    assert_equal [ [ "Selling", true ], [ "Billing", true ] ], more_rows.map { |row| [ row[0], row[2] ] }
+  end
+
+  test "inside the iOS app each row is an expandable details element that needs no script" do
+    navigation = KeystoneUi::Configuration.new
+    sales_and_billing(navigation)
+    KeystoneUi.stub(:configuration, navigation) { get "/pages/more", headers: { "User-Agent" => "Hotwire Native iOS; Turbo Native iOS" } }
+
+    assert_equal [ [ "Sales", [ "Quotes", "Orders" ] ], [ "Billing", [ "Invoices" ] ] ], listed_groups
+  end
+
   private
 
   def get_more_page_with_areas(selling_on: nil, find: nil)
