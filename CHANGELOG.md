@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.8.0] - 2026-11-19
+
+### Added
+- An account's choice of which areas are on is kept in a table the gem owns, added with `bin/rails generate keystone_ui:app:install`, and `KeystoneUi::App.area_on?(view, name)` answers for the account `account_supplier` names (#50).
+- An area the account has turned off loses its bottom tab and native tab, and its groups leave the desktop menu, the More page and the phone group menu (#51).
+- A settings section, `keystone_ui/app/settings/areas` with the `KeystoneUi::App::TurnArea` action, lists the areas a person may open with a button to turn each on or off, and `app_area` takes an optional `available:` check (#53).
+- `include KeystoneUi::App::AreaGuard` with `in_area` refuses a page whose area is off, or whose `available:` check fails for the person, and `config.areas_settings` links the refusal page to the areas section (#52).
+
+### Changed
+- keystone_ui-app requires activerecord and keystone_ui 0.104.0 or later.
+
 ## [0.7.0] - 2026-11-19
 
 ### Added
