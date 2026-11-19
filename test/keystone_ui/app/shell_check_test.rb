@@ -62,6 +62,12 @@ class KeystoneUi::App::ShellCheckTest < ActiveSupport::TestCase
     assert_equal "Screen rule 2 has no pattern.", error.message
   end
 
+  test "an area that opens a page in none of its groups is refused, naming the area and the page" do
+    error = assert_raises(KeystoneUi::App::ShellCheck::Error) { check(app_areas: [ area(opens: :invoices) ], group_pages: { "Sales" => [ :quotes, :orders ] }) }
+
+    assert_equal "The Selling area opens the invoices page, which is in none of its groups.", error.message
+  end
+
   test "an area naming a group that is not declared is refused, naming the area and the group" do
     error = assert_raises(KeystoneUi::App::ShellCheck::Error) { check(app_areas: [ area(groups: [ "Billing" ]) ]) }
 
@@ -103,8 +109,8 @@ class KeystoneUi::App::ShellCheckTest < ActiveSupport::TestCase
 
   private
 
-  def check(bottom_tabs: [ tab ], native_rules: [], sections: [ "Sales" ], app_areas: [], more_page: nil)
-    KeystoneUi::App::ShellCheck.new(bottom_tabs: bottom_tabs, native_rules: native_rules, sections: sections, app_areas: app_areas, more_page: more_page).call
+  def check(bottom_tabs: [ tab ], native_rules: [], sections: [ "Sales" ], app_areas: [], more_page: nil, group_pages: {})
+    KeystoneUi::App::ShellCheck.new(bottom_tabs: bottom_tabs, native_rules: native_rules, sections: sections, app_areas: app_areas, more_page: more_page, group_pages: group_pages).call
   end
 
   def area(**overrides)

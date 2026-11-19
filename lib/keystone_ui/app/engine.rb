@@ -13,7 +13,8 @@ module KeystoneUi
           native_rules: configuration.native_rules,
           sections: KeystoneUi.configuration.navigation_groups.map(&:label),
           app_areas: configuration.app_areas,
-          more_page: configuration.more_page_tab
+          more_page: configuration.more_page_tab,
+          group_pages: KeystoneUi.configuration.navigation_groups.to_h { |group| [ group.label, group.tabs.map(&:key) ] }
         ).call
       end
 

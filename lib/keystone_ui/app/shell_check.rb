@@ -7,8 +7,9 @@ module KeystoneUi
 
       MOST_BOTTOM_TABS = 5
 
-      def initialize(bottom_tabs:, native_rules:, sections:, app_areas: [], more_page: nil)
+      def initialize(bottom_tabs:, native_rules:, sections:, app_areas: [], more_page: nil, group_pages: {})
         @bottom_tabs = bottom_tabs
+        @group_pages = group_pages
         @more_page = more_page
         @app_areas = app_areas
         @native_rules = native_rules
@@ -43,6 +44,11 @@ module KeystoneUi
         raise Error, "The #{area.name} area's tab has no Android icon." if blank?(area.android_icon)
         undeclared = area.groups.find { |group| !@sections.include?(group) }
         raise Error, "The #{area.name} area names the #{undeclared} group, which is not a declared navigation group." if undeclared
+        raise Error, "The #{area.name} area opens the #{area.opens} page, which is in none of its groups." if area.opens && !area_pages(area).include?(area.opens)
+      end
+
+      def area_pages(area)
+        area.groups.flat_map { |group| @group_pages.fetch(group, []) }
       end
 
       def shared_group
