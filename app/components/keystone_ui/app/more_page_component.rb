@@ -56,12 +56,12 @@ module KeystoneUi
       end
 
       def bottom_bar
-        @bottom_bar ||= KeystoneUi::App::BottomBar.new(helpers)
+        @bottom_bar ||= KeystoneUi::App::BottomBar.for(helpers)
       end
 
       def visible_groups
         @visible_groups ||= KeystoneUi::VisibleNavigation.new(
-          KeystoneUi.configuration.navigation_groups,
+          KeystoneUi::App::PersonGroups.for(helpers).groups,
           view: helpers,
           saved_order: saved_order,
           current_tab: nil

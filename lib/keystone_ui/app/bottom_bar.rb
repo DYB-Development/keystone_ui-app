@@ -3,6 +3,7 @@
 require "keystone_ui/navigation_order"
 require "keystone_ui/app/shell_check"
 require "keystone_ui/app/area_choices"
+require "keystone_ui/app/person_groups"
 
 module KeystoneUi
   module App
@@ -12,14 +13,21 @@ module KeystoneUi
       MORE_LABEL = "More"
       MOST_TABS = ShellCheck::MOST_BOTTOM_TABS
 
+      ENV_KEY = "keystone_ui_app.bottom_bar"
+
+      def self.for(view)
+        env = view.request.env if view.respond_to?(:request)
+        return new(view) unless env
+
+        env[ENV_KEY] ||= new(view)
+      end
+
       def initialize(view)
         @view = view
       end
 
       def tabs
-        shown = fixed_tabs + area_tabs
-        full = shown.first(MOST_TABS)
-        more_tab_needed?(full) ? shown.first(MOST_TABS - 1) + [ more_tab ] : full
+        @tabs ||= arranged_tabs
       end
 
       def opened_href(area)
@@ -27,6 +35,12 @@ module KeystoneUi
       end
 
       private
+
+      def arranged_tabs
+        shown = fixed_tabs + area_tabs
+        full = shown.first(MOST_TABS)
+        more_tab_needed?(full) ? shown.first(MOST_TABS - 1) + [ more_tab ] : full
+      end
 
       def fixed_tabs
         configuration.bottom_tabs.select { |tab| tab.permitted.call(@view) }.map do |tab|
@@ -75,7 +89,7 @@ module KeystoneUi
       end
 
       def permitted_groups
-        @permitted_groups ||= KeystoneUi.configuration.navigation_groups
+        @permitted_groups ||= PersonGroups.for(@view).groups
           .map { |group| [ group, group.tabs_permitted_for(@view) ] }
           .reject { |_group, pages| pages.empty? }
       end
@@ -88,7 +102,7 @@ module KeystoneUi
       end
 
       def area_choices
-        @area_choices ||= AreaChoices.for(configuration, @view)
+        @area_choices ||= KeystoneUi::App.area_choices(@view)
       end
 
       def configuration

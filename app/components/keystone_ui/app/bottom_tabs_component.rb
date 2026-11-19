@@ -13,7 +13,7 @@ module KeystoneUi
       end
 
       def tabs
-        @tabs ||= KeystoneUi::App::BottomBar.new(helpers).tabs
+        @tabs ||= KeystoneUi::App::BottomBar.for(helpers).tabs
       end
 
       def active?(tab)

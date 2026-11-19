@@ -39,7 +39,7 @@ module KeystoneUi
       end
 
       def bar_tabs
-        @bar_tabs ||= KeystoneUi::App::BottomBar.new(view).tabs
+        @bar_tabs ||= KeystoneUi::App::BottomBar.for(view).tabs
       end
 
       def view
