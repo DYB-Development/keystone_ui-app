@@ -106,6 +106,16 @@ class MorePageTest < ActionDispatch::IntegrationTest
     assert_select "main", text: /No page matches/
   end
 
+  test "inside the native app the find field narrows the pages the same way" do
+    navigation = KeystoneUi::Configuration.new
+    sales_and_billing(navigation)
+    KeystoneUi.stub(:configuration, navigation) do
+      get "/pages/more", params: { find: "ord" }, headers: { "User-Agent" => "Hotwire Native iOS; Turbo Native iOS" }
+    end
+
+    assert_equal [ true, [ [ "Sales", [ "Orders" ] ] ] ], [ css_select("main input[name=find]").any?, listed_groups ]
+  end
+
   private
 
   def sales_and_billing(navigation)
