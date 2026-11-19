@@ -4,6 +4,7 @@ require "turbo-rails"
 require "keystone_ui/app/version"
 require "keystone_ui/app/configuration"
 require "keystone_ui/app/area_choices"
+require "keystone_ui/app/person_groups"
 require "keystone_ui/app/engine"
 
 module KeystoneUi
@@ -17,7 +18,7 @@ module KeystoneUi
     end
 
     def self.areas_open_to(view)
-      groups = KeystoneUi.configuration.navigation_groups.select { |group| group.tabs_permitted_for(view).any? }.map(&:label)
+      groups = PersonGroups.for(view).groups.select { |group| group.tabs_permitted_for(view).any? }.map(&:label)
       configuration.app_areas.select { |area| area.groups.intersect?(groups) }
     end
 

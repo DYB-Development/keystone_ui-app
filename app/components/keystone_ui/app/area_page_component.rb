@@ -39,7 +39,7 @@ module KeystoneUi
       end
 
       def permitted_groups
-        KeystoneUi.configuration.navigation_groups
+        KeystoneUi::App::PersonGroups.for(helpers).groups
           .map { |group| [ group, group.tabs_permitted_for(helpers) ] }
           .reject { |_group, pages| pages.empty? }
       end

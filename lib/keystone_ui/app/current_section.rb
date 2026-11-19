@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "keystone_ui/visible_navigation"
+require "keystone_ui/app/person_groups"
 
 module KeystoneUi
   module App
@@ -11,7 +12,7 @@ module KeystoneUi
 
       def group
         KeystoneUi::VisibleNavigation.new(
-          KeystoneUi.configuration.navigation_groups,
+          KeystoneUi::App::PersonGroups.for(@view).groups,
           view: @view,
           saved_order: [],
           current_tab: KeystoneUi.configuration.supplied_current_tab(@view)
