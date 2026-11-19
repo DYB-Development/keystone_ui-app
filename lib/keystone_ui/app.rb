@@ -3,6 +3,7 @@ require "view_component"
 require "turbo-rails"
 require "keystone_ui/app/version"
 require "keystone_ui/app/configuration"
+require "keystone_ui/app/area_choices"
 require "keystone_ui/app/engine"
 
 module KeystoneUi
