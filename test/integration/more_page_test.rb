@@ -82,6 +82,24 @@ class MorePageTest < ActionDispatch::IntegrationTest
     assert_equal [ [ "Sales", [ "Orders" ] ] ], listed_groups
   end
 
+  test "typing a group's name shows that group with all its pages" do
+    get_more_page(find: "sales") { |navigation| sales_and_billing(navigation) }
+
+    assert_equal [ [ "Sales", [ "Quotes", "Orders" ] ] ], listed_groups
+  end
+
+  test "a group with no page left after finding is hidden along with its label" do
+    get_more_page(find: "invo") { |navigation| sales_and_billing(navigation) }
+
+    assert_equal [ "Billing" ], listed_groups.map(&:first)
+  end
+
+  test "clearing the field shows every group and page again" do
+    get_more_page(find: "") { |navigation| sales_and_billing(navigation) }
+
+    assert_equal [ [ "Sales", [ "Quotes", "Orders" ] ], [ "Billing", [ "Invoices" ] ] ], listed_groups
+  end
+
   private
 
   def sales_and_billing(navigation)
