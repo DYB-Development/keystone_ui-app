@@ -15,7 +15,7 @@ module KeystoneUi
           view: @view,
           saved_order: [],
           current_tab: KeystoneUi.configuration.supplied_current_tab(@view)
-        ).groups.find(&:active)
+        ).groups.find { |group| group.active && !group.standalone }
       end
     end
   end
