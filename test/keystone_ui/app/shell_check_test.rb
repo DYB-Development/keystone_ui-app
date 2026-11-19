@@ -68,6 +68,14 @@ class KeystoneUi::App::ShellCheckTest < ActiveSupport::TestCase
     assert_equal "The Selling area opens the invoices page, which is in none of its groups.", error.message
   end
 
+  test "an area that names no page to open is accepted" do
+    assert_nil check(app_areas: [ area ], group_pages: { "Sales" => [ :quotes ] })
+  end
+
+  test "an area that opens a page in one of its groups is accepted" do
+    assert_nil check(app_areas: [ area(opens: :quotes) ], group_pages: { "Sales" => [ :quotes ] })
+  end
+
   test "an area naming a group that is not declared is refused, naming the area and the group" do
     error = assert_raises(KeystoneUi::App::ShellCheck::Error) { check(app_areas: [ area(groups: [ "Billing" ]) ]) }
 
