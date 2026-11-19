@@ -22,6 +22,15 @@ class TurnedOffAreasTest < ActionDispatch::IntegrationTest
     assert_select "header .ks-nav-dropdown-menu a", text: "Quotes", count: 0
   end
 
+  test "an area the account has turned on shows its groups in the desktop menu and on the More page" do
+    shown = [ "/pages/plain", "/pages/more" ].map do |path|
+      get_with_selling(path, on: true)
+      css_select("nav.top-nav a.ks-nav-item, main a").map { |link| link.text.strip }.include?("Quotes")
+    end
+
+    assert_equal [ true, true ], shown
+  end
+
   private
 
   def get_with_selling(path, on:)
