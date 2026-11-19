@@ -9,7 +9,12 @@ module KeystoneUi
       end
 
       def on?(area_name)
-        declared(area_name).on_by_default
+        saved = AreaChoice.find_by(account_key: @account, area_name: area_name)
+        saved ? saved.on : declared(area_name).on_by_default
+      end
+
+      def turn(area_name, on:)
+        AreaChoice.find_or_initialize_by(account_key: @account, area_name: area_name).update!(on: on)
       end
 
       private
