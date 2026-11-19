@@ -43,6 +43,9 @@ class PagesController < ApplicationController
   def account
   end
 
+  def areas_settings
+  end
+
   def area
   end
 end

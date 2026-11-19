@@ -1,0 +1,8 @@
+<% choices = KeystoneUi::App.area_choices(self) %>
+<%= ui_value_list(rows: KeystoneUi::App.areas_open_to(self).map { |area|
+  {
+    label: area.name,
+    note: area.description,
+    value: area.available_to?(self) ? render("keystone_ui/app/settings/area_switch", area: area, on: choices.on?(area.name), submit_url: submit_url) : "Not available yet"
+  }
+}) %>

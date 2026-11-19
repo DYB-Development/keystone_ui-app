@@ -1,0 +1,5 @@
+<%= form_with(url: submit_url, method: :patch, data: { turbo: false }) do %>
+  <%= hidden_field_tag :area, area.name %>
+  <%= hidden_field_tag :on, (!on).to_s %>
+  <%= ui_button(label: on ? "Turn off" : "Turn on", type: :submit) %>
+<% end %>
