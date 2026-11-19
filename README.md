@@ -119,6 +119,24 @@ SettingsHub.section :areas, area: :account, title: "Areas", renders: "keystone_u
 
 The section lists each area holding a page the person may open, with its name, its description and a button to turn it on or off. An area declared with `available: ->(view) { ... }` shows as not available yet, with no button, when that check fails for the person. A request naming an area the app does not declare is refused and saves nothing.
 
+A page joins an area by including the guard in its controller and naming the area:
+
+```ruby
+class QuotesController < ApplicationController
+  include KeystoneUi::App::AreaGuard
+
+  in_area "Selling"
+end
+```
+
+When the area is off for the current account, the page shows a page saying so, with status 403, and a JSON request gets a bare 403. When the area is on but its `available:` check fails for the person, the page shows a different page saying the area is not available to them yet. Naming an area the app does not declare raises an error naming it. To link the area is off page to the areas section for the people who may change it, declare where the section lives:
+
+```ruby
+KeystoneUi::App.configure do |config|
+  config.areas_settings(href: ->(view) { view.settings_hub.section_path(:areas) }, permitted: ->(view) { view.can?(:configure_account) })
+end
+```
+
 ### The More page
 
 The app adds the route its `more_page` declaration points at, and draws the page in its own view with one call:
