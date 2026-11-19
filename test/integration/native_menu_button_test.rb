@@ -26,4 +26,13 @@ class NativeMenuButtonTest < ActionDispatch::IntegrationTest
 
     assert_select "[data-controller='bridge--menu-button']", count: 0
   end
+
+  test "inside the native app the native menu button lists the same pages as the phone group bar" do
+    get "/pages/plain", params: { tab: "quotes" }
+    bar = css_select("header .ks-nav-dropdown-menu a").map { |link| { "title" => link.text.strip, "path" => link["href"] } }
+
+    get "/pages/plain", params: { tab: "quotes" }, headers: NATIVE_APP
+
+    assert_equal bar, sent_menu["items"]
+  end
 end
