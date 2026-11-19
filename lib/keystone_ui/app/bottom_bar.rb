@@ -22,6 +22,10 @@ module KeystoneUi
         more_tab_needed?(full) ? shown.first(MOST_TABS - 1) + [ more_tab ] : full
       end
 
+      def opened_href(area)
+        opened_page(area).href_for(@view)
+      end
+
       private
 
       def fixed_tabs
