@@ -34,6 +34,18 @@ class AreaGuardTest < ActionDispatch::IntegrationTest
     assert_select "main a[href='/settings/areas']", count: 0
   end
 
+  test "a person who fails an area's check sees a page saying the area is not available to them yet" do
+    get_selling(on: true, available: ->(_view) { false })
+
+    assert_select "main", text: /Selling is not available to you yet/
+  end
+
+  test "the not available yet page is not the area is off page" do
+    get_selling(on: true, available: ->(_view) { false })
+
+    assert_select "main", text: /turned off/, count: 0
+  end
+
   private
 
   def get_selling(on:, format: nil, available: nil, settings: nil)
